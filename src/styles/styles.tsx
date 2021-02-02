@@ -271,6 +271,11 @@ const fonts = css`
 `;
 
 const rules = css`
+  html,
+  body,
+  #__next {
+    min-height: 100vh;
+  }
   body {
     background: ${designSystem.colors.brand.primary};
     font-family: ${designSystem.font.base.family};
@@ -278,7 +283,11 @@ const rules = css`
     padding: 0px;
     font-size: ${designSystem.font.base.size};
     overflow-x: hidden;
-    min-height: 100%;
+  }
+
+  #__next {
+    display: flex;
+    flex-direction: column;
   }
 
   * {
@@ -298,6 +307,12 @@ const rules = css`
   h6 {
     display: block;
     margin: 0px;
+  }
+`;
+
+const globalClasses = css`
+  .flex-spacer {
+    flex: 1;
   }
 `;
 const reset = css`
@@ -1367,6 +1382,7 @@ const globalStyles = (
     styles={css`
       ${reset}
       ${fonts}
+      ${globalClasses}
       ${rules}
     `}
   />

@@ -14,7 +14,7 @@ const BottomNavBar: React.FC<Props> = () => {
     <footer
       css={css`
         & {
-          position: fixed;
+          position: sticky;
           left: 0;
           right: 0;
           bottom: 0;
