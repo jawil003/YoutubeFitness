@@ -15,39 +15,41 @@ const MyCoursePage: React.FC = () => {
       <Head>
         <title>My Courses</title>
       </Head>
-      <FlexContainer
+
+      <div
         css={css`
-          & {
-            width: 100%;
-            height: 100%;
-          }
+          display: grid;
+          grid-template-columns: repeat(auto-fill, minmax(371px, auto));
+          grid-template-rows: 140px;
+          justify-content: center;
+          align-items: start;
+          justify-items: center;
+          height: 100%;
+          gap: 20px;
+          padding: 40px;
         `}
-        alignItems="center"
-        justifyContent="center"
       >
-        <FlexContainer wrap alignItems="center" columnGap="20px" rowGap="20px">
-          <Course
-            title="Test"
-            imageUrl="https://images.unsplash.com/photo-1518611012118-696072aa579a?ixid=MXwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHw%3D&ixlib=rb-1.2.1&auto=format&fit=crop&w=1050&q=80"
-            url="https://google.de/"
-          />
-          <Course
-            title="Test"
-            imageUrl="https://images.unsplash.com/photo-1518611012118-696072aa579a?ixid=MXwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHw%3D&ixlib=rb-1.2.1&auto=format&fit=crop&w=1050&q=80"
-            url="https://google.de/"
-          />
-          <Course
-            title="Test"
-            imageUrl="https://images.unsplash.com/photo-1518611012118-696072aa579a?ixid=MXwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHw%3D&ixlib=rb-1.2.1&auto=format&fit=crop&w=1050&q=80"
-            url="https://google.de/"
-          />
-          <Course
-            title="Test"
-            imageUrl="https://images.unsplash.com/photo-1518611012118-696072aa579a?ixid=MXwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHw%3D&ixlib=rb-1.2.1&auto=format&fit=crop&w=1050&q=80"
-            url="https://google.de/"
-          />
-        </FlexContainer>
-      </FlexContainer>
+        <Course
+          title="Test"
+          imageUrl="https://images.unsplash.com/photo-1518611012118-696072aa579a?ixid=MXwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHw%3D&ixlib=rb-1.2.1&auto=format&fit=crop&w=1050&q=80"
+          url="https://google.de/"
+        />
+        <Course
+          title="Test"
+          imageUrl="https://images.unsplash.com/photo-1518611012118-696072aa579a?ixid=MXwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHw%3D&ixlib=rb-1.2.1&auto=format&fit=crop&w=1050&q=80"
+          url="https://google.de/"
+        />
+        <Course
+          title="Test"
+          imageUrl="https://images.unsplash.com/photo-1518611012118-696072aa579a?ixid=MXwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHw%3D&ixlib=rb-1.2.1&auto=format&fit=crop&w=1050&q=80"
+          url="https://google.de/"
+        />
+        <Course
+          title="Test"
+          imageUrl="https://images.unsplash.com/photo-1518611012118-696072aa579a?ixid=MXwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHw%3D&ixlib=rb-1.2.1&auto=format&fit=crop&w=1050&q=80"
+          url="https://google.de/"
+        />
+      </div>
     </>
   );
 };

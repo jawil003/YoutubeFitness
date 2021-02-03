@@ -274,7 +274,7 @@ const rules = css`
   html,
   body,
   #__next {
-    min-height: 100vh;
+    height: 100%;
   }
   body {
     background: ${designSystem.colors.brand.primary};
