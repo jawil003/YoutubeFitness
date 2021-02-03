@@ -2,7 +2,6 @@ import { css } from "@emotion/react";
 import Head from "next/head";
 import React from "react";
 import Course from "../components/Course";
-import FlexContainer from "../components/FlexContainer";
 
 /**
  * An MyCoursePage React Component.
@@ -30,8 +29,7 @@ const MyCoursePage: React.FC = () => {
         `}
       >
         <Course
-          title="Test"
-          imageUrl="https://images.unsplash.com/photo-1518611012118-696072aa579a?ixid=MXwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHw%3D&ixlib=rb-1.2.1&auto=format&fit=crop&w=1050&q=80"
+          youtubeVideoUrl="https://www.youtube.com/watch?v=PU-9fdFrWq4"
           url="https://google.de/"
         />
         <Course

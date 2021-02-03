@@ -1,11 +1,10 @@
 import { css } from "@emotion/react";
 import React from "react";
+import useYoutubeVideoMetadata from "../hooks/useYoutubeVideoMetadata.hook";
 import designSystem from "../styles/designSystem";
 
 interface Props {
-  title: string;
-  url: string;
-  imageUrl: string;
+  youtubeVideoUrl: string;
 }
 
 /**
@@ -13,7 +12,8 @@ interface Props {
  * @author Jannik Will
  * @version 0.1
  */
-const Course: React.FC<Props> = ({ title, imageUrl }) => {
+const Course: React.FC<Props> = ({ youtubeVideoUrl }) => {
+  const { data, isSuccess } = useYoutubeVideoMetadata(youtubeVideoUrl);
   return (
     <div
       css={css`
@@ -51,10 +51,13 @@ const Course: React.FC<Props> = ({ title, imageUrl }) => {
       `}
     >
       <div>
-        <img src={imageUrl} alt={title} />
+        <img
+          src={isSuccess || data ? data?.thumbnail_url : ""}
+          alt={data?.title}
+        />
         <div></div>
       </div>
-      <span>{title}</span>
+      <span>{isSuccess || data ? data?.title : ""}</span>
     </div>
   );
 };
