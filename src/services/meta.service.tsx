@@ -94,7 +94,7 @@ class MetaService {
 
     return [
       <meta key="theme-color" name="theme-color" content={accentColor} />,
-      title ? <title key="title">{title}</title> : undefined,
+      title ? <title key="title">{title + " | " + appTitle}</title> : undefined,
       title ? (
         <meta
           key="apple-mobile-web-app-title"
