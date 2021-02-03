@@ -17,7 +17,7 @@ const generateItems = (
         <BottomNavigationAction
           showLabel
           label={i.name}
-          value={i.name.toLowerCase()}
+          value={i.name.toLowerCase().replace(" ", "-")}
           icon={getMaterialIcons(i.icon)}
         />
       </a>
@@ -26,7 +26,7 @@ const generateItems = (
         <BottomNavigationAction
           showLabel
           label={i.name}
-          value={i.name.toLowerCase()}
+          value={i.name.toLowerCase().replace(" ", "-")}
           icon={getMaterialIcons(i.icon)}
         />
       </Link>
@@ -44,7 +44,7 @@ interface Props {
  * @version 0.1
  */
 const BottomNavBar: React.FC<Props> = ({ className }) => {
-  const [navigationState, setNavigationState] = useState("courses");
+  const [navigationState, setNavigationState] = useState("my-courses");
   const { toggle } = useFabContext();
   return (
     <BottomNavigation
