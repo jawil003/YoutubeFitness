@@ -1,5 +1,6 @@
 {
-  "name": "with-typescript",
+  "name": "youtube-fitness",
+  "title": "Youtube Fitness",
   "version": "1.0.0",
   "scripts": {
     "dev": "next",
@@ -14,6 +15,7 @@
     "@material-ui/icons": "^4.11.2",
     "@material-ui/lab": "^4.0.0-alpha.57",
     "axios": "^0.21.1",
+    "dayjs": "^1.10.4",
     "dexie": "^3.0.3",
     "dexie-react-hooks": "^1.0.2",
     "next": "latest",

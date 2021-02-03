@@ -1,7 +1,9 @@
 import { css } from "@emotion/react";
 import Head from "next/head";
 import React from "react";
+import designSystem from "src/styles/designSystem";
 import Course from "../components/Course";
+import { generateIndividualTags } from "../services/meta.service";
 
 /**
  * An MyCoursePage React Component.
@@ -12,7 +14,12 @@ const MyCoursePage: React.FC = () => {
   return (
     <>
       <Head>
-        <title>My Courses</title>
+        {generateIndividualTags({
+          accentColor: designSystem.colors.brand.primary,
+          author: "Jannik Will",
+          language: "en",
+          title: "My Courses",
+        })}
       </Head>
 
       <div
