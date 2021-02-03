@@ -1,1 +1,14 @@
-[{ "name": "My Courses" }, { "name": "Stats" }]
+{
+  "bottom": {
+    "left": [{ "name": "My Courses", "icon": "FitnessCenter", "url": "/" }],
+    "right": [
+      {
+        "name": "Explore",
+        "icon": "Explore",
+        "external": true,
+        "url": "https://youtube.com"
+      }
+    ]
+  },
+  "dot": [{ "name": "Settings" }, { "name": "About" }]
+}

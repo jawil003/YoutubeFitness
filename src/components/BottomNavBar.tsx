@@ -2,10 +2,37 @@ import React, { useState } from "react";
 import { css } from "@emotion/react";
 import FloatingButton from "./FloatingButton";
 import { BottomNavigation, BottomNavigationAction } from "@material-ui/core";
-import FitnessCenterIcon from "@material-ui/icons/FitnessCenter";
-import ExploreIcon from "@material-ui/icons/Explore";
 import designSystem from "../styles/designSystem";
 import useFabContext from "../hooks/useFabContext";
+import { bottom } from "../config/routes.json";
+import Link from "next/link";
+import getMaterialIcons from "src/functions/getMaterialIcons.func";
+
+const generateItems = (
+  items: Array<{ name: string; icon: string; url: string; external?: boolean }>
+) => {
+  return items.map((i) =>
+    i.external ? (
+      <a href={i.url} target="_blank">
+        <BottomNavigationAction
+          showLabel
+          label={i.name}
+          value={i.name.toLowerCase()}
+          icon={getMaterialIcons(i.icon)}
+        />
+      </a>
+    ) : (
+      <Link href={i.url}>
+        <BottomNavigationAction
+          showLabel
+          label={i.name}
+          value={i.name.toLowerCase()}
+          icon={getMaterialIcons(i.icon)}
+        />
+      </Link>
+    )
+  );
+};
 
 interface Props {
   className?: string;
@@ -37,26 +64,17 @@ const BottomNavBar: React.FC<Props> = ({ className }) => {
         }
       `}
     >
-      <BottomNavigationAction
-        label="My Courses"
-        value="courses"
-        icon={<FitnessCenterIcon />}
-      />
+      {generateItems(bottom.left)}
       <FloatingButton
         onPress={() => toggle()}
         css={css`
-          position: relative;
-          bottom: 40%;
+          & {
+            position: relative;
+            bottom: 40%;
+          }
         `}
       />
-      <a href="https://youtube.com" target="_blank">
-        <BottomNavigationAction
-          showLabel
-          label="Explore"
-          value="explore"
-          icon={<ExploreIcon />}
-        />
-      </a>
+      {generateItems(bottom.right)}
     </BottomNavigation>
   );
 };
