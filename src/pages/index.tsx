@@ -28,25 +28,7 @@ const MyCoursePage: React.FC = () => {
           padding: 40px;
         `}
       >
-        <Course
-          youtubeVideoUrl="https://www.youtube.com/watch?v=PU-9fdFrWq4"
-          url="https://google.de/"
-        />
-        <Course
-          title="Test"
-          imageUrl="https://images.unsplash.com/photo-1518611012118-696072aa579a?ixid=MXwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHw%3D&ixlib=rb-1.2.1&auto=format&fit=crop&w=1050&q=80"
-          url="https://google.de/"
-        />
-        <Course
-          title="Test"
-          imageUrl="https://images.unsplash.com/photo-1518611012118-696072aa579a?ixid=MXwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHw%3D&ixlib=rb-1.2.1&auto=format&fit=crop&w=1050&q=80"
-          url="https://google.de/"
-        />
-        <Course
-          title="Test"
-          imageUrl="https://images.unsplash.com/photo-1518611012118-696072aa579a?ixid=MXwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHw%3D&ixlib=rb-1.2.1&auto=format&fit=crop&w=1050&q=80"
-          url="https://google.de/"
-        />
+        <Course youtubeVideoUrl="https://www.youtube.com/watch?v=-YJXpabrX4k" />
       </div>
     </>
   );

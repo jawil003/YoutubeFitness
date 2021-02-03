@@ -17,7 +17,8 @@ import CloseIcon from "@material-ui/icons/Close";
 import FlexContainer from "./FlexContainer";
 import Autocomplete from "@material-ui/lab/Autocomplete";
 import NoEmbedService from "../services/NoEmbedService";
-import IndexedDBService from "../services/IndexedDBService";
+import { db } from "../store/LocalAppStorage";
+import Course from "../entities/course.entitiy";
 
 const evaluateWhichWIndowShown = (
   navigationState: string,
@@ -41,14 +42,10 @@ const evaluateWhichWIndowShown = (
           </DialogContentText>
         </DialogContent>,
         <DialogActions>
-          <Button onClick={() => setNavigationState("action")} color="primary">
+          <Button onClick={() => setNavigationState("action")}>
             Create Course
           </Button>
-          <Button
-            onClick={() => setNavigationState("activity")}
-            color="primary"
-            autoFocus
-          >
+          <Button onClick={() => setNavigationState("activity")}>
             Add Activity
           </Button>
         </DialogActions>,
@@ -75,24 +72,17 @@ const evaluateWhichWIndowShown = (
           />
         </DialogContent>,
         <DialogActions>
-          <Button onClick={() => setNavigationState("main")} color="primary">
-            Go Back
-          </Button>
+          <Button onClick={() => setNavigationState("main")}>Go Back</Button>
           <Button
             onClick={async () => {
               toggle();
-              const data = await new NoEmbedService().getMetaDataByYoutubeUrl(
-                url
-              );
-              IndexedDBService.connect();
-              const name = "Courses";
-              IndexedDBService.createObjectStores(name);
-              IndexedDBService.addData(name, (transaction) => {
-                transaction?.objectStore(name).add(data);
+              const {
+                data: { thumbnail_url, title, url: pageUrl },
+              } = await new NoEmbedService().getMetaDataByYoutubeUrl(url);
+              await db.transaction("rw", db.courses, async () => {
+                await db.courses.add(new Course(title, pageUrl, thumbnail_url));
               });
-              IndexedDBService.close();
             }}
-            color="primary"
           >
             Finish
           </Button>
@@ -125,9 +115,7 @@ const evaluateWhichWIndowShown = (
           />
         </DialogContent>,
         <DialogActions>
-          <Button onClick={() => setNavigationState("main")} color="primary">
-            Go Back
-          </Button>
+          <Button onClick={() => setNavigationState("main")}>Go Back</Button>
         </DialogActions>,
       ];
     }

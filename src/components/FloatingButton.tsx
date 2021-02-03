@@ -30,7 +30,7 @@ const FloatingButton: React.FC<Props> = ({ className, onPress }) => {
         }
       `}
     >
-      <AddIcon />
+      <AddIcon color="primary" />
     </Fab>
   );
 };
