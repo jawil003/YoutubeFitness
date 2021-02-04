@@ -26,6 +26,7 @@ const designSystem = {
     brand: {
       primary: "#f3f3f3", // white
       secondary: "#2D69C3", // blue
+      secondaryDark: "#295fb0", // darkblue
       secondaryText: "#000", // black
     },
   },

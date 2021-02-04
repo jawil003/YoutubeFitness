@@ -9,6 +9,8 @@ const theme = createMuiTheme({
     MuiButton: { color: "secondary" },
     MuiInput: { color: "secondary" },
     MuiFormLabel: { color: "secondary" },
+    MuiFab: { color: "secondary" },
+    MuiBottomNavigationAction: { color: "secondary" },
   },
 });
 export default theme;

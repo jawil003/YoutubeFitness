@@ -57,6 +57,10 @@ const BottomNavBar: React.FC<Props> = ({ className }) => {
       css={css`
         &.MuiBottomNavigation-root.MuiBottomNavigation-root {
           justify-content: space-around;
+          background-color: ${designSystem.colors.brand.primary};
+          filter: drop-shadow(0px -2px 2px rgba(0, 0, 0, 0.25));
+          box-sizing: content-box;
+          padding: 5px 0px;
         }
         &
           .MuiBottomNavigationAction-root.Mui-selected.MuiBottomNavigationAction-root.Mui-selected {
@@ -65,15 +69,7 @@ const BottomNavBar: React.FC<Props> = ({ className }) => {
       `}
     >
       {generateItems(bottom.left)}
-      <FloatingButton
-        onPress={() => toggle()}
-        css={css`
-          & {
-            position: relative;
-            bottom: 40%;
-          }
-        `}
-      />
+      <FloatingButton onPress={() => toggle()} />
       {generateItems(bottom.right)}
     </BottomNavigation>
   );

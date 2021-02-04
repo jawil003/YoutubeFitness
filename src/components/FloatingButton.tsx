@@ -1,8 +1,15 @@
-import React, { VoidFunctionComponent } from "react";
+import React from "react";
 import AddIcon from "@material-ui/icons/Add";
+import { SpeedDial, SpeedDialAction } from "@material-ui/lab";
+import SportsIcon from "@material-ui/icons/Sports";
+import TimerIcon from "@material-ui/icons/Timer";
 import { css } from "@emotion/react";
-import designSystem from "../styles/designSystem";
-import { Fab } from "@material-ui/core";
+import designSystem from "src/styles/designSystem";
+
+const actions = [
+  { icon: <SportsIcon />, name: "Create Course" },
+  { icon: <TimerIcon />, name: "Add Activity" },
+];
 
 interface Props {
   className?: string;
@@ -14,24 +21,56 @@ interface Props {
  * @author Jannik Will
  * @version 0.1
  */
-const FloatingButton: React.FC<Props> = ({ className, onPress }) => {
+const FloatingButton: React.FC<Props> = ({ className }) => {
+  const [open, setOpen] = React.useState(false);
+
+  const handleClose = () => {
+    setOpen(false);
+  };
+
+  const handleOpen = () => {
+    setOpen(true);
+  };
+
   return (
-    <Fab
-      onClick={onPress}
-      color="primary"
-      aria-label="add"
+    <div
       className={className}
       css={css`
-        &.MuiFab-primary.MuiFab-primary {
-          width: 56px;
-          height: 56px;
-          background-color: ${designSystem.colors.brand.secondary};
-          position: relative;
+        & {
+          position: absolute;
+          bottom: 38px;
         }
       `}
     >
-      <AddIcon color="primary" />
-    </Fab>
+      <SpeedDial
+        css={css`
+          & > button {
+            background-color: ${designSystem.colors.brand.secondary};
+          }
+          & > button:hover {
+            background-color: ${designSystem.colors.brand.secondaryDark};
+          }
+          & > button svg {
+            fill: ${designSystem.colors.brand.primary};
+          }
+        `}
+        ariaLabel="SpeedDial example"
+        icon={<AddIcon />}
+        onClose={handleClose}
+        onOpen={handleOpen}
+        open={open}
+        direction="up"
+      >
+        {actions.map((action) => (
+          <SpeedDialAction
+            key={action.name}
+            icon={action.icon}
+            tooltipTitle={action.name}
+            onClick={handleClose}
+          />
+        ))}
+      </SpeedDial>
+    </div>
   );
 };
 
