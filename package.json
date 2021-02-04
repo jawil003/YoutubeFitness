@@ -13,11 +13,14 @@
     "postbuild": "next-sitemap"
   },
   "dependencies": {
+    "@apollo/client": "^3.3.7",
     "@emotion/react": "^11.1.4",
     "@emotion/styled": "^11.0.0",
+    "@lifeomic/axios-fetch": "^1.5.1",
     "@material-ui/core": "^4.11.2",
     "@material-ui/icons": "^4.11.2",
     "@material-ui/lab": "^4.0.0-alpha.57",
+    "apollo-link-http": "^1.5.17",
     "apollo-server-micro": "^2.19.2",
     "axios": "^0.21.1",
     "dayjs": "^1.10.4",
@@ -34,6 +37,7 @@
     "@babel/core": "^7.12.10",
     "@emotion/babel-plugin": "^11.1.2",
     "@types/axios": "^0.14.0",
+    "@types/lifeomic__axios-fetch": "^1.5.0",
     "@types/node": "^14.14.25",
     "@types/react": "^17.0.1",
     "@types/react-dom": "^17.0.0",
