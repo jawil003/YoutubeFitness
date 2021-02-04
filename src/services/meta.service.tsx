@@ -7,9 +7,14 @@ dayjs.extend(utc);
 dayjs.extend(timezone);
 
 class MetaService {
-  public static generateGeneralTags(webApp?: boolean) {
+  public static generateGeneralTags(
+    webApp?: boolean,
+  ) {
     return [
-      <meta key="charSet" charSet="UTF-8" />,
+      <meta
+        key="charSet"
+        charSet="UTF-8"
+      />,
       <meta
         key="X-UA-Compatible-IE=edge"
         httpEquiv="X-UA-Compatible"
@@ -22,7 +27,11 @@ class MetaService {
           content="yes"
         />
       ) : undefined,
-      <link key="manifest" href="./manifest.json" rel="manifest" />,
+      <link
+        key="manifest"
+        href="./manifest.json"
+        rel="manifest"
+      />,
       <meta
         key="google-site-verification"
         name="google-site-verification"
@@ -49,7 +58,7 @@ class MetaService {
       revisedTime?: string;
       cache?: boolean;
       expiresIn?: number;
-    } = {}
+    } = {},
   ) {
     const {
       accentColor: defaultAccentColor,
@@ -93,8 +102,16 @@ class MetaService {
     } = data;
 
     return [
-      <meta key="theme-color" name="theme-color" content={accentColor} />,
-      title ? <title key="title">{title + " | " + appTitle}</title> : undefined,
+      <meta
+        key="theme-color"
+        name="theme-color"
+        content={accentColor}
+      />,
+      title ? (
+        <title key="title">
+          {title + " | " + appTitle}
+        </title>
+      ) : undefined,
       title ? (
         <meta
           key="apple-mobile-web-app-title"
@@ -102,18 +119,40 @@ class MetaService {
           content={title}
         />
       ) : undefined,
-      title ? <meta key="subject" name="subject" content={title} /> : undefined,
+      title ? (
+        <meta
+          key="subject"
+          name="subject"
+          content={title}
+        />
+      ) : undefined,
       description ? (
-        <meta key="description" name="description" content={description} />
+        <meta
+          key="description"
+          name="description"
+          content={description}
+        />
       ) : undefined,
       author
         ? [
-            <meta key="author" name="author" content={author} />,
-            <meta key="copyright" name="copyright" content={author} />,
+            <meta
+              key="author"
+              name="author"
+              content={author}
+            />,
+            <meta
+              key="copyright"
+              name="copyright"
+              content={author}
+            />,
           ]
         : undefined,
       language ? (
-        <meta key="language" name="language" content={language} />
+        <meta
+          key="language"
+          name="language"
+          content={language}
+        />
       ) : undefined,
       robots ? (
         <meta
@@ -133,14 +172,25 @@ class MetaService {
         />
       ),
       revisedTime ? (
-        <meta key="revised" name="revised" content={revisedTime} />
+        <meta
+          key="revised"
+          name="revised"
+          content={revisedTime}
+        />
       ) : undefined,
       expiresIn ? (
-        <meta key="expires" httpEquiv="expires" content={String(expiresIn)} />
+        <meta
+          key="expires"
+          httpEquiv="expires"
+          content={String(expiresIn)}
+        />
       ) : undefined,
     ];
   }
-  public static provideImages(basePath: string, iconName: string) {
+  public static provideImages(
+    basePath: string,
+    iconName: string,
+  ) {
     iconName = basePath + iconName;
     return [
       <link
@@ -195,6 +245,9 @@ class MetaService {
   }
 }
 
-export const generateGeneralTags = MetaService.generateGeneralTags;
-export const generateIndividualTags = MetaService.generateIndividualTags;
-export const provideImages = MetaService.provideImages;
+export const generateGeneralTags =
+  MetaService.generateGeneralTags;
+export const generateIndividualTags =
+  MetaService.generateIndividualTags;
+export const provideImages =
+  MetaService.provideImages;

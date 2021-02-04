@@ -1,6 +1,12 @@
 {
   "bottom": {
-    "left": [{ "name": "My Courses", "icon": "FitnessCenter", "url": "/" }],
+    "left": [
+      {
+        "name": "My Courses",
+        "icon": "FitnessCenter",
+        "url": "/"
+      }
+    ],
     "right": [
       {
         "name": "Explore",
@@ -10,5 +16,8 @@
       }
     ]
   },
-  "dot": [{ "name": "Settings" }, { "name": "About" }]
+  "dot": [
+    { "name": "Settings" },
+    { "name": "About" }
+  ]
 }

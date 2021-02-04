@@ -1,13 +1,21 @@
 import React from "react";
-import { IconButton, Menu, MenuItem } from "@material-ui/core";
+import {
+  IconButton,
+  Menu,
+  MenuItem,
+} from "@material-ui/core";
 import MoreVertIcon from "@material-ui/icons/MoreVert";
 import { dot } from "../config/routes.json";
 
 const generateItems = (
   items: Array<{ name: string }>,
-  handleClose: () => void
+  handleClose: () => void,
 ) => {
-  return items.map((i) => <MenuItem onClick={handleClose}>{i.name}</MenuItem>);
+  return items.map((i) => (
+    <MenuItem onClick={handleClose}>
+      {i.name}
+    </MenuItem>
+  ));
 };
 
 interface Props {}
@@ -18,9 +26,16 @@ interface Props {}
  * @version 0.1
  */
 const ThreeDotMenu: React.FC<Props> = () => {
-  const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
+  const [
+    anchorEl,
+    setAnchorEl,
+  ] = React.useState<null | HTMLElement>(
+    null,
+  );
 
-  const handleClick = (event: React.MouseEvent<HTMLButtonElement>) => {
+  const handleClick = (
+    event: React.MouseEvent<HTMLButtonElement>,
+  ) => {
     setAnchorEl(event.currentTarget);
   };
 
@@ -41,7 +56,10 @@ const ThreeDotMenu: React.FC<Props> = () => {
         open={Boolean(anchorEl)}
         onClose={handleClose}
       >
-        {generateItems(dot, handleClose)}
+        {generateItems(
+          dot,
+          handleClose,
+        )}
       </Menu>
     </>
   );

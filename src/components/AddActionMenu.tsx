@@ -9,7 +9,7 @@ import {
   OutlinedTextFieldProps,
   StandardTextFieldProps,
 } from "@material-ui/core";
-import React, { useState } from "react";
+import React from "react";
 import useFabContext from "../hooks/useFabContext";
 import CloseIcon from "@material-ui/icons/Close";
 import FlexContainer from "./FlexContainer";
@@ -21,7 +21,10 @@ import Autocomplete from "@material-ui/lab/Autocomplete";
  * @version 0.1
  */
 const CreateCourseMenu: React.FC = () => {
-  const { menuOpen, toggle } = useFabContext();
+  const {
+    menuOpen,
+    toggle,
+  } = useFabContext();
   return (
     <Dialog open={menuOpen}>
       <FlexContainer>
@@ -33,27 +36,43 @@ const CreateCourseMenu: React.FC = () => {
           <CloseIcon />
         </IconButton>
       </FlexContainer>
-      <DialogTitle style={{ cursor: "move" }} id="draggable-dialog-title">
+      <DialogTitle
+        style={{ cursor: "move" }}
+        id="draggable-dialog-title"
+      >
         Add Activity
       </DialogTitle>
       ,
       <DialogContent>
         <DialogContentText>
-          To add a new Course to start with, just enter the Adress of an fitting
-          YouTube Video
+          To add a new Course to start
+          with, just enter the Adress of
+          an fitting YouTube Video
         </DialogContentText>
         <Autocomplete
           id="combo-box-demo"
-          options={["Example", "Example3"]}
-          getOptionLabel={(option: string) => option}
+          options={[
+            "Example",
+            "Example3",
+          ]}
+          getOptionLabel={(
+            option: string,
+          ) => option}
           style={{ width: 300 }}
           renderInput={(
             params:
-              | (JSX.IntrinsicAttributes & StandardTextFieldProps)
-              | (JSX.IntrinsicAttributes & FilledTextFieldProps)
-              | (JSX.IntrinsicAttributes & OutlinedTextFieldProps)
+              | (JSX.IntrinsicAttributes &
+                  StandardTextFieldProps)
+              | (JSX.IntrinsicAttributes &
+                  FilledTextFieldProps)
+              | (JSX.IntrinsicAttributes &
+                  OutlinedTextFieldProps),
           ) => (
-            <TextField {...params} label="Select Course" variant="outlined" />
+            <TextField
+              {...params}
+              label="Select Course"
+              variant="outlined"
+            />
           )}
         />
       </DialogContent>

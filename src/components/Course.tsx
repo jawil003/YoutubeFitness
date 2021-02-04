@@ -12,14 +12,25 @@ interface Props {
  * @author Jannik Will
  * @version 0.1
  */
-const Course: React.FC<Props> = ({ youtubeVideoUrl }) => {
-  const { data, isSuccess } = useYoutubeVideoMetadata(youtubeVideoUrl);
+const Course: React.FC<Props> = ({
+  youtubeVideoUrl,
+}) => {
+  const {
+    data,
+    isSuccess,
+  } = useYoutubeVideoMetadata(
+    youtubeVideoUrl,
+  );
   return (
     <div
       css={css`
         & {
-          filter: drop-shadow(2px 4px 16px rgba(0, 0, 0, 0.25));
-          background-color: ${designSystem.colors.brand.primary};
+          filter: drop-shadow(
+            2px 4px 16px
+              rgba(0, 0, 0, 0.25)
+          );
+          background-color: ${designSystem
+            .colors.brand.primary};
           border-radius: 18px;
           width: 371px;
           height: 140px;
@@ -52,12 +63,20 @@ const Course: React.FC<Props> = ({ youtubeVideoUrl }) => {
     >
       <div>
         <img
-          src={isSuccess || data ? data?.thumbnail_url : ""}
+          src={
+            isSuccess || data
+              ? data?.thumbnail_url
+              : ""
+          }
           alt={data?.title}
         />
         <div></div>
       </div>
-      <span>{isSuccess || data ? data?.title : ""}</span>
+      <span>
+        {isSuccess || data
+          ? data?.title
+          : ""}
+      </span>
     </div>
   );
 };

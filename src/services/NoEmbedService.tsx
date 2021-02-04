@@ -1,9 +1,11 @@
 import axios from "axios";
 
 export default class NoEmbedService {
-  public getMetaDataByYoutubeUrl = async (youtubeUrl: string) => {
+  public getMetaDataByYoutubeUrl = async (
+    youtubeUrl: string,
+  ) => {
     return await axios.get<Response>(
-      `https://noembed.com/embed?url=${youtubeUrl}`
+      `https://noembed.com/embed?url=${youtubeUrl}`,
     );
   };
 }

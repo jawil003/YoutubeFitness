@@ -1,6 +1,14 @@
 import React from "react";
-import Document, { Html, Head, Main, NextScript } from "next/document";
-import { generateGeneralTags, provideImages } from "src/services/meta.service";
+import Document, {
+  Html,
+  Head,
+  Main,
+  NextScript,
+} from "next/document";
+import {
+  generateGeneralTags,
+  provideImages,
+} from "src/services/meta.service";
 /**
  * An  React Component.
  * @author
@@ -19,7 +27,10 @@ class MyDocument extends Document {
             type="image/x-icon"
             href={`img/favicon.ico`}
           />
-          {provideImages("./img/icons", "icon")}
+          {provideImages(
+            "./img/icons",
+            "icon",
+          )}
         </Head>
 
         <body>

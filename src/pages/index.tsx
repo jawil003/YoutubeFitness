@@ -15,7 +15,9 @@ const MyCoursePage: React.FC = () => {
     <>
       <Head>
         {generateIndividualTags({
-          accentColor: designSystem.colors.brand.primary,
+          accentColor:
+            designSystem.colors.brand
+              .primary,
           author: "Jannik Will",
           language: "en",
           title: "My Courses",
@@ -25,7 +27,10 @@ const MyCoursePage: React.FC = () => {
       <div
         css={css`
           display: grid;
-          grid-template-columns: repeat(auto-fill, minmax(371px, auto));
+          grid-template-columns: repeat(
+            auto-fill,
+            minmax(371px, auto)
+          );
           grid-template-rows: 140px;
           justify-content: center;
           align-items: start;

@@ -2,7 +2,8 @@ const designSystem = {
   font: {
     base: {
       size: "16px",
-      family: "Roboto, 'Source Sans Pro', sans-serif",
+      family:
+        "Roboto, 'Source Sans Pro', sans-serif",
     },
     fontWeight: {
       lighter: 200,
@@ -47,11 +48,24 @@ const designSystem = {
 
 export default designSystem;
 
-export const fontSizeToRelativeValue = (fontSizePx: string) => {
-  const fontSize = Number(fontSizePx.slice(0, fontSizePx.length - 2));
+export const fontSizeToRelativeValue = (
+  fontSizePx: string,
+) => {
+  const fontSize = Number(
+    fontSizePx.slice(
+      0,
+      fontSizePx.length - 2,
+    ),
+  );
 
   return `${
-    (1 / Number(designSystem.font.base.size.slice(0, fontSizePx.length - 2))) *
+    (1 /
+      Number(
+        designSystem.font.base.size.slice(
+          0,
+          fontSizePx.length - 2,
+        ),
+      )) *
     fontSize
   }rem`;
 };

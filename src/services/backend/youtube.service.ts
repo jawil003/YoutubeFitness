@@ -1,14 +1,21 @@
 import axios from "axios";
 
 export default class YoutubeService {
-  public async getMetadataForVideo(youtubeVideoId: string) {
-    const { YOUTUBE_API_KEY } = process.env;
-    const { data, status } = await axios.get<YoutubeSnippetResponse>(
-      `https://youtube.googleapis.com/youtube/v3/videos?part=snippet&id=${youtubeVideoId}&key=${YOUTUBE_API_KEY}`
+  public async getMetadataForVideo(
+    youtubeVideoId: string,
+  ) {
+    const {
+      YOUTUBE_API_KEY,
+    } = process.env;
+    const {
+      data,
+      status,
+    } = await axios.get<YoutubeSnippetResponse>(
+      `https://youtube.googleapis.com/youtube/v3/videos?part=snippet&id=${youtubeVideoId}&key=${YOUTUBE_API_KEY}`,
     );
     if (!data || status >= 300) {
       throw new Error(
-        "Could not find a matching Video for the provided YoutubeVideoId"
+        "Could not find a matching Video for the provided YoutubeVideoId",
       );
     }
 
@@ -61,7 +68,7 @@ interface YoutubeSnippetResponse {
         };
         defaultAudioLanguage: string;
       };
-    }
+    },
   ];
   pageInfo: {
     totalResults: number;

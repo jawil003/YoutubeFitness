@@ -1,5 +1,3 @@
-import { ResolveType } from "apollo-server-micro";
-
 const YoutubeResolver = {
   Query: {},
 };

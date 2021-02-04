@@ -1,4 +1,7 @@
-import React, { useEffect, useState } from "react";
+import React, {
+  useEffect,
+  useState,
+} from "react";
 import { AppProps } from "next/app";
 import Head from "next/head";
 import BottomNavBar from "../components/BottomNavBar";
@@ -7,7 +10,10 @@ import globalStyles from "../styles/styles";
 import Main from "../components/Main";
 import FloatingButtonContext from "../contexts/FloatingButtonContext";
 import OverlayMenu from "../components/AddActionMenu";
-import { QueryClient, QueryClientProvider } from "react-query";
+import {
+  QueryClient,
+  QueryClientProvider,
+} from "react-query";
 import { ThemeProvider } from "@material-ui/core";
 import theme from "../styles/materialUi";
 import useValidateEnvironment from "../hooks/useValidateEnvironment.hook";
@@ -19,8 +25,14 @@ const queryClient = new QueryClient();
  * @author Jannik Will
  * @version 0.1
  */
-const MyApp: React.FC<AppProps> = ({ Component, pageProps }) => {
-  const [floatingButtonContext, setFloatingButtonContext] = useState({
+const MyApp: React.FC<AppProps> = ({
+  Component,
+  pageProps,
+}) => {
+  const [
+    floatingButtonContext,
+    setFloatingButtonContext,
+  ] = useState({
     menuOpen: false,
   });
   const validateEnvironment = useValidateEnvironment();
@@ -32,24 +44,33 @@ const MyApp: React.FC<AppProps> = ({ Component, pageProps }) => {
   return (
     <>
       <Head>
-        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <meta
+          name="viewport"
+          content="width=device-width, initial-scale=1.0"
+        />
       </Head>
       {globalStyles}
-      <QueryClientProvider client={queryClient}>
+      <QueryClientProvider
+        client={queryClient}
+      >
         <ThemeProvider theme={theme}>
           <FloatingButtonContext.Provider
             value={{
               ...floatingButtonContext,
               toggle: () =>
-                setFloatingButtonContext((prev) => ({
-                  ...prev,
-                  menuOpen: !prev.menuOpen,
-                })),
+                setFloatingButtonContext(
+                  (prev) => ({
+                    ...prev,
+                    menuOpen: !prev.menuOpen,
+                  }),
+                ),
             }}
           >
             <Header />
             <Main>
-              <Component {...pageProps} />
+              <Component
+                {...pageProps}
+              />
             </Main>
             <BottomNavBar />
             <OverlayMenu />

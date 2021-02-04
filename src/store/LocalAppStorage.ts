@@ -10,12 +10,15 @@ class LocalAppStorage extends Dexie {
   constructor() {
     super("YoutubeFitnessDatabase");
     this.version(1).stores({
-      courses: "++id, title, url, thumbnail_url",
+      courses:
+        "++id, title, url, thumbnail_url",
       //...other tables goes here...
     });
     // The following line is needed if your typescript
     // is compiled using babel instead of tsc:
-    this.courses = this.table("courses");
+    this.courses = this.table(
+      "courses",
+    );
     this.courses.mapToClass(Course);
   }
 }

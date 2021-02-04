@@ -8,7 +8,6 @@ import {
   TextField,
 } from "@material-ui/core";
 import React, { useState } from "react";
-import useFabContext from "../hooks/useFabContext";
 import CloseIcon from "@material-ui/icons/Close";
 import FlexContainer from "./FlexContainer";
 import NoEmbedService from "../services/NoEmbedService";
@@ -25,7 +24,10 @@ interface Props {
  * @author Jannik Will
  * @version 0.1
  */
-const CreateCourseMenu: React.FC<Props> = ({ hidden, toggleVisibility }) => {
+const CreateCourseMenu: React.FC<Props> = ({
+  hidden,
+  toggleVisibility,
+}) => {
   const [url, setUrl] = useState("");
 
   return (
@@ -41,12 +43,15 @@ const CreateCourseMenu: React.FC<Props> = ({ hidden, toggleVisibility }) => {
       </FlexContainer>
       <DialogContent>
         <DialogContentText>
-          To add a new Course to start with, just enter the Adress of an fitting
-          YouTube Video
+          To add a new Course to start
+          with, just enter the Adress of
+          an fitting YouTube Video
         </DialogContentText>
         <TextField
           value={url}
-          onChange={({ target: { value } }) => {
+          onChange={({
+            target: { value },
+          }) => {
             setUrl(value);
           }}
           autoFocus
@@ -63,11 +68,27 @@ const CreateCourseMenu: React.FC<Props> = ({ hidden, toggleVisibility }) => {
           onClick={async () => {
             toggleVisibility();
             const {
-              data: { thumbnail_url, title, url: pageUrl },
-            } = await new NoEmbedService().getMetaDataByYoutubeUrl(url);
-            await db.transaction("rw", db.courses, async () => {
-              await db.courses.add(new Course(title, pageUrl, thumbnail_url));
-            });
+              data: {
+                thumbnail_url,
+                title,
+                url: pageUrl,
+              },
+            } = await new NoEmbedService().getMetaDataByYoutubeUrl(
+              url,
+            );
+            await db.transaction(
+              "rw",
+              db.courses,
+              async () => {
+                await db.courses.add(
+                  new Course(
+                    title,
+                    pageUrl,
+                    thumbnail_url,
+                  ),
+                );
+              },
+            );
           }}
         >
           Finish

@@ -1,4 +1,7 @@
-import { css, Global } from "@emotion/react";
+import {
+  css,
+  Global,
+} from "@emotion/react";
 import designSystem from "./designSystem";
 
 const fonts = css`
@@ -12,10 +15,12 @@ const fonts = css`
     src: local(""),
       url("../fonts/source/source-sans-pro-v14-latin-200.eot?#iefix")
         format("embedded-opentype"),
-      /* IE6-IE8 */ url("../fonts/source/source-sans-pro-v14-latin-200.woff2")
+      /* IE6-IE8 */
+        url("../fonts/source/source-sans-pro-v14-latin-200.woff2")
         format("woff2"),
       /* Super Modern Browsers */
-        url("../fonts/source/source-sans-pro-v14-latin-200.woff") format("woff"),
+        url("../fonts/source/source-sans-pro-v14-latin-200.woff")
+        format("woff"),
       /* Modern Browsers */
         url("../fonts/source/source-sans-pro-v14-latin-200.ttf")
         format("truetype"),
@@ -56,10 +61,12 @@ const fonts = css`
     src: local(""),
       url("../fonts/source/source-sans-pro-v14-latin-300.eot?#iefix")
         format("embedded-opentype"),
-      /* IE6-IE8 */ url("../fonts/source/source-sans-pro-v14-latin-300.woff2")
+      /* IE6-IE8 */
+        url("../fonts/source/source-sans-pro-v14-latin-300.woff2")
         format("woff2"),
       /* Super Modern Browsers */
-        url("../fonts/source/source-sans-pro-v14-latin-300.woff") format("woff"),
+        url("../fonts/source/source-sans-pro-v14-latin-300.woff")
+        format("woff"),
       /* Modern Browsers */
         url("../fonts/source/source-sans-pro-v14-latin-300.ttf")
         format("truetype"),
@@ -146,10 +153,12 @@ const fonts = css`
     src: local(""),
       url("../fonts/source/source-sans-pro-v14-latin-600.eot?#iefix")
         format("embedded-opentype"),
-      /* IE6-IE8 */ url("../fonts/source/source-sans-pro-v14-latin-600.woff2")
+      /* IE6-IE8 */
+        url("../fonts/source/source-sans-pro-v14-latin-600.woff2")
         format("woff2"),
       /* Super Modern Browsers */
-        url("../fonts/source/source-sans-pro-v14-latin-600.woff") format("woff"),
+        url("../fonts/source/source-sans-pro-v14-latin-600.woff")
+        format("woff"),
       /* Modern Browsers */
         url("../fonts/source/source-sans-pro-v14-latin-600.ttf")
         format("truetype"),
@@ -213,10 +222,12 @@ const fonts = css`
     src: local(""),
       url("../fonts/source/source-sans-pro-v14-latin-700.eot?#iefix")
         format("embedded-opentype"),
-      /* IE6-IE8 */ url("../fonts/source/source-sans-pro-v14-latin-700.woff2")
+      /* IE6-IE8 */
+        url("../fonts/source/source-sans-pro-v14-latin-700.woff2")
         format("woff2"),
       /* Super Modern Browsers */
-        url("../fonts/source/source-sans-pro-v14-latin-700.woff") format("woff"),
+        url("../fonts/source/source-sans-pro-v14-latin-700.woff")
+        format("woff"),
       /* Modern Browsers */
         url("../fonts/source/source-sans-pro-v14-latin-700.ttf")
         format("truetype"),
@@ -234,10 +245,12 @@ const fonts = css`
     src: local(""),
       url("../fonts/source/source-sans-pro-v14-latin-900.eot?#iefix")
         format("embedded-opentype"),
-      /* IE6-IE8 */ url("../fonts/source/source-sans-pro-v14-latin-900.woff2")
+      /* IE6-IE8 */
+        url("../fonts/source/source-sans-pro-v14-latin-900.woff2")
         format("woff2"),
       /* Super Modern Browsers */
-        url("../fonts/source/source-sans-pro-v14-latin-900.woff") format("woff"),
+        url("../fonts/source/source-sans-pro-v14-latin-900.woff")
+        format("woff"),
       /* Modern Browsers */
         url("../fonts/source/source-sans-pro-v14-latin-900.ttf")
         format("truetype"),
@@ -277,11 +290,14 @@ const rules = css`
     height: 100%;
   }
   body {
-    background: ${designSystem.colors.brand.primary};
-    font-family: ${designSystem.font.base.family};
+    background: ${designSystem.colors
+      .brand.primary};
+    font-family: ${designSystem.font
+      .base.family};
     margin: 0px;
     padding: 0px;
-    font-size: ${designSystem.font.base.size};
+    font-size: ${designSystem.font.base
+      .size};
     overflow-x: hidden;
   }
 
@@ -454,7 +470,8 @@ const reset = css`
     -webkit-margin-end: 0;
     font-weight: bold;
   }
-  :-webkit-any(article, aside, nav, section) h1 {
+  :-webkit-any(article, aside, nav, section)
+    h1 {
     font-size: 1.5em;
     -webkit-margin-before: 0.83__qem;
     -webkit-margin-after: 0.83em;
@@ -1056,23 +1073,29 @@ const reset = css`
     white-space: pre;
     min-height: 1.2em;
   }
-  select:-internal-list-box optgroup option:before {
+  select:-internal-list-box
+    optgroup
+    option:before {
     content: "\00a0\00a0\00a0\00a0";
   }
   select:-internal-list-box option,
   select:-internal-list-box optgroup {
     line-height: initial !important;
   }
-  select:-internal-list-box:focus option:checked {
+  select:-internal-list-box:focus
+    option:checked {
     background-color: -internal-active-list-box-selection !important;
     color: -internal-active-list-box-selection-text !important;
   }
-  select:-internal-list-box option:checked {
+  select:-internal-list-box
+    option:checked {
     background-color: -internal-inactive-list-box-selection !important;
     color: -internal-inactive-list-box-selection-text !important;
   }
-  select:-internal-list-box:disabled option:checked,
-  select:-internal-list-box option:checked:disabled {
+  select:-internal-list-box:disabled
+    option:checked,
+  select:-internal-list-box
+    option:checked:disabled {
     color: gray !important;
   }
   select:-internal-list-box hr {
