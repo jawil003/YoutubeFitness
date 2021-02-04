@@ -2,7 +2,9 @@ import { gql } from "apollo-server-micro";
 
 const Query = gql`
   type Query {
-    dummy: Boolean
+    youtubeVideoMetadata(
+      youtubeVideoId: String!
+    ): YouTubeVideo!
   }
 `;
 export default Query;
