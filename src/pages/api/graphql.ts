@@ -1,3 +1,5 @@
+// Template from: https://stackoverflow.com/questions/62105419/next-js-api-routes-with-type-graphql-error-resolver-is-not-a-function
+
 import "reflect-metadata";
 import { ApolloServer } from "apollo-server-micro";
 import { buildSchema } from "type-graphql";
