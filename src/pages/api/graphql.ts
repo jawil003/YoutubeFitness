@@ -7,6 +7,7 @@ import {
   NextApiRequest,
   NextApiResponse,
 } from "next";
+import YoutubeResolver from "src/graphql/youtube.resolver";
 
 let apolloServerHandler: (
   req: any,
@@ -16,9 +17,7 @@ let apolloServerHandler: (
 const getApolloServerHandler = async () => {
   if (!apolloServerHandler) {
     const schema = await buildSchema({
-      resolvers: [
-        "src/graphql/**.resolver.ts",
-      ],
+      resolvers: [YoutubeResolver],
     });
     apolloServerHandler = new ApolloServer(
       { schema },
