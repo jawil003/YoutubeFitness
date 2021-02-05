@@ -1,30 +1,40 @@
+import "reflect-metadata";
 import { ApolloServer } from "apollo-server-micro";
-import Mutation from "src/graphql/mutation.type";
-import Query from "src/graphql/query.type";
-import YoutubeVideo from "src/graphql/youtubeVideo.type";
-import YoutubeVideoThumbnail from "src/graphql/youtubeVideoThumbnail.type";
-import YoutubeVideoThumbnailElement from "src/graphql/youtubeVideoThumbnailElement.type";
-import YoutubeResolver from "src/graphql/youtube.resolver";
+import { buildSchema } from "type-graphql";
+import {
+  NextApiRequest,
+  NextApiResponse,
+} from "next";
 
-const apolloServer = new ApolloServer({
-  typeDefs: [
-    Mutation,
-    Query,
-    YoutubeVideo,
-    YoutubeVideoThumbnail,
-    YoutubeVideoThumbnailElement,
-  ],
-  resolvers: [YoutubeResolver],
-});
+let apolloServerHandler: (
+  req: any,
+  res: any,
+) => Promise<void>;
 
-export default apolloServer.createHandler(
-  {
-    path: "/api/graphql",
-  },
-);
+const getApolloServerHandler = async () => {
+  if (!apolloServerHandler) {
+    const schema = await buildSchema({
+      resolvers: [
+        "src/graphql/**.resolver.ts",
+      ],
+    });
+    apolloServerHandler = new ApolloServer(
+      { schema },
+    ).createHandler({
+      path: "/api/graphql",
+    });
+  }
+  return apolloServerHandler;
+};
+
+export default async (
+  req: NextApiRequest,
+  res: NextApiResponse,
+) => {
+  const apolloServerHandler = await getApolloServerHandler();
+  return apolloServerHandler(req, res);
+};
 
 export const config = {
-  api: {
-    bodyParser: false,
-  },
+  api: { bodyParser: false },
 };
