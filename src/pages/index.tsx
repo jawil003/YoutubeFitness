@@ -1,6 +1,8 @@
 import { css } from "@emotion/react";
 import Head from "next/head";
 import React from "react";
+import EmptyCoursesPlaceholder from "src/components/EmptyCoursesPlaceholder";
+import FlexContainer from "src/components/FlexContainer";
 import designSystem from "src/styles/designSystem";
 import { generateIndividualTags } from "../services/frontend/meta.service";
 
@@ -23,7 +25,7 @@ const MyCoursePage: React.FC = () => {
         })}
       </Head>
 
-      <div
+      {/*<div
         css={css`
           & {
             display: grid;
@@ -40,7 +42,19 @@ const MyCoursePage: React.FC = () => {
             padding: 40px;
           }
         `}
-      ></div>
+        ></div>*/}
+      <FlexContainer
+        css={css`
+          & {
+            height: 100%;
+          }
+        `}
+        alignItems="center"
+        justifyContent="center"
+        direction="column"
+      >
+        <EmptyCoursesPlaceholder />
+      </FlexContainer>
     </>
   );
 };
