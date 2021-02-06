@@ -1,97 +1,99 @@
 import {
-  Button,
-  IconButton,
   Dialog,
+  DialogTitle,
   DialogContent,
   DialogContentText,
-  DialogActions,
   TextField,
+  Button,
+  DialogActions,
 } from "@material-ui/core";
-import React, { useState } from "react";
-import CloseIcon from "@material-ui/icons/Close";
-import FlexContainer from "./FlexContainer";
-import NoEmbedService from "../services/NoEmbedService";
-import { db } from "../store/LocalAppStorage";
-import Course from "../entities/course.entitiy";
-
-interface Props {
-  hidden: boolean;
-  toggleVisibility: () => void;
-}
+import React, {
+  useEffect,
+  useState,
+} from "react";
+import useFabContext from "../hooks/useFabContext";
+import * as yup from "yup";
 
 /**
  * An OverlayMenu React Component.
  * @author Jannik Will
  * @version 0.1
  */
-const CreateCourseMenu: React.FC<Props> = ({
-  hidden,
-  toggleVisibility,
-}) => {
+const CreateCourseMenu: React.FC = () => {
+  const {
+    menuOpen,
+    toggle,
+  } = useFabContext();
   const [url, setUrl] = useState("");
-
+  const validation = yup
+    .string()
+    .required(
+      "Please insert an Youtube Url",
+    )
+    .url(
+      "Please insert an valid Youtube Url",
+    );
+  const [
+    errorMessage,
+    setErrorMessage,
+  ] = useState("");
+  useEffect(() => {
+    setUrl("");
+    setErrorMessage("");
+  }, [menuOpen]);
   return (
-    <Dialog open={!hidden}>
-      <FlexContainer>
-        <IconButton
-          onClick={() => {
-            toggleVisibility();
-          }}
-        >
-          <CloseIcon />
-        </IconButton>
-      </FlexContainer>
+    <Dialog open={menuOpen}>
+      <DialogTitle id="draggable-dialog-title">
+        Create Course
+      </DialogTitle>
       <DialogContent>
         <DialogContentText>
-          To add a new Course to start
-          with, just enter the Adress of
-          an fitting YouTube Video
+          Just add a new Fitness Course
+          to start with, just enter the
+          Address of an YouTube Video
         </DialogContentText>
         <TextField
-          value={url}
+          required
           onChange={({
             target: { value },
           }) => {
-            setUrl(value);
+            validation
+              .validate(value)
+              .catch(
+                ({
+                  errors,
+                }: yup.ValidationError) => {
+                  setErrorMessage(
+                    errors[0],
+                  );
+                },
+              );
           }}
-          autoFocus
-          margin="dense"
-          id="youtube_url"
-          label="Youtube Url"
-          type="url"
+          error={errorMessage !== ""}
+          helperText={errorMessage}
+          variant="outlined"
+          placeholder="https://www.youtube.com/watch?v=I3OIbbuZ1XE"
+          label="Youtube URL"
           fullWidth
         />
       </DialogContent>
-
       <DialogActions>
         <Button
-          onClick={async () => {
-            toggleVisibility();
-            const {
-              data: {
-                thumbnail_url,
-                title,
-                url: pageUrl,
-              },
-            } = await new NoEmbedService().getMetaDataByYoutubeUrl(
-              url,
-            );
-            await db.transaction(
-              "rw",
-              db.courses,
-              async () => {
-                await db.courses.add(
-                  new Course(
-                    title,
-                    pageUrl,
-                    thumbnail_url,
-                  ),
-                );
-              },
-            );
+          onClick={() => {
+            toggle();
           }}
         >
-          Finish
+          Cancel
+        </Button>
+        <Button
+          onClick={(event) => {
+            event.preventDefault();
+            if (errorMessage !== "")
+              return;
+            //TODO: Add Code to save the Video in IndexDB Database here
+          }}
+        >
+          Confirm
         </Button>
       </DialogActions>
     </Dialog>

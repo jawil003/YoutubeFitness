@@ -1,28 +1,12 @@
 import React from "react";
 import AddIcon from "@material-ui/icons/Add";
-import {
-  SpeedDial,
-  SpeedDialAction,
-} from "@material-ui/lab";
-import SportsIcon from "@material-ui/icons/Sports";
-import TimerIcon from "@material-ui/icons/Timer";
+import { Fab } from "@material-ui/core";
 import { css } from "@emotion/react";
 import designSystem from "src/styles/designSystem";
-
-const actions = [
-  {
-    icon: <SportsIcon />,
-    name: "Create Course",
-  },
-  {
-    icon: <TimerIcon />,
-    name: "Add Activity",
-  },
-];
+import useFabContext from "src/hooks/useFabContext";
 
 interface Props {
   className?: string;
-  onPress?: () => void;
 }
 
 /**
@@ -33,19 +17,15 @@ interface Props {
 const FloatingButton: React.FC<Props> = ({
   className,
 }) => {
-  const [
-    open,
-    setOpen,
-  ] = React.useState(false);
-
-  const handleClose = () => {
-    setOpen(false);
+  const { toggle } = useFabContext();
+  const handleClick = (
+    _event: React.MouseEvent<
+      HTMLButtonElement,
+      MouseEvent
+    >,
+  ) => {
+    toggle();
   };
-
-  const handleOpen = () => {
-    setOpen(true);
-  };
-
   return (
     <div
       className={className}
@@ -56,7 +36,7 @@ const FloatingButton: React.FC<Props> = ({
         }
       `}
     >
-      <SpeedDial
+      <Fab
         css={css`
           & > button {
             background-color: ${designSystem
@@ -72,22 +52,10 @@ const FloatingButton: React.FC<Props> = ({
               .brand.primary};
           }
         `}
-        ariaLabel="SpeedDial example"
-        icon={<AddIcon />}
-        onClose={handleClose}
-        onOpen={handleOpen}
-        open={open}
-        direction="up"
+        onClick={handleClick}
       >
-        {actions.map((action) => (
-          <SpeedDialAction
-            key={action.name}
-            icon={action.icon}
-            tooltipTitle={action.name}
-            onClick={handleClose}
-          />
-        ))}
-      </SpeedDial>
+        <AddIcon />
+      </Fab>
     </div>
   );
 };
