@@ -1,28 +1,24 @@
-import { gql } from "@apollo/client";
-import { localClient } from "src/config/client";
+import logger from "logger";
+import { localApiClient } from "src/config/client";
 
 export default class YoutubeService {
   public async getMetadataForVideo(
     youtubeVideoUrl: string,
   ) {
-    /*const youtubeVideoId = youtubeVideoUrl.split(
+    const youtubeVideoId = youtubeVideoUrl.split(
       "v=",
-    )[1];*/
+    )[1];
     const {
+      data,
+    } = await localApiClient.post<{
       data: {
-        thumbnails: {
-          default: {
-            url: thumbnailUrl,
-          },
-        },
-        title,
-      },
-    } = await localClient.query<YoutubeMetaData>(
-      {
-        query: gql`
+        videoData: YoutubeMetaData;
+      };
+    }>("/graphql", {
+      query: `
           {
             videoData: youtubeVideoMetadata(
-              youtubeVideoId: "${youtubeVideoUrl}"
+              youtubeVideoId: "${youtubeVideoId}"
             ) {
               id
               title
@@ -31,14 +27,30 @@ export default class YoutubeService {
                   url
                 }
               }
-            }
           }
+        }
         `,
-      },
+    });
+    logger.debug(
+      `Frontend fetched ${data}`,
     );
+
+    const {
+      data: {
+        videoData: {
+          thumbnails: {
+            default: {
+              url: thumbnailUrl,
+            },
+          },
+          title,
+        },
+      },
+    } = data;
+
     return {
       title,
-      youtubeVideoId,
+      id: youtubeVideoId,
       thumbnailUrl,
       url: youtubeVideoUrl,
     };

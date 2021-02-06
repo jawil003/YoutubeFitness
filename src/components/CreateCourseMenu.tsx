@@ -16,6 +16,7 @@ import * as yup from "yup";
 import YoutubeService from "src/services/frontend/youtube.service";
 import Course from "src/entities/course.entitiy";
 import { db } from "src/store/LocalAppStorage";
+import logger from "logger";
 
 /**
  * An OverlayMenu React Component.
@@ -74,6 +75,7 @@ const CreateCourseMenu: React.FC = () => {
                   );
                 },
               );
+            setUrl(value);
           }}
           error={errorMessage !== ""}
           helperText={errorMessage}
@@ -93,28 +95,54 @@ const CreateCourseMenu: React.FC = () => {
         </Button>
         <Button
           onClick={async (event) => {
-            event.preventDefault();
-            if (errorMessage !== "")
-              return;
-            const {
-              title,
-              thumbnailUrl,
-              url: youtubeUrl,
-            } = await youtubeService.getMetadataForVideo(
-              url,
-            );
-            const course = new Course(
-              title,
-              youtubeUrl,
-              thumbnailUrl,
-            );
-            await db.transaction(
-              "rw",
-              db.courses,
-              () => {
-                db.courses.add(course);
-              },
-            );
+            try {
+              event.preventDefault();
+              if (errorMessage !== "") {
+                logger.info(
+                  `Please insert an valid Youtube Url, not "${url}"`,
+                );
+                return;
+              }
+              const {
+                title,
+                thumbnailUrl,
+                url: youtubeUrl,
+              } = await youtubeService.getMetadataForVideo(
+                url,
+              );
+              logger.debug(
+                `Resolved Youtube Video Metas title:"${title}", thumbnailUrl:"${thumbnailUrl}" for "${url}" `,
+              );
+              const course = new Course(
+                title,
+                youtubeUrl,
+                thumbnailUrl,
+              );
+              logger.debug(
+                "Created new Course",
+              );
+              await db.transaction(
+                "rw",
+                db.courses,
+                () => {
+                  db.courses.add(
+                    course,
+                  );
+                },
+              );
+              logger.debug(
+                "Created new Course",
+              );
+              toggle();
+              logger.debug(
+                "Hide CreateCoursemenu again",
+              );
+            } catch (err) {
+              logger.error(
+                "Something went wrong while adding new Course",
+                err,
+              );
+            }
           }}
         >
           Confirm

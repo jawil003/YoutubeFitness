@@ -17,9 +17,13 @@
     "noUnusedLocals": true,
     "noUnusedParameters": true,
     "resolveJsonModule": true,
+    "paths": {
+      "logger": ["src/config/logger.ts"]
+    },
     "skipLibCheck": true,
     "strict": true,
     "target": "esnext"
+    
   },
   "exclude": ["node_modules"],
   "include": ["**/*.ts", "**/*.tsx"]
