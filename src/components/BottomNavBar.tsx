@@ -94,9 +94,7 @@ const BottomNavBar: React.FC<Props> = ({
       `}
     >
       {generateItems(bottom.left)}
-      <FloatingButton
-        onPress={() => toggle()}
-      />
+      <FloatingButton />
       {generateItems(bottom.right)}
     </BottomNavigation>
   );

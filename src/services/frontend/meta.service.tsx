@@ -1,5 +1,5 @@
 /* eslint-disable react/jsx-key */
-import { title as appTitle } from "../../package.json";
+import { title as appTitle } from "../../../package.json";
 import dayjs from "dayjs";
 import utc from "dayjs/plugin/utc";
 import timezone from "dayjs/plugin/timezone";

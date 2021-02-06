@@ -8,7 +8,7 @@ import Document, {
 import {
   generateGeneralTags,
   provideImages,
-} from "src/services/meta.service";
+} from "src/services/frontend/meta.service";
 /**
  * An  React Component.
  * @author

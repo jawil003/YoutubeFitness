@@ -13,6 +13,9 @@ import React, {
 } from "react";
 import useFabContext from "../hooks/useFabContext";
 import * as yup from "yup";
+import YoutubeService from "src/services/frontend/youtube.service";
+import Course from "src/entities/course.entitiy";
+import { db } from "src/store/LocalAppStorage";
 
 /**
  * An OverlayMenu React Component.
@@ -20,6 +23,7 @@ import * as yup from "yup";
  * @version 0.1
  */
 const CreateCourseMenu: React.FC = () => {
+  const youtubeService = new YoutubeService();
   const {
     menuOpen,
     toggle,
@@ -64,7 +68,9 @@ const CreateCourseMenu: React.FC = () => {
                   errors,
                 }: yup.ValidationError) => {
                   setErrorMessage(
-                    errors[0],
+                    errors.length > 0
+                      ? errors[0]
+                      : "",
                   );
                 },
               );
@@ -86,11 +92,29 @@ const CreateCourseMenu: React.FC = () => {
           Cancel
         </Button>
         <Button
-          onClick={(event) => {
+          onClick={async (event) => {
             event.preventDefault();
             if (errorMessage !== "")
               return;
-            //TODO: Add Code to save the Video in IndexDB Database here
+            const {
+              title,
+              thumbnailUrl,
+              url: youtubeUrl,
+            } = await youtubeService.getMetadataForVideo(
+              url,
+            );
+            const course = new Course(
+              title,
+              youtubeUrl,
+              thumbnailUrl,
+            );
+            await db.transaction(
+              "rw",
+              db.courses,
+              () => {
+                db.courses.add(course);
+              },
+            );
           }}
         >
           Confirm

@@ -2,8 +2,7 @@ import { css } from "@emotion/react";
 import Head from "next/head";
 import React from "react";
 import designSystem from "src/styles/designSystem";
-import Course from "../components/Course";
-import { generateIndividualTags } from "../services/meta.service";
+import { generateIndividualTags } from "../services/frontend/meta.service";
 
 /**
  * An MyCoursePage React Component.
@@ -26,22 +25,22 @@ const MyCoursePage: React.FC = () => {
 
       <div
         css={css`
-          display: grid;
-          grid-template-columns: repeat(
-            auto-fill,
-            minmax(371px, auto)
-          );
-          grid-template-rows: 140px;
-          justify-content: center;
-          align-items: start;
-          justify-items: center;
-          height: 100%;
-          gap: 20px;
-          padding: 40px;
+          & {
+            display: grid;
+            grid-template-columns: repeat(
+              auto-fill,
+              minmax(371px, auto)
+            );
+            grid-template-rows: 140px;
+            justify-content: center;
+            align-items: start;
+            justify-items: center;
+            height: 100%;
+            gap: 20px;
+            padding: 40px;
+          }
         `}
-      >
-        <Course youtubeVideoUrl="https://www.youtube.com/watch?v=-YJXpabrX4k" />
-      </div>
+      ></div>
     </>
   );
 };
