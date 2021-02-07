@@ -5,6 +5,9 @@ import React, {
 } from "react";
 import designSystem from "../styles/designSystem";
 import ThreeDotMenu from "./ThreeDotMenu";
+import getMaterialIcons from "src/functions/getMaterialIcons.func";
+import FlexContainer from "./FlexContainer";
+import { Typography } from "@material-ui/core";
 
 /**
  * An Header React Component.
@@ -21,7 +24,9 @@ const Header: React.FC = () => {
       typeof window !== "undefined" &&
       document.title !== ""
     )
-      setTitle(document?.title);
+      setTitle(
+        document?.title.split(" |")[0],
+      );
   });
 
   return (
@@ -46,7 +51,34 @@ const Header: React.FC = () => {
         }
       `}
     >
-      <span>{title}</span>
+      <FlexContainer
+        alignItems="center"
+        css={css`
+          & svg.MuiSvgIcon-root {
+            font-size: 25px;
+          }
+        `}
+        columnGap="20px"
+      >
+        {getMaterialIcons(
+          title === "My Courses"
+            ? "FitnessCenter"
+            : "Explore",
+        )}
+        <Typography
+          css={css`
+            &.MuiTypography-root {
+              font-weight: 500;
+            }
+          `}
+          variant="h5"
+          variantMapping={{
+            h5: "h1",
+          }}
+        >
+          {title}
+        </Typography>
+      </FlexContainer>
       <div className="flex-spacer" />
       <ThreeDotMenu />
     </header>

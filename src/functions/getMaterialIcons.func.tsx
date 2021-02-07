@@ -1,3 +1,4 @@
+import { css } from "@emotion/react";
 import dynamic from "next/dynamic";
 const ExploreIcon = dynamic(
   () =>
@@ -18,18 +19,34 @@ const CheckBoxOutlineBlank = dynamic(
     ),
 );
 
+const svgStyle = css`
+  &.MuiSvgIcon-root {
+    font-size: 20px;
+  }
+`;
+
 const getMaterialIcons = (
   name: string,
 ) => {
   switch (name) {
     case "Explore": {
-      return <ExploreIcon />;
+      return (
+        <ExploreIcon css={svgStyle} />
+      );
     }
     case "FitnessCenter": {
-      return <FitnessCenterIcon />;
+      return (
+        <FitnessCenterIcon
+          css={svgStyle}
+        />
+      );
     }
     default: {
-      return <CheckBoxOutlineBlank />;
+      return (
+        <CheckBoxOutlineBlank
+          css={svgStyle}
+        />
+      );
     }
   }
 };

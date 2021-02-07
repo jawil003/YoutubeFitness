@@ -20,30 +20,32 @@ const generateItems = (
 ) => {
   return items.map((i) =>
     i.external ? (
-      <a
+      <BottomNavigationAction
+        key={`${i.name}-navigationAction`}
+        component="a"
+        disableRipple
+        disableTouchRipple
+        focusRipple={false}
         href={i.url}
         target="_blank"
-        key={`${i.name}-navigationAction`}
-      >
-        <BottomNavigationAction
-          showLabel
-          label={i.name}
-          value={i.name
-            .toLowerCase()
-            .replace(" ", "-")}
-          icon={getMaterialIcons(
-            i.icon,
-          )}
-        />
-      </a>
+        label={i.name}
+        value={i.name
+          .toLowerCase()
+          .replace(" ", "-")}
+        icon={getMaterialIcons(i.icon)}
+      />
     ) : (
       <Link
         href={i.url}
         key={`${i.name}-navigationAction`}
       >
         <BottomNavigationAction
-          showLabel
+          component="a"
+          disableRipple
+          disableTouchRipple
+          focusRipple={false}
           label={i.name}
+          showLabel
           value={i.name
             .toLowerCase()
             .replace(" ", "-")}
@@ -68,16 +70,8 @@ interface Props {
 const BottomNavBar: React.FC<Props> = ({
   className,
 }) => {
-  const [
-    navigationState,
-    setNavigationState,
-  ] = useState("my-courses");
   return (
     <BottomNavigation
-      value={navigationState}
-      onChange={(_event, newValue) => {
-        setNavigationState(newValue);
-      }}
       showLabels
       className={className}
       css={css`
@@ -91,6 +85,7 @@ const BottomNavBar: React.FC<Props> = ({
           box-sizing: content-box;
           padding: 5px 0px;
         }
+
         &
           .MuiBottomNavigationAction-root.Mui-selected.MuiBottomNavigationAction-root.Mui-selected {
           color: ${designSystem.colors
