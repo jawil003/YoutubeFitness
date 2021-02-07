@@ -6,7 +6,6 @@ import {
   BottomNavigationAction,
 } from "@material-ui/core";
 import designSystem from "../styles/designSystem";
-import useFabContext from "../hooks/useFabContext";
 import { bottom } from "../config/routes.json";
 import Link from "next/link";
 import getMaterialIcons from "src/functions/getMaterialIcons.func";
@@ -21,7 +20,11 @@ const generateItems = (
 ) => {
   return items.map((i) =>
     i.external ? (
-      <a href={i.url} target="_blank">
+      <a
+        href={i.url}
+        target="_blank"
+        key={`${i.name}-navigationAction`}
+      >
         <BottomNavigationAction
           showLabel
           label={i.name}
@@ -34,7 +37,10 @@ const generateItems = (
         />
       </a>
     ) : (
-      <Link href={i.url}>
+      <Link
+        href={i.url}
+        key={`${i.name}-navigationAction`}
+      >
         <BottomNavigationAction
           showLabel
           label={i.name}
@@ -66,7 +72,6 @@ const BottomNavBar: React.FC<Props> = ({
     navigationState,
     setNavigationState,
   ] = useState("my-courses");
-  const { toggle } = useFabContext();
   return (
     <BottomNavigation
       value={navigationState}
@@ -94,7 +99,7 @@ const BottomNavBar: React.FC<Props> = ({
       `}
     >
       {generateItems(bottom.left)}
-      <FloatingButton />
+      <FloatingButton key="floating-button" />
       {generateItems(bottom.right)}
     </BottomNavigation>
   );

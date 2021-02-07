@@ -11,7 +11,7 @@ class LocalAppStorage extends Dexie {
     super("YoutubeFitnessDatabase");
     this.version(1).stores({
       courses:
-        "++id, title, url, thumbnail_url",
+        "++id, title, url, thumbnailUrl",
       //...other tables goes here...
     });
     // The following line is needed if your typescript
@@ -23,4 +23,4 @@ class LocalAppStorage extends Dexie {
   }
 }
 
-export var db = new LocalAppStorage();
+export const db = new LocalAppStorage();

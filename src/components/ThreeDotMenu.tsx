@@ -12,7 +12,10 @@ const generateItems = (
   handleClose: () => void,
 ) => {
   return items.map((i) => (
-    <MenuItem onClick={handleClose}>
+    <MenuItem
+      key={`${i.name}-menuItem`}
+      onClick={handleClose}
+    >
       {i.name}
     </MenuItem>
   ));

@@ -15,7 +15,6 @@ import useFabContext from "../hooks/useFabContext";
 import * as yup from "yup";
 import YoutubeService from "src/services/frontend/youtube.service";
 import Course from "src/entities/course.entitiy";
-import { db } from "src/store/LocalAppStorage";
 import logger from "logger";
 
 /**
@@ -121,15 +120,9 @@ const CreateCourseMenu: React.FC = () => {
               logger.debug(
                 "Created new Course",
               );
-              await db.transaction(
-                "rw",
-                db.courses,
-                () => {
-                  db.courses.add(
-                    course,
-                  );
-                },
-              );
+
+              await course.save();
+
               logger.debug(
                 "Created new Course",
               );
