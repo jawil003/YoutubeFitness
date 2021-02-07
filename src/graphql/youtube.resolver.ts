@@ -1,4 +1,4 @@
-import YoutubeService from "src/services/backend/youtube.service";
+import YoutubeService from "../services/backend/youtube.service";
 import {
   Arg,
   Query,

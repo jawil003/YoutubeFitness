@@ -1,5 +1,5 @@
-import logger from "logger";
-import { localApiClient } from "src/config/client";
+import logger from "../../config/logger";
+import { localApiClient } from "../../config/client";
 
 export default class YoutubeService {
   public async getMetadataForVideo(

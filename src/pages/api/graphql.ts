@@ -1,5 +1,4 @@
 // Template from: https://stackoverflow.com/questions/62105419/next-js-api-routes-with-type-graphql-error-resolver-is-not-a-function
-
 import "reflect-metadata";
 import { ApolloServer } from "apollo-server-micro";
 import { buildSchema } from "type-graphql";
@@ -7,7 +6,7 @@ import {
   NextApiRequest,
   NextApiResponse,
 } from "next";
-import YoutubeResolver from "src/graphql/youtube.resolver";
+import YoutubeResolver from "../../graphql/youtube.resolver";
 
 let apolloServerHandler: (
   req: any,
