@@ -17,6 +17,7 @@ import {
 import { ThemeProvider } from "@material-ui/core";
 import theme from "../styles/materialUi";
 import useValidateEnvironment from "../hooks/useValidateEnvironment.hook";
+import BottomAndHeaderContext from "src/contexts/BottomAndHeaderContext";
 
 const queryClient = new QueryClient();
 
@@ -34,6 +35,13 @@ const MyApp: React.FC<AppProps> = ({
     setFloatingButtonContext,
   ] = useState({
     menuOpen: false,
+  });
+  const [
+    buttonAndHeaderContext,
+    setButtonAndHeaderContext,
+  ] = useState({
+    headerOpen: true,
+    bottomOpen: true,
   });
   const validateEnvironment = useValidateEnvironment();
 
@@ -54,27 +62,34 @@ const MyApp: React.FC<AppProps> = ({
         client={queryClient}
       >
         <ThemeProvider theme={theme}>
-          <FloatingButtonContext.Provider
+          <BottomAndHeaderContext.Provider
             value={{
-              ...floatingButtonContext,
-              toggle: () =>
-                setFloatingButtonContext(
-                  (prev) => ({
-                    ...prev,
-                    menuOpen: !prev.menuOpen,
-                  }),
-                ),
+              ...buttonAndHeaderContext,
+              set: setButtonAndHeaderContext,
             }}
           >
-            <Header />
-            <Main>
-              <Component
-                {...pageProps}
-              />
-            </Main>
-            <BottomNavBar />
-            <CreateCourseMenu />
-          </FloatingButtonContext.Provider>{" "}
+            <FloatingButtonContext.Provider
+              value={{
+                ...floatingButtonContext,
+                toggle: () =>
+                  setFloatingButtonContext(
+                    (prev) => ({
+                      ...prev,
+                      menuOpen: !prev.menuOpen,
+                    }),
+                  ),
+              }}
+            >
+              <Header />
+              <Main>
+                <Component
+                  {...pageProps}
+                />
+              </Main>
+              <BottomNavBar />
+              <CreateCourseMenu />
+            </FloatingButtonContext.Provider>
+          </BottomAndHeaderContext.Provider>
         </ThemeProvider>
       </QueryClientProvider>
     </>

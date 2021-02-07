@@ -82,6 +82,10 @@ const CreateCourseMenu: React.FC = () => {
           placeholder="https://www.youtube.com/watch?v=I3OIbbuZ1XE"
           label="Youtube URL"
           fullWidth
+          margin="normal"
+          InputLabelProps={{
+            shrink: true,
+          }}
         />
       </DialogContent>
       <DialogActions>

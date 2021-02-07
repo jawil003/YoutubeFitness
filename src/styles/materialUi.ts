@@ -15,13 +15,25 @@ const theme = createMuiTheme({
   },
   props: {
     MuiButton: { color: "secondary" },
-    MuiInput: { color: "secondary" },
-    MuiFormLabel: {
-      color: "secondary",
-    },
+
     MuiFab: { color: "secondary" },
     MuiBottomNavigationAction: {
       color: "secondary",
+    },
+    MuiInputBase: {
+      color: "secondary",
+    },
+    MuiFormLabel: {
+      color: "secondary",
+    },
+  },
+  overrides: {
+    MuiPaper: {
+      root: {
+        backgroundColor:
+          designSystem.colors.brand
+            .primary,
+      },
     },
   },
 });
