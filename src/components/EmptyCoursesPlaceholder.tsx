@@ -1,8 +1,8 @@
 import { css } from "@emotion/react";
 import { Typography } from "@material-ui/core";
 import React from "react";
-import EmptyParcelManDesign from "src/designs/EmptyParcelMan.design";
-import designSystem from "src/styles/designSystem";
+import EmptyParcelManDesign from "../designs/EmptyParcelMan.design";
+import designSystem from "../styles/designSystem";
 
 /**
  * An EmptyCoursesPlaceholder React Component.

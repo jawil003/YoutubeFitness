@@ -1,7 +1,7 @@
 {
   "name": "youtube-fitness",
   "title": "Youtube Fitness",
-  "version": "1.0.0",
+  "version": "1.5.1",
   "scripts": {
     "dev": "next",
     "debug": "NODE_OPTIONS='--inspect' next dev",
@@ -11,8 +11,11 @@
     "lint-staged": "lint-staged",
     "format": "prettier --write .",
     "postbuild": "next-sitemap",
-    "test": "jest -i src/__tests__/**.test.ts --watch",
-    "test:api": "jest -i src/__tests__/api/**.test.ts"
+    "test:unit:watch": "jest 'src/__tests__/frontend/.*.spec.(tsx|ts)$' --watch",
+    "test:unit": "jest 'src/__tests__/frontend/.*.spec.(tsx|ts)$'",
+    "test:integration:watch": "jest 'src/__tests__/frontend/.*.test.(tsx|ts)$' --watch",
+    "test:integration": "jest 'src/__tests__/frontend/.*.test.(tsx|ts)$'",
+    "test:api": "jest 'src/__tests__/api/.*.(test|spec).(tsx|ts)$'"
   },
   "dependencies": {
     "@emotion/react": "^11.1.4",
@@ -21,7 +24,7 @@
     "@material-ui/icons": "^4.11.2",
     "@material-ui/lab": "^4.0.0-alpha.57",
     "@testing-library/jest-dom": "^5.1.0",
-    "@testing-library/react": "^9.4.0",
+    "@testing-library/react": "^11.2.5",
     "@types/jest": "^26.0.20",
     "apollo-link-http": "^1.5.17",
     "apollo-server-micro": "^2.19.2",

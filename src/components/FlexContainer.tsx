@@ -58,6 +58,7 @@ const FlexContainer: React.FC<Props> = ({
 }) => {
   return (
     <div
+      role="flex-box"
       css={css`
         & {
           display: ${inline

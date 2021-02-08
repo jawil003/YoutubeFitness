@@ -1,5 +1,5 @@
-import { localApiClient } from "../config/client";
-import startServer from "../mocks/graphql/apolloMockServer";
+import { localApiClient } from "../../config/client";
+import startServer from "../../mocks/graphql/apolloMockServer";
 
 const query = `query getYoutubeVideoMetadata($youtubeVideoId: String!) {
   videoData: youtubeVideoMeadata(youtubeVideoId: $youtubeVideoId) {

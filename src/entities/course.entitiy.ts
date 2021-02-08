@@ -1,4 +1,4 @@
-import { db } from "src/store/LocalAppStorage";
+import { db } from "../store/LocalAppStorage";
 
 export default class Course {
   //@ts-ignore
@@ -31,5 +31,10 @@ export default class Course {
         );
       },
     );
+  }
+  static async getAll(): Promise<
+    Course[] | undefined
+  > {
+    return await db.courses.toArray();
   }
 }
