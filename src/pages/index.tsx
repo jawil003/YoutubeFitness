@@ -8,6 +8,7 @@ import { generateIndividualTags } from "../services/frontend/meta.service";
 import CourseRepository from "src/services/frontend/courseRepository.service";
 import Course from "src/components/Course";
 import { useQuery } from "react-query";
+import { CircularProgress } from "@material-ui/core";
 
 /**
  * An MyCoursePage React Component.
@@ -81,7 +82,11 @@ const MyCoursePage: React.FC = () => {
           justifyContent="center"
           direction="column"
         >
-          <EmptyCoursesPlaceholder />
+          {isFetched ? (
+            <EmptyCoursesPlaceholder />
+          ) : (
+            <CircularProgress color="secondary" />
+          )}
         </FlexContainer>
       )}
     </>
