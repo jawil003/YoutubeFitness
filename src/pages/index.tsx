@@ -59,11 +59,15 @@ const MyCoursePage: React.FC = () => {
         >
           {courses.map(
             ({
+              id,
               thumbnailUrl,
+              url,
               title,
             }) => (
               <Course
+                id={id}
                 title={title}
+                youtubeVideoUrl={url}
                 thumbnailUrl={
                   thumbnailUrl
                 }

@@ -1,9 +1,12 @@
 import { css } from "@emotion/react";
 import React from "react";
+import useIntentContext from "src/hooks/useIntent.hook";
 import designSystem from "../styles/designSystem";
 import ThreeDotMenu from "./ThreeDotMenu";
 
 interface Props {
+  id?: number;
+  youtubeVideoUrl: string;
   title: string;
   thumbnailUrl: string;
 }
@@ -16,7 +19,11 @@ interface Props {
 const Course: React.FC<Props> = ({
   title,
   thumbnailUrl,
+  youtubeVideoUrl,
 }) => {
+  const {
+    toggleYoutube,
+  } = useIntentContext();
   return (
     <div
       css={css`
@@ -84,7 +91,17 @@ const Course: React.FC<Props> = ({
         }
       `}
     >
-      <div className="imageContainer">
+      <div
+        className="imageContainer"
+        onClick={() =>
+          toggleYoutube({
+            title,
+            youtubeVideoId: youtubeVideoUrl.split(
+              "v=",
+            )[1],
+          })
+        }
+      >
         <img
           src={thumbnailUrl}
           alt={title + "-image"}
@@ -95,7 +112,12 @@ const Course: React.FC<Props> = ({
       </div>
       <span>{title}</span>
       <div className="menuContainer">
-        <ThreeDotMenu />
+        <ThreeDotMenu
+          items={[
+            { name: "Delete" },
+            { name: "Add Activity" },
+          ]}
+        />
       </div>
     </div>
   );

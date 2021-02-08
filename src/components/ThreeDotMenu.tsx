@@ -21,14 +21,18 @@ const generateItems = (
   ));
 };
 
-interface Props {}
+interface Props {
+  items?: Array<{ name: string }>;
+}
 
 /**
  * An ThreeDotMenu React Component.
  * @author Jannik Will
  * @version 0.1
  */
-const ThreeDotMenu: React.FC<Props> = () => {
+const ThreeDotMenu: React.FC<Props> = ({
+  items,
+}) => {
   const [
     anchorEl,
     setAnchorEl,
@@ -60,12 +64,16 @@ const ThreeDotMenu: React.FC<Props> = () => {
         onClose={handleClose}
       >
         {generateItems(
-          dot,
+          items,
           handleClose,
         )}
       </Menu>
     </>
   );
+};
+
+ThreeDotMenu.defaultProps = {
+  items: dot,
 };
 
 export default ThreeDotMenu;

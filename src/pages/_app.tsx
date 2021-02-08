@@ -18,6 +18,8 @@ import { ThemeProvider } from "@material-ui/core";
 import theme from "../styles/materialUi";
 import useValidateEnvironment from "../hooks/useValidateEnvironment.hook";
 import BottomAndHeaderContext from "src/contexts/BottomAndHeaderContext";
+import IntentContext from "src/contexts/IntentContext";
+import YoutubeFullScreenDialog from "src/components/YoutubeVideoFullscreenDialog";
 
 const queryClient = new QueryClient();
 
@@ -43,6 +45,13 @@ const MyApp: React.FC<AppProps> = ({
     headerOpen: true,
     bottomOpen: true,
   });
+  const [
+    intentState,
+    setIntentState,
+  ] = useState({
+    youtubeOpen: false,
+    data: { youtube: {} },
+  });
   const validateEnvironment = useValidateEnvironment();
 
   useEffect(() => {
@@ -62,34 +71,56 @@ const MyApp: React.FC<AppProps> = ({
         client={queryClient}
       >
         <ThemeProvider theme={theme}>
-          <BottomAndHeaderContext.Provider
+          <IntentContext.Provider
             value={{
-              ...buttonAndHeaderContext,
-              set: setButtonAndHeaderContext,
+              ...intentState,
+              toggleYoutube: (data: {}) =>
+                setIntentState(
+                  (prev) => ({
+                    ...prev,
+                    data: {
+                      ...prev.data,
+                      youtube: data,
+                    },
+                    youtubeOpen: !prev.youtubeOpen,
+                  }),
+                ),
             }}
           >
-            <FloatingButtonContext.Provider
+            <BottomAndHeaderContext.Provider
               value={{
-                ...floatingButtonContext,
-                toggle: () =>
-                  setFloatingButtonContext(
-                    (prev) => ({
-                      ...prev,
-                      menuOpen: !prev.menuOpen,
-                    }),
-                  ),
+                ...buttonAndHeaderContext,
+                set: setButtonAndHeaderContext,
               }}
             >
-              <Header />
-              <Main>
-                <Component
-                  {...pageProps}
+              <FloatingButtonContext.Provider
+                value={{
+                  ...floatingButtonContext,
+                  toggle: () =>
+                    setFloatingButtonContext(
+                      (prev) => ({
+                        ...prev,
+                        menuOpen: !prev.menuOpen,
+                      }),
+                    ),
+                }}
+              >
+                <Header />
+                <Main>
+                  <Component
+                    {...pageProps}
+                  />
+                </Main>
+                <YoutubeFullScreenDialog
+                  open={
+                    intentState.youtubeOpen
+                  }
                 />
-              </Main>
-              <BottomNavBar />
-              <CreateCourseMenu />
-            </FloatingButtonContext.Provider>
-          </BottomAndHeaderContext.Provider>
+                <BottomNavBar />
+                <CreateCourseMenu />
+              </FloatingButtonContext.Provider>
+            </BottomAndHeaderContext.Provider>
+          </IntentContext.Provider>
         </ThemeProvider>
       </QueryClientProvider>
     </>
