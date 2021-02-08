@@ -22,7 +22,7 @@ const MyCoursePage: React.FC = () => {
   } = useQuery(
     "courses",
     async () =>
-      await CourseRepository.getAll(),
+      await CourseRepository.findAll(),
   );
 
   return (

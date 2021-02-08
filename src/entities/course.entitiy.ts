@@ -1,12 +1,10 @@
 export default class Course {
-  //@ts-ignore
   public id?: number;
-  //@ts-ignore
   public title: string;
-  //@ts-ignore
   public url: string;
-  //@ts-ignore
   public thumbnailUrl: string;
+  public timestamp: number;
+
   constructor(
     title: string,
     url: string,
@@ -17,22 +15,6 @@ export default class Course {
     this.title = title;
     this.url = url;
     this.thumbnailUrl = thumbnailUrl;
+    this.timestamp = 0;
   }
-
-  /*async save() {
-    await db.transaction(
-      "rw",
-      db.courses,
-      async () => {
-        this.id = await db.courses.put(
-          this,
-        );
-      },
-    );
-  }
-  static async getAll(): Promise<
-    Course[] | undefined
-  > {
-    return await db.courses.toArray();
-  }*/
 }

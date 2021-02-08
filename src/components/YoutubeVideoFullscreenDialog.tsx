@@ -43,7 +43,7 @@ const YoutubeFullScreenDialog: React.FC<Props> = ({
             <CloseIcon />
           </IconButton>
           <Typography variant="h6">
-            {youtube?.title}
+            {youtube?.title as string}
           </Typography>
         </Toolbar>
       </AppBar>
@@ -59,12 +59,12 @@ const YoutubeFullScreenDialog: React.FC<Props> = ({
       >
         <YouTube
           videoId={
-            youtube?.youtubeVideoId
+            youtube?.youtubeVideoId as string
           }
           opts={{
-            width: "100%",
             playerVars: {
-              autoplay: 0,
+              autoplay: 1,
+              start: youtube?.timestamp as number,
             },
           }}
         />

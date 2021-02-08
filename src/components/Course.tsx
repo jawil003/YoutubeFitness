@@ -1,6 +1,7 @@
 import { css } from "@emotion/react";
 import React from "react";
 import useIntentContext from "src/hooks/useIntent.hook";
+import CourseRepository from "src/services/frontend/courseRepository.service";
 import designSystem from "../styles/designSystem";
 import ThreeDotMenu from "./ThreeDotMenu";
 
@@ -9,6 +10,7 @@ interface Props {
   youtubeVideoUrl: string;
   title: string;
   thumbnailUrl: string;
+  timestamp: number;
 }
 
 /**
@@ -20,6 +22,8 @@ const Course: React.FC<Props> = ({
   title,
   thumbnailUrl,
   youtubeVideoUrl,
+  timestamp,
+  id,
 }) => {
   const {
     toggleYoutube,
@@ -99,6 +103,7 @@ const Course: React.FC<Props> = ({
             youtubeVideoId: youtubeVideoUrl.split(
               "v=",
             )[1],
+            timestamp,
           })
         }
       >
@@ -114,7 +119,15 @@ const Course: React.FC<Props> = ({
       <div className="menuContainer">
         <ThreeDotMenu
           items={[
-            { name: "Delete" },
+            {
+              name: "Delete",
+              onClick: async () =>
+                id
+                  ? await CourseRepository.deleteById(
+                      id,
+                    )
+                  : undefined,
+            },
             { name: "Add Activity" },
           ]}
         />

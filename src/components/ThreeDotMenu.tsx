@@ -6,23 +6,59 @@ import {
 } from "@material-ui/core";
 import MoreVertIcon from "@material-ui/icons/MoreVert";
 import { dot } from "../config/routes.json";
+import Link from "next/link";
 
 const generateItems = (
-  items: Array<{ name: string }>,
+  items: Array<{
+    name: string;
+    url?: string;
+    onClick?: () => Promise<void>;
+  }>,
   handleClose: () => void,
 ) => {
-  return items.map((i) => (
-    <MenuItem
-      key={`${i.name}-menuItem`}
-      onClick={handleClose}
-    >
-      {i.name}
-    </MenuItem>
-  ));
+  return items.map(
+    ({ name, onClick, url }) =>
+      url ? (
+        <Link href={url}>
+          <MenuItem
+            component="a"
+            key={`${name}-menuItem`}
+            onClick={handleClose}
+          >
+            {name}
+          </MenuItem>
+        </Link>
+      ) : onClick ? (
+        <MenuItem
+          component="button"
+          key={`${name}-menuItem`}
+          onClick={async () => {
+            await onClick();
+            handleClose();
+          }}
+        >
+          {name}
+        </MenuItem>
+      ) : (
+        <MenuItem
+          component="button"
+          key={`${name}-menuItem`}
+          onClick={() => {
+            handleClose();
+          }}
+        >
+          {name}
+        </MenuItem>
+      ),
+  );
 };
 
 interface Props {
-  items?: Array<{ name: string }>;
+  items?: Array<{
+    name: string;
+    url?: string;
+    onClick?: () => Promise<void>;
+  }>;
 }
 
 /**
@@ -64,7 +100,11 @@ const ThreeDotMenu: React.FC<Props> = ({
         onClose={handleClose}
       >
         {generateItems(
-          items,
+          items as Array<{
+            name: string;
+            url?: string;
+            onClick?: () => Promise<void>;
+          }>,
           handleClose,
         )}
       </Menu>
