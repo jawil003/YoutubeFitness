@@ -1,6 +1,7 @@
 import { css } from "@emotion/react";
 import React from "react";
 import designSystem from "../styles/designSystem";
+import ThreeDotMenu from "./ThreeDotMenu";
 
 interface Props {
   title: string;
@@ -33,8 +34,9 @@ const Course: React.FC<Props> = ({
           justify-content: center;
           align-items: center;
           overflow: hidden;
+          position: relative;
         }
-        & > div {
+        & > .imageContainer {
           height: 100%;
           width: 155px;
           overflow: hidden;
@@ -45,25 +47,56 @@ const Course: React.FC<Props> = ({
           filter: blur(2px);
         }
         & > div > img ~ div {
+          position: absolute;
+          top: 0;
+          left: 0;
           display: flex;
+          justify-content: center;
+          align-items: center;
           width: 100%;
           height: 100%;
+          cursor: pointer;
         }
+        & > div > img ~ div > div {
+          width: 0;
+          height: 0;
+          border-style: solid;
+          border-width: 18px 0 18px 36px;
+          border-color: transparent
+            transparent transparent
+            #f3f3f3;
+        }
+
         & > span {
           flex: 1;
           padding: 20px 40px;
           text-align: center;
         }
+        & > .menuContainer {
+          position: absolute;
+          right: 0;
+          top: 0;
+          height: 100%;
+          width: 40px;
+          display: flex;
+          flex-direction: column;
+          justify-content: flex-start;
+        }
       `}
     >
-      <div>
+      <div className="imageContainer">
         <img
           src={thumbnailUrl}
           alt={title + "-image"}
         />
-        <div></div>
+        <div>
+          <div />
+        </div>
       </div>
       <span>{title}</span>
+      <div className="menuContainer">
+        <ThreeDotMenu />
+      </div>
     </div>
   );
 };
