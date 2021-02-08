@@ -42,10 +42,7 @@ describe("src/components/flexContainer.tsx", () => {
     );
   });
   test("Test ColumnGap Prop", () => {
-    const {
-      getByRole,
-      getByTestId,
-    } = render(
+    const { getByRole } = render(
       <FlexContainer columnGap="8px">
         <div data-testid="flex-element" />
       </FlexContainer>,
@@ -64,6 +61,13 @@ describe("src/components/flexContainer.tsx", () => {
       "margin",
       "calc(0px / -2) calc(8px / -2)",
     );
-    //TODO: Check if Child has Style from Container
+
+    expect(
+      flexContainer,
+    ).toHaveStyleRule(
+      "margin",
+      "calc(0px / 2) calc(8px / 2)",
+      { target: "& > *" },
+    );
   });
 });
