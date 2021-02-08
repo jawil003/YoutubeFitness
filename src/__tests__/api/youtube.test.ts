@@ -14,18 +14,14 @@ const exampleYoutubeVideoId =
  * Fetch MetaData (title, thumbnail, url) for an Youtube Video.
  */
 test("Fetch Metadata For Example YoutubeVideo", async () => {
+  jest.setTimeout(30000);
   await testApiHandler({
-    requestPatcher: (req) => {
-      req.headers = {
-        ...req.headers,
-        Origin: "localhost:3000",
-        Host: "localhost:3000",
-      };
-    },
+    requestPatcher: (req) =>
+      (req.url = "/api/graphql"),
     handler: graphQlHandler,
     test: async ({ fetch }) => {
-      const query = `query getYoutubeVideoMetadata($youtubeVideoId: String!) {
-  videoData: youtubeVideoMeadata(youtubeVideoId: $youtubeVideoId) {
+      const query = `{
+  videoData: youtubeVideoMeadata(youtubeVideoId: ${exampleYoutubeVideoId}) {
     id
     title
     thumbnails {
@@ -39,23 +35,11 @@ test("Fetch Metadata For Example YoutubeVideo", async () => {
       const res = await fetch({
         method: "POST",
         headers: {
-          Accept: "	*/*",
-          "Accept-Encoding":
-            "gzip deflate",
-          "Accept-Language":
-            "de,en-US;q=0.7,en;q=0.3",
           "Content-Type":
             "application/json",
-          "User-Agent":
-            "Mozilla/5.0 (Macintosh; Intel Mac OS X 10.13; rv:85.0) Gecko/20100101 Firefox/85.0",
         },
         body: JSON.stringify({
-          operationName:
-            "getYoutubeVideoMetadata",
           query,
-          variables: {
-            youtubeVideoId: exampleYoutubeVideoId,
-          },
         }),
       });
       console.log(await res.json());

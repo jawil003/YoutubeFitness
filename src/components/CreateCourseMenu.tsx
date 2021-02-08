@@ -16,6 +16,7 @@ import * as yup from "yup";
 import YoutubeService from "src/services/frontend/youtube.service";
 import Course from "src/entities/course.entitiy";
 import logger from "logger";
+import CourseRepository from "src/services/frontend/courseRepository.service";
 
 /**
  * An OverlayMenu React Component.
@@ -125,7 +126,9 @@ const CreateCourseMenu: React.FC = () => {
                 "Created new Course",
               );
 
-              await course.save();
+              await CourseRepository.save(
+                course,
+              );
 
               logger.debug(
                 "Created new Course",

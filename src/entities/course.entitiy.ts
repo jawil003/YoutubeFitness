@@ -1,5 +1,3 @@
-import { db } from "../store/LocalAppStorage";
-
 export default class Course {
   //@ts-ignore
   public id?: number;
@@ -21,7 +19,7 @@ export default class Course {
     this.thumbnailUrl = thumbnailUrl;
   }
 
-  async save() {
+  /*async save() {
     await db.transaction(
       "rw",
       db.courses,
@@ -36,5 +34,5 @@ export default class Course {
     Course[] | undefined
   > {
     return await db.courses.toArray();
-  }
+  }*/
 }

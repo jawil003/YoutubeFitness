@@ -19,7 +19,7 @@ class LocalAppStorage extends Dexie {
     this.courses = this.table(
       "courses",
     );
-    //this.courses.mapToClass(Course);
+    this.courses.mapToClass(Course);
   }
 }
 
