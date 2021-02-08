@@ -30,9 +30,17 @@ const YoutubeFullScreenDialog: React.FC<Props> = ({
   } = useIntentContext();
   return (
     <Dialog open={open} fullScreen>
-      <AppBar>
+      <AppBar
+        css={css`
+          &.MuiPaper-elevation4 {
+            box-shadow: none;
+          }
+        `}
+      >
         <Toolbar>
           <IconButton
+            focusRipple={false}
+            disableRipple
             onClick={() =>
               toggleYoutube()
             }
@@ -40,11 +48,14 @@ const YoutubeFullScreenDialog: React.FC<Props> = ({
             color="inherit"
             aria-label="close"
           >
-            <CloseIcon />
+            <CloseIcon
+              css={css`
+                &.MuiSvgIcon-root {
+                  font-size: 45px;
+                }
+              `}
+            />
           </IconButton>
-          <Typography variant="h6">
-            {youtube?.title as string}
-          </Typography>
         </Toolbar>
       </AppBar>
       <DialogContent

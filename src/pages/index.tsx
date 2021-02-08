@@ -38,7 +38,9 @@ const MyCoursePage: React.FC = () => {
         })}
       </Head>
 
-      {isFetched && courses ? (
+      {isFetched &&
+      courses &&
+      courses.length > 0 ? (
         <div
           css={css`
             & {
@@ -63,10 +65,12 @@ const MyCoursePage: React.FC = () => {
               thumbnailUrl,
               url,
               title,
+              timestamp,
             }) => (
               <Course
                 id={id}
                 title={title}
+                timestamp={timestamp}
                 youtubeVideoUrl={url}
                 thumbnailUrl={
                   thumbnailUrl
