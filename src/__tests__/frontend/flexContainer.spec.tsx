@@ -3,6 +3,10 @@ import {
   screen,
 } from "@testing-library/react";
 import FlexContainer from "../../components/FlexContainer";
+import { matchers } from "@emotion/jest";
+
+// Add the custom matchers provided by '@emotion/jest'
+expect.extend(matchers);
 
 describe("src/components/flexContainer.tsx", () => {
   test("Test AlignItems Prop", () => {
@@ -38,33 +42,28 @@ describe("src/components/flexContainer.tsx", () => {
     );
   });
   test("Test ColumnGap Prop", () => {
-    render(
+    const {
+      getByRole,
+      getByTestId,
+    } = render(
       <FlexContainer columnGap="8px">
         <div data-testid="flex-element" />
       </FlexContainer>,
     );
-    const flexContainer = screen.getByRole(
+    const flexContainer = getByRole(
       "flex-box",
     );
 
-    const flexItem = screen.getByTestId(
+    /*const flexItem = getByTestId(
       "flex-element",
-    );
+    );*/
 
-    const containerStyle = window.getComputedStyle(
+    expect(
       flexContainer,
+    ).toHaveStyleRule(
+      "margin",
+      "calc(0px / -2) calc(8px / -2)",
     );
-
-    const elementStyle = window.getComputedStyle(
-      flexItem,
-    );
-
-    expect(containerStyle.margin).toBe(
-      "-4px 0px",
-    );
-
-    expect(elementStyle.margin).toBe(
-      "4px 0px",
-    );
+    //TODO: Check if Child has Style from Container
   });
 });
