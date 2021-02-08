@@ -5,9 +5,9 @@ import EmptyCoursesPlaceholder from "../components/EmptyCoursesPlaceholder";
 import FlexContainer from "../components/FlexContainer";
 import designSystem from "../styles/designSystem";
 import { generateIndividualTags } from "../services/frontend/meta.service";
-import { useLiveQuery } from "dexie-react-hooks";
 import CourseRepository from "src/services/frontend/courseRepository.service";
 import Course from "src/components/Course";
+import { useQuery } from "react-query";
 
 /**
  * An MyCoursePage React Component.
@@ -15,9 +15,15 @@ import Course from "src/components/Course";
  * @version 0.1
  */
 const MyCoursePage: React.FC = () => {
-  const courses = useLiveQuery(() =>
-    CourseRepository.getAll(),
+  const {
+    data: courses,
+    isFetched,
+  } = useQuery(
+    "courses",
+    async () =>
+      await CourseRepository.getAll(),
   );
+
   return (
     <>
       <Head>
@@ -31,7 +37,7 @@ const MyCoursePage: React.FC = () => {
         })}
       </Head>
 
-      {courses ? (
+      {isFetched && courses ? (
         <div
           css={css`
             & {

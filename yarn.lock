@@ -3987,11 +3987,6 @@ detect-newline@^3.0.0:
   resolved "https://registry.yarnpkg.com/detect-newline/-/detect-newline-3.1.0.tgz#576f5dfc63ae1a192ff192d8ad3af6308991b651"
   integrity sha512-TLz+x/vEXm/Y7P7wn1EJFNLxYpUD4TgMosxY6fAVJUnJMbupHBOncxyWUG9OpTaH9EBD7uFI5LfEgmMOc54DsA==
 
-dexie-react-hooks@^1.0.2:
-  version "1.0.2"
-  resolved "https://registry.yarnpkg.com/dexie-react-hooks/-/dexie-react-hooks-1.0.2.tgz#17f596b3d4d105b906b2afdee47e2bf8f4a4bf44"
-  integrity sha512-Omue1blFsPza0z+qBwib8MZPqcJ1tN9ogw2P3lOr2HOivnFDxd5TJPAVrq3wZZfRFly+fG3Vb4wNS/izNmgcjA==
-
 dexie@^3.1.0-alpha.6:
   version "3.1.0-alpha.6"
   resolved "https://registry.yarnpkg.com/dexie/-/dexie-3.1.0-alpha.6.tgz#855384b5928f28df609dd55fe059b8b6dabd38b3"
