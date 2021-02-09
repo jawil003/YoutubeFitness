@@ -14,6 +14,7 @@ const theme = createMuiTheme({
     },
   },
   props: {
+    MuiStepIcon: { color: "secondary" },
     MuiButton: { color: "secondary" },
 
     MuiFab: { color: "secondary" },
@@ -33,6 +34,50 @@ const theme = createMuiTheme({
         backgroundColor:
           designSystem.colors.brand
             .primary,
+      },
+    },
+    MuiStepConnector: {
+      root: {
+        minWidth: "10px",
+      },
+    },
+    MuiStepIcon: {
+      root: {
+        color:
+          designSystem.colors.brand
+            .secondary,
+        "& > circle": { opacity: 0.54 },
+      },
+      active: {
+        "&&": {
+          color:
+            designSystem.colors.brand
+              .secondary,
+        },
+        "& > circle": { opacity: 1 },
+      },
+      text: {
+        fill:
+          designSystem.colors.brand
+            .primary,
+      },
+    },
+    MuiStepLabel: {
+      root: {
+        "&&": {
+          fontWeight: 400,
+          color: "#000",
+        },
+        "& .MuiStepLabel-label": {
+          opacity: 0.54,
+        },
+      },
+      active: {
+        "&&": {
+          fontWeight: 400,
+          color: "#000",
+          opacity: 1,
+        },
       },
     },
   },

@@ -1,7 +1,7 @@
 import React from "react";
 
 const IntentContext = React.createContext<{
-  youtubeOpen: false;
+  youtubeOpen: boolean;
   data: {
     [x: string]: Record<
       string,

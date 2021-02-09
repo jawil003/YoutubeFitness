@@ -704,7 +704,7 @@ const reset = css`
   button {
     margin: 0__qem;
     font: -webkit-small-control;
-    text-rendering: auto; /* FIXME: Remove when tabs work with optimizeLegibility. */
+    text-rendering: auto;
     color: initial;
     letter-spacing: normal;
     word-spacing: normal;
@@ -1385,7 +1385,6 @@ const reset = css`
   }
   /* page */
   @page {
-    /* FIXME: Define the right default values for page properties. */
     size: auto;
     margin: auto;
     padding: 0px;

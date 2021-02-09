@@ -1,5 +1,4 @@
 import {
-  Dialog,
   DialogTitle,
   DialogContent,
   DialogContentText,
@@ -11,14 +10,13 @@ import React, {
   useEffect,
   useState,
 } from "react";
-import useFabContext from "../hooks/useFabContext";
 import * as yup from "yup";
 import YoutubeService from "src/services/frontend/youtube.service";
 import Course from "src/entities/course.entitiy";
 import logger from "logger";
 import CourseRepository from "src/services/frontend/courseRepository.service";
 import { useQueryClient } from "react-query";
-import { Query } from "../config/reactQuery.enum";
+import { Query } from "../../config/reactQuery.enum";
 
 /**
  * An OverlayMenu React Component.
@@ -28,10 +26,6 @@ import { Query } from "../config/reactQuery.enum";
 const AddVideoMenu: React.FC = () => {
   const queryClient = useQueryClient();
   const youtubeService = new YoutubeService();
-  const {
-    menuOpen,
-    toggle,
-  } = useFabContext();
   const [url, setUrl] = useState("");
   const validation = yup
     .string()
@@ -45,12 +39,17 @@ const AddVideoMenu: React.FC = () => {
     errorMessage,
     setErrorMessage,
   ] = useState("");
-  useEffect(() => {
-    setUrl("");
-    setErrorMessage("");
-  }, [menuOpen]);
+  useEffect(
+    () => {
+      setUrl("");
+      setErrorMessage("");
+    },
+    [
+      /*menuOpen*/
+    ],
+  );
   return (
-    <Dialog open={menuOpen}>
+    <>
       <DialogTitle id="draggable-dialog-title">
         Create Course
       </DialogTitle>
@@ -154,7 +153,7 @@ const AddVideoMenu: React.FC = () => {
           Confirm
         </Button>
       </DialogActions>
-    </Dialog>
+    </>
   );
 };
 

@@ -9,7 +9,7 @@ import Header from "../components/Header";
 import globalStyles from "../styles/styles";
 import Main from "../components/Main";
 import FloatingButtonContext from "../contexts/FloatingButtonContext";
-import AddVideoMenu from "../components/AddVideoMenu";
+import CreateCourseMenu from "../components/CreateCourseDialog/Index";
 import {
   QueryClient,
   QueryClientProvider,
@@ -74,17 +74,29 @@ const MyApp: React.FC<AppProps> = ({
           <IntentContext.Provider
             value={{
               ...intentState,
-              toggleYoutube: (data: {}) =>
-                setIntentState(
-                  (prev) => ({
-                    ...prev,
-                    data: {
-                      ...prev.data,
-                      youtube: data,
-                    },
-                    youtubeOpen: !prev.youtubeOpen,
-                  }),
-                ),
+              toggleYoutube: (
+                data: {} | undefined,
+              ) =>
+                data
+                  ? setIntentState(
+                      (prev) => ({
+                        ...prev,
+                        data: {
+                          ...prev.data,
+                          youtube: data,
+                        },
+                        youtubeOpen: !prev.youtubeOpen,
+                      }),
+                    )
+                  : setIntentState(
+                      (prev) => ({
+                        ...prev,
+                        data: {
+                          ...prev.data,
+                        },
+                        youtubeOpen: !prev.youtubeOpen,
+                      }),
+                    ),
             }}
           >
             <BottomAndHeaderContext.Provider
@@ -117,7 +129,7 @@ const MyApp: React.FC<AppProps> = ({
                   }
                 />
                 <BottomNavBar />
-                <AddVideoMenu />
+                <CreateCourseMenu />
               </FloatingButtonContext.Provider>
             </BottomAndHeaderContext.Provider>
           </IntentContext.Provider>
