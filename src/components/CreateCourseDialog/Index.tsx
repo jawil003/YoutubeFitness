@@ -26,6 +26,14 @@ interface Props {}
  * @version 0.1
  */
 const CreateCourseDialog: React.FC<Props> = () => {
+  const [
+    courseError,
+    setCourseError,
+  ] = useState({ titleError: "" });
+  const [
+    videosError,
+    setVideosError,
+  ] = useState({ urlError: "" });
   const {
     menuOpen,
     toggle,
@@ -34,22 +42,43 @@ const CreateCourseDialog: React.FC<Props> = () => {
     activeStep,
     setActiveStep,
   ] = useState<0 | 1>(0);
-  const [values, setValues] = useState({
+  const [values, setValues] = useState<{
+    course: { title: string };
+    videos: { url: string }[];
+  }>({
     course: { title: "" },
     videos: [],
   });
   const [
     completed,
-    setCompleted,
+    _setCompleted,
   ] = useState([false, false]);
-  const handleClose = () => toggle();
+  const resetState = () => {
+    setValues({
+      course: { title: "" },
+      videos: [],
+    });
+    setActiveStep(0);
+    setCourseError({ titleError: "" });
+    setVideosError({ urlError: "" });
+  };
+
+  const handleClose = () => {
+    toggle();
+    resetState();
+  };
   return (
     <DialogStepperContext.Provider
       value={{
         activeStep,
+        videosError,
+        courseError,
+        setVideosError,
+        setCourseError,
         ...values,
         setValues,
         setActiveStep,
+        reset: resetState,
       }}
     >
       <Dialog open={menuOpen}>
@@ -81,13 +110,7 @@ const CreateCourseDialog: React.FC<Props> = () => {
         {useMemo(() => {
           switch (activeStep) {
             case 0: {
-              return (
-                <AddCourseMenu
-                  onNextPressed={() =>
-                    setActiveStep(1)
-                  }
-                />
-              );
+              return <AddCourseMenu />;
             }
             case 1: {
               return <AddVideoMenu />;

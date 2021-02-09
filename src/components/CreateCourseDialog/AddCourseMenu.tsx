@@ -7,16 +7,24 @@ import {
 } from "@material-ui/core";
 import React from "react";
 import useDialogStepperContext from "../../hooks/useDialogStepperContext.hook";
-
+import * as yup from "yup";
+import { ValidationError } from "yup";
 /**
  * An AddCourseMenu React Component.
  * @author Jannik Will
  * @version 0.1
  */
 const AddCourseMenu: React.FC = () => {
+  const courseNameSchema = yup
+    .string()
+    .required(
+      "Please insert an Name for a Fitness Course",
+    );
   const {
     setActiveStep,
     course: { title },
+    courseError: { titleError },
+    setCourseError,
     setValues,
   } = useDialogStepperContext();
   return (
@@ -29,14 +37,31 @@ const AddCourseMenu: React.FC = () => {
         </DialogContentText>
         <TextField
           value={title}
-          onChange={({
+          onChange={async ({
             target: { value: title },
-          }) =>
-            setValues((prev) => ({
-              ...prev,
-              course: { title },
-            }))
-          }
+          }) => {
+            try {
+              await courseNameSchema.validate(
+                title,
+              );
+              setCourseError({
+                titleError: "",
+              });
+            } catch (err) {
+              setCourseError({
+                titleError: (err as ValidationError)
+                  .errors[0],
+              });
+            } finally {
+              setValues((prev) => ({
+                ...prev,
+                course: { title },
+              }));
+            }
+          }}
+          autoFocus
+          helperText={titleError}
+          error={titleError != ""}
           required
           fullWidth
           variant="outlined"
@@ -50,6 +75,10 @@ const AddCourseMenu: React.FC = () => {
       </DialogContent>
       <DialogActions>
         <Button
+          disabled={
+            titleError != "" ||
+            title === ""
+          }
           onClick={() =>
             setActiveStep(1)
           }

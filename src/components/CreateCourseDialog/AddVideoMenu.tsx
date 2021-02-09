@@ -75,6 +75,7 @@ const AddVideoMenu: React.FC = () => {
             `}
           >
             <TextField
+              autoFocus
               value={url}
               onChange={({
                 target: { value: url },
