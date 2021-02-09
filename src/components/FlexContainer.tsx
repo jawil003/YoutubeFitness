@@ -78,7 +78,7 @@ const FlexContainer: React.FC<Props> = ({
         }
         & > * {
           margin: calc(${rowGap} / 2)
-            calc(${columnGap} / 2);
+            calc(${columnGap} / 2) !important;
         }
       `}
       className={className}
