@@ -17,6 +17,8 @@ import YoutubeService from "src/services/frontend/youtube.service";
 import Course from "src/entities/course.entitiy";
 import logger from "logger";
 import CourseRepository from "src/services/frontend/courseRepository.service";
+import { useQueryClient } from "react-query";
+import { Query } from "../config/reactQuery.enum";
 
 /**
  * An OverlayMenu React Component.
@@ -24,6 +26,7 @@ import CourseRepository from "src/services/frontend/courseRepository.service";
  * @version 0.1
  */
 const CreateCourseMenu: React.FC = () => {
+  const queryClient = useQueryClient();
   const youtubeService = new YoutubeService();
   const {
     menuOpen,
@@ -132,6 +135,9 @@ const CreateCourseMenu: React.FC = () => {
 
               logger.debug(
                 "Created new Course",
+              );
+              await queryClient.invalidateQueries(
+                Query.courses,
               );
               toggle();
               logger.debug(

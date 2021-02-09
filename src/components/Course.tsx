@@ -4,6 +4,8 @@ import useIntentContext from "src/hooks/useIntent.hook";
 import CourseRepository from "src/services/frontend/courseRepository.service";
 import designSystem from "../styles/designSystem";
 import ThreeDotMenu from "./ThreeDotMenu";
+import { useQueryClient } from "react-query";
+import { Query } from "../config/reactQuery.enum";
 
 interface Props {
   id?: number;
@@ -28,9 +30,15 @@ const Course: React.FC<Props> = ({
   const {
     toggleYoutube,
   } = useIntentContext();
+  const queryClient = useQueryClient();
   return (
     <div
       css={css`
+        & {
+          width: 100%;
+          max-width: 371px;
+        }
+
         & {
           filter: drop-shadow(
             2px 4px 16px
@@ -39,7 +47,7 @@ const Course: React.FC<Props> = ({
           background-color: ${designSystem
             .colors.brand.primary};
           border-radius: 18px;
-          width: 371px;
+
           height: 140px;
           display: flex;
           justify-content: center;
@@ -121,12 +129,16 @@ const Course: React.FC<Props> = ({
           items={[
             {
               name: "Delete",
-              onClick: async () =>
-                id
-                  ? await CourseRepository.deleteById(
-                      id,
-                    )
-                  : undefined,
+              onClick: async () => {
+                if (id) {
+                  await CourseRepository.deleteById(
+                    id,
+                  );
+                  await queryClient.invalidateQueries(
+                    Query.courses,
+                  );
+                }
+              },
             },
             { name: "Add Activity" },
           ]}

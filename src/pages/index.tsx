@@ -9,7 +9,7 @@ import CourseRepository from "src/services/frontend/courseRepository.service";
 import Course from "src/components/Course";
 import { useQuery } from "react-query";
 import { CircularProgress } from "@material-ui/core";
-
+import { Query } from "../config/reactQuery.enum";
 /**
  * An MyCoursePage React Component.
  * @author
@@ -20,7 +20,7 @@ const MyCoursePage: React.FC = () => {
     data: courses,
     isFetched,
   } = useQuery(
-    "courses",
+    Query.courses,
     async () =>
       await CourseRepository.findAll(),
   );
@@ -43,16 +43,25 @@ const MyCoursePage: React.FC = () => {
       courses.length > 0 ? (
         <div
           css={css`
+            @media (min-width: 500px) {
+              & {
+                grid-template-columns: repeat(
+                  auto-fill,
+                  371px
+                );
+              }
+            }
+            @media (max-width: 500px) {
+              & {
+                grid-template-columns: 1fr;
+              }
+            }
             & {
               display: grid;
-              grid-template-columns: repeat(
-                auto-fill,
-                minmax(371px, auto)
-              );
-              grid-template-rows: 140px;
-              justify-content: center;
+              justify-content: space-around;
+              align-content: flex-start;
               align-items: start;
-              justify-items: center;
+
               height: 100%;
               gap: 20px;
               padding: 40px;
