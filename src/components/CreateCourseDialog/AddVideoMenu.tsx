@@ -12,6 +12,7 @@ import {
 import React, { useState } from "react";
 import useDialogStepperContext from "../../hooks/useDialogStepperContext.hook";
 import FlexContainer from "../FlexContainer";
+import * as yup from "yup";
 
 /**
  * An OverlayMenu React Component.
@@ -23,8 +24,15 @@ const AddVideoMenu: React.FC = () => {
     setActiveStep,
     videos,
     setValues,
+    videosError: { urlError },
+    setVideosError,
   } = useDialogStepperContext();
   const [url, setUrl] = useState("");
+  const youtubeVideoUrlSchema = yup
+    .string()
+    .url(
+      "Please insert an valid Youtube Video Link",
+    );
   return (
     <>
       <DialogContent>
@@ -77,10 +85,44 @@ const AddVideoMenu: React.FC = () => {
             <TextField
               autoFocus
               value={url}
-              onChange={({
+              onChange={async ({
                 target: { value: url },
-              }) => setUrl(url)}
+              }) => {
+                try {
+                  await youtubeVideoUrlSchema.validate(
+                    url,
+                  );
+                  setVideosError({
+                    urlError: "",
+                  });
+                } catch (err) {
+                  setVideosError({
+                    urlError: (err as yup.ValidationError)
+                      .errors[0],
+                  });
+                } finally {
+                  setUrl(url);
+                }
+              }}
+              error={urlError != ""}
+              helperText={urlError}
               label="YoutubeVideoUrl"
+              variant="outlined"
+              InputLabelProps={{
+                shrink: true,
+              }}
+            />
+            <TextField
+              type="number"
+              label="From"
+              variant="outlined"
+              InputLabelProps={{
+                shrink: true,
+              }}
+            />
+            <TextField
+              type="number"
+              label="To"
               variant="outlined"
               InputLabelProps={{
                 shrink: true,
