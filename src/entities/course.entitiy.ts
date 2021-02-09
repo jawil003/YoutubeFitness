@@ -1,20 +1,22 @@
+import Video from "./video.entity";
+
 export default class Course {
   public id?: number;
   public title: string;
-  public url: string;
-  public thumbnailUrl: string;
-  public timestamp: number;
+  public timestamp: {
+    videoId?: number;
+    time: number;
+  };
+  public videos?: Video[];
 
   constructor(
     title: string,
-    url: string,
-    thumbnailUrl: string,
     id?: number,
+    videos?: Video[],
   ) {
     if (id) this.id = id;
     this.title = title;
-    this.url = url;
-    this.thumbnailUrl = thumbnailUrl;
-    this.timestamp = 0;
+    this.timestamp = { time: 0 };
+    if (videos) this.videos = videos;
   }
 }

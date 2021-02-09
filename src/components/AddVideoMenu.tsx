@@ -25,7 +25,7 @@ import { Query } from "../config/reactQuery.enum";
  * @author Jannik Will
  * @version 0.1
  */
-const CreateCourseMenu: React.FC = () => {
+const AddVideoMenu: React.FC = () => {
   const queryClient = useQueryClient();
   const youtubeService = new YoutubeService();
   const {
@@ -158,4 +158,4 @@ const CreateCourseMenu: React.FC = () => {
   );
 };
 
-export default CreateCourseMenu;
+export default AddVideoMenu;

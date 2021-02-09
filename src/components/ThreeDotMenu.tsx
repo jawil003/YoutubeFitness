@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useMemo } from "react";
 import {
   IconButton,
   Menu,
@@ -7,6 +7,7 @@ import {
 import MoreVertIcon from "@material-ui/icons/MoreVert";
 import { dot } from "../config/routes.json";
 import Link from "next/link";
+import { css } from "@emotion/react";
 
 const generateItems = (
   items: Array<{
@@ -21,6 +22,11 @@ const generateItems = (
       url ? (
         <Link href={url}>
           <MenuItem
+            css={css`
+              & {
+                width: 100%;
+              }
+            `}
             component="a"
             key={`${name}-menuItem`}
             onClick={handleClose}
@@ -30,6 +36,11 @@ const generateItems = (
         </Link>
       ) : onClick ? (
         <MenuItem
+          css={css`
+            && {
+              width: 100%;
+            }
+          `}
           component="button"
           key={`${name}-menuItem`}
           onClick={async () => {
@@ -92,6 +103,11 @@ const ThreeDotMenu: React.FC<Props> = ({
         <MoreVertIcon />
       </IconButton>
       <Menu
+        css={css`
+          & {
+            width: 100%;
+          }
+        `}
         id="simple-menu"
         variant="selectedMenu"
         anchorEl={anchorEl}
@@ -99,13 +115,17 @@ const ThreeDotMenu: React.FC<Props> = ({
         open={Boolean(anchorEl)}
         onClose={handleClose}
       >
-        {generateItems(
-          items as Array<{
-            name: string;
-            url?: string;
-            onClick?: () => Promise<void>;
-          }>,
-          handleClose,
+        {useMemo(
+          () =>
+            generateItems(
+              items as Array<{
+                name: string;
+                url?: string;
+                onClick?: () => Promise<void>;
+              }>,
+              handleClose,
+            ),
+          [items],
         )}
       </Menu>
     </>

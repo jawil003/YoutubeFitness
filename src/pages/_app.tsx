@@ -9,7 +9,7 @@ import Header from "../components/Header";
 import globalStyles from "../styles/styles";
 import Main from "../components/Main";
 import FloatingButtonContext from "../contexts/FloatingButtonContext";
-import CreateCourseMenu from "../components/CreateCourseMenu";
+import AddVideoMenu from "../components/AddVideoMenu";
 import {
   QueryClient,
   QueryClientProvider,
@@ -117,7 +117,7 @@ const MyApp: React.FC<AppProps> = ({
                   }
                 />
                 <BottomNavBar />
-                <CreateCourseMenu />
+                <AddVideoMenu />
               </FloatingButtonContext.Provider>
             </BottomAndHeaderContext.Provider>
           </IntentContext.Provider>

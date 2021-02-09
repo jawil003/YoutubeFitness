@@ -140,7 +140,6 @@ const Course: React.FC<Props> = ({
                 }
               },
             },
-            { name: "Add Activity" },
           ]}
         />
       </div>
