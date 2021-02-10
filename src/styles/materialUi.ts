@@ -14,6 +14,7 @@ const theme = createMuiTheme({
     },
   },
   props: {
+    MuiSlider: { color: "secondary" },
     MuiStepIcon: { color: "secondary" },
     MuiButton: { color: "secondary" },
 
@@ -29,6 +30,15 @@ const theme = createMuiTheme({
     },
   },
   overrides: {
+    MuiSlider: {
+      valueLabel: {
+        "&& > span > span": {
+          color:
+            designSystem.colors.brand
+              .primary,
+        },
+      },
+    },
     MuiPaper: {
       root: {
         backgroundColor:

@@ -1,5 +1,6 @@
 import logger from "../../config/logger";
 import { localApiClient } from "../../config/client";
+import TimeConverterService from "./timeConverter.service";
 
 export default class YoutubeService {
   public async getMetadataForVideo(
@@ -44,6 +45,7 @@ export default class YoutubeService {
             },
           },
           title,
+          duration,
         },
       },
     } = data;
@@ -53,6 +55,9 @@ export default class YoutubeService {
       id: youtubeVideoId,
       thumbnailUrl,
       url: youtubeVideoUrl,
+      duration: TimeConverterService.getSecondsFromISO8601(
+        duration,
+      ),
     };
   }
 }
@@ -65,4 +70,5 @@ interface YoutubeMetaData {
       url: string;
     };
   };
+  duration: string;
 }

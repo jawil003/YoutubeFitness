@@ -8,8 +8,14 @@ import {
   Button,
   DialogActions,
   TextField,
+  Slider,
+  Checkbox,
+  FormControlLabel,
 } from "@material-ui/core";
-import React, { useState } from "react";
+import React, {
+  useMemo,
+  useState,
+} from "react";
 import useDialogStepperContext from "../../hooks/useDialogStepperContext.hook";
 import FlexContainer from "../FlexContainer";
 import * as yup from "yup";
@@ -24,18 +30,30 @@ const AddVideoMenu: React.FC = () => {
     setActiveStep,
     videos,
     setValues,
-    videosError: { urlError },
-    setVideosError,
   } = useDialogStepperContext();
   const [url, setUrl] = useState("");
   const [
-    starttime,
-    setStarttime,
-  ] = useState(0);
+    urlError,
+    setUrlError,
+  ] = useState("");
   const [
-    endtime,
-    setEndtime,
-  ] = useState(10);
+    stepperRange,
+    setStepperRange,
+  ] = useState<number[]>([0, 20]);
+  const [
+    useWholeVideo,
+    setUseWholeVideo,
+  ] = useState(true);
+  const marks = [
+    {
+      value: 0,
+      label: "00:00:00",
+    },
+    {
+      value: 100,
+      label: "01:00:00",
+    },
+  ];
   const youtubeVideoUrlSchema = yup
     .string()
     .url(
@@ -53,7 +71,7 @@ const AddVideoMenu: React.FC = () => {
           columnGap="40px"
           css={css`
             & {
-              max-width: 500px;
+              max-width: 552px;
               width: 100%;
             }
           `}
@@ -61,32 +79,44 @@ const AddVideoMenu: React.FC = () => {
           <List
             css={css`
               & {
-                min-width: 50%;
+                flex: 1;
                 height: 300px;
                 overflow-y: scroll;
               }
             `}
           >
-            {videos.length > 0 ? (
-              videos.map(({ url }) => (
-                <ListItem>
-                  <ListItemText>
-                    {url.split("v=")[1]}
-                  </ListItemText>
-                </ListItem>
-              ))
-            ) : (
-              <FlexContainer
-                css={css`
-                  & {
-                    height: 100%;
-                  }
-                `}
-                alignItems="center"
-                justifyContent="center"
-              >
-                <span>No Videos</span>
-              </FlexContainer>
+            {useMemo(
+              () =>
+                videos.length > 0 ? (
+                  videos.map(
+                    ({ url }) => (
+                      <ListItem>
+                        <ListItemText>
+                          {
+                            url.split(
+                              "v=",
+                            )[1]
+                          }
+                        </ListItemText>
+                      </ListItem>
+                    ),
+                  )
+                ) : (
+                  <FlexContainer
+                    css={css`
+                      & {
+                        height: 100%;
+                      }
+                    `}
+                    alignItems="center"
+                    justifyContent="center"
+                  >
+                    <span>
+                      No Videos
+                    </span>
+                  </FlexContainer>
+                ),
+              [videos],
             )}
           </List>
           <FlexContainer
@@ -95,6 +125,7 @@ const AddVideoMenu: React.FC = () => {
             justifyContent="center"
             css={css`
               & {
+                flex: 1;
                 min-height: 100%;
               }
             `}
@@ -111,14 +142,12 @@ const AddVideoMenu: React.FC = () => {
                   await youtubeVideoUrlSchema.validate(
                     url,
                   );
-                  setVideosError({
-                    urlError: "",
-                  });
+                  setUrlError("");
                 } catch (err) {
-                  setVideosError({
-                    urlError: (err as yup.ValidationError)
+                  setUrlError(
+                    (err as yup.ValidationError)
                       .errors[0],
-                  });
+                  );
                 } finally {
                   setUrl(url);
                 }
@@ -131,28 +160,41 @@ const AddVideoMenu: React.FC = () => {
                 shrink: true,
               }}
             />
-            <TextField
-              fullWidth
-              placeholder="0:00:00"
-              value={starttime}
-              type="number"
-              label="From"
-              variant="outlined"
-              InputLabelProps={{
-                shrink: true,
-              }}
+            <FormControlLabel
+              value="wholeVideo"
+              control={
+                <Checkbox
+                  checked={
+                    useWholeVideo
+                  }
+                  onChange={() =>
+                    setUseWholeVideo(
+                      (prev) => !prev,
+                    )
+                  }
+                  color="secondary"
+                />
+              }
+              label="Use whole Video"
+              labelPlacement="end"
             />
-            <TextField
-              fullWidth
-              placeholder="0:00:10"
-              value={endtime}
-              type="number"
-              label="To"
-              variant="outlined"
-              InputLabelProps={{
-                shrink: true,
-              }}
-            />
+            {!useWholeVideo ? (
+              <Slider
+                value={stepperRange}
+                onChange={(
+                  _,
+                  newValue,
+                ) =>
+                  setStepperRange(
+                    newValue as number[],
+                  )
+                }
+                marks={marks}
+                defaultValue={0}
+                valueLabelDisplay="auto"
+                max={100}
+              />
+            ) : undefined}
             <Button
               onClick={() => {
                 setValues((prev) => ({
