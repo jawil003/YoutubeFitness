@@ -3,8 +3,10 @@ import {
   Arg,
   Query,
   Resolver,
+  Info,
 } from "type-graphql";
 import YoutubeVideo from "./youtubeVideo.type";
+import InfoType from "./InfoType.type";
 
 @Resolver()
 export default class YoutubeResolver {
@@ -19,11 +21,14 @@ export default class YoutubeResolver {
       nullable: false,
     })
     youtubeVideoId: string,
+    @Info() info: InfoType,
   ): Promise<YoutubeVideo> {
+    //TODO: Find out which Data really needs to be fetched
     const {
       items,
     } = await this.youtubeService.getMetadataForVideo(
       youtubeVideoId,
+      ["contentDetails", "snippet"],
     );
     const {
       snippet: { title, thumbnails },

@@ -3,6 +3,10 @@ import axios from "axios";
 export default class YoutubeService {
   public async getMetadataForVideo(
     youtubeVideoId: string,
+    parts: (
+      | "snippet"
+      | "contentDetails"
+    )[],
   ) {
     const {
       YOUTUBE_API_KEY,
@@ -11,7 +15,11 @@ export default class YoutubeService {
       data,
       status,
     } = await axios.get<YoutubeSnippetResponse>(
-      `https://youtube.googleapis.com/youtube/v3/videos?part=snippet&part=contentDetails&id=${youtubeVideoId}&key=${YOUTUBE_API_KEY}`,
+      `https://youtube.googleapis.com/youtube/v3/videos?${parts
+        .map((p) => `part=${p}`)
+        .join(
+          "&",
+        )}&id=${youtubeVideoId}&key=${YOUTUBE_API_KEY}`,
     );
     if (!data || status >= 300) {
       throw new Error(
