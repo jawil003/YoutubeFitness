@@ -27,12 +27,14 @@ export default class YoutubeResolver {
     );
     const {
       snippet: { title, thumbnails },
+      contentDetails: { duration },
     } = items[0];
 
     return {
       id: youtubeVideoId,
       title,
       thumbnails,
+      duration,
     };
   }
 }

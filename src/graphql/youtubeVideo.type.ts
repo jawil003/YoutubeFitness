@@ -73,4 +73,10 @@ export default class YoutubeVideo {
     nullable: false,
   })
   thumbnails!: YoutubeThumbnails;
+  @Field({
+    description:
+      "The Duration of the Video in ISO 8601",
+    nullable: false,
+  })
+  duration!: string;
 }

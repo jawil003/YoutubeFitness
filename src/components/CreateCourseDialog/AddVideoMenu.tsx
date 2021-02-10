@@ -28,6 +28,14 @@ const AddVideoMenu: React.FC = () => {
     setVideosError,
   } = useDialogStepperContext();
   const [url, setUrl] = useState("");
+  const [
+    starttime,
+    setStarttime,
+  ] = useState(0);
+  const [
+    endtime,
+    setEndtime,
+  ] = useState(10);
   const youtubeVideoUrlSchema = yup
     .string()
     .url(
@@ -41,12 +49,21 @@ const AddVideoMenu: React.FC = () => {
           to start with, just enter the
           Address of an YouTube Video
         </DialogContentText>
-        <FlexContainer>
+        <FlexContainer
+          columnGap="40px"
+          css={css`
+            & {
+              max-width: 500px;
+              width: 100%;
+            }
+          `}
+        >
           <List
             css={css`
               & {
                 min-width: 50%;
                 height: 300px;
+                overflow-y: scroll;
               }
             `}
           >
@@ -54,7 +71,7 @@ const AddVideoMenu: React.FC = () => {
               videos.map(({ url }) => (
                 <ListItem>
                   <ListItemText>
-                    {url}
+                    {url.split("v=")[1]}
                   </ListItemText>
                 </ListItem>
               ))
@@ -83,6 +100,8 @@ const AddVideoMenu: React.FC = () => {
             `}
           >
             <TextField
+              fullWidth
+              placeholder="https://www.youtube.com/watch?v=UItWltVZZmE"
               autoFocus
               value={url}
               onChange={async ({
@@ -113,6 +132,9 @@ const AddVideoMenu: React.FC = () => {
               }}
             />
             <TextField
+              fullWidth
+              placeholder="0:00:00"
+              value={starttime}
               type="number"
               label="From"
               variant="outlined"
@@ -121,6 +143,9 @@ const AddVideoMenu: React.FC = () => {
               }}
             />
             <TextField
+              fullWidth
+              placeholder="0:00:10"
+              value={endtime}
               type="number"
               label="To"
               variant="outlined"

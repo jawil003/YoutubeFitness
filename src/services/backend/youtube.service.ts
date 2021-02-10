@@ -11,7 +11,7 @@ export default class YoutubeService {
       data,
       status,
     } = await axios.get<YoutubeSnippetResponse>(
-      `https://youtube.googleapis.com/youtube/v3/videos?part=snippet&id=${youtubeVideoId}&key=${YOUTUBE_API_KEY}`,
+      `https://youtube.googleapis.com/youtube/v3/videos?part=snippet&part=contentDetails&id=${youtubeVideoId}&key=${YOUTUBE_API_KEY}`,
     );
     if (!data || status >= 300) {
       throw new Error(
@@ -67,6 +67,18 @@ interface YoutubeSnippetResponse {
           description: string;
         };
         defaultAudioLanguage: string;
+      };
+      contentDetails: {
+        duration: string;
+        dimension: string;
+        definition: string;
+        caption: string;
+        licensedContent: boolean;
+        contentRating: Record<
+          string,
+          unknown
+        >;
+        projection: string;
       };
     },
   ];
