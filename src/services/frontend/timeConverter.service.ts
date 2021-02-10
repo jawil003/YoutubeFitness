@@ -3,54 +3,42 @@ export default class TimeConverterService {
   public static getSecondsFromISO8601(
     duration: string,
   ) {
-    const a = duration.match(/\d+/g);
-    var newDuration: number;
-
-    if (
-      duration.indexOf("M") >= 0 &&
-      duration.indexOf("H") == -1 &&
-      duration.indexOf("S") == -1
-    ) {
-      a = [0, a[0], 0];
+    const match = duration.match(
+      /P(\d+Y)?(\d+W)?(\d+D)?T(\d+H)?(\d+M)?(\d+S)?/,
+    );
+    // An invalid case won't crash the app.
+    if (!match) {
+      console.error(
+        `Invalid YouTube video duration: ${duration}`,
+      );
+      return 0;
     }
-
-    if (
-      duration.indexOf("H") >= 0 &&
-      duration.indexOf("M") == -1
-    ) {
-      a = [a[0], 0, a[1]];
-    }
-    if (
-      duration.indexOf("H") >= 0 &&
-      duration.indexOf("M") == -1 &&
-      duration.indexOf("S") == -1
-    ) {
-      a = [a[0], 0, 0];
-    }
-
-    duration = 0;
-
-    if (a.length == 3) {
-      duration =
-        duration +
-        parseInt(a[0]) * 3600;
-      duration =
-        duration + parseInt(a[1]) * 60;
-      duration =
-        duration + parseInt(a[2]);
-    }
-
-    if (a.length == 2) {
-      duration =
-        duration + parseInt(a[0]) * 60;
-      duration =
-        duration + parseInt(a[1]);
-    }
-
-    if (a.length == 1) {
-      duration =
-        duration + parseInt(a[0]);
-    }
-    return duration;
+    const [
+      years,
+      weeks,
+      days,
+      hours,
+      minutes,
+      seconds,
+    ] = match
+      .slice(1)
+      .map((_) =>
+        _
+          ? parseInt(
+              _.replace(/\D/, ""),
+            )
+          : 0,
+      );
+    return (
+      (((years * 365 +
+        weeks * 7 +
+        days) *
+        24 +
+        hours) *
+        60 +
+        minutes) *
+        60 +
+      seconds
+    );
   }
 }

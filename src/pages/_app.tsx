@@ -20,6 +20,7 @@ import useValidateEnvironment from "../hooks/useValidateEnvironment.hook";
 import BottomAndHeaderContext from "src/contexts/BottomAndHeaderContext";
 import IntentContext from "src/contexts/IntentContext";
 import YoutubeFullScreenDialog from "src/components/YoutubeVideoFullscreenDialog";
+import { ReactQueryDevtools } from "react-query/devtools";
 
 const queryClient = new QueryClient();
 
@@ -134,6 +135,9 @@ const MyApp: React.FC<AppProps> = ({
             </BottomAndHeaderContext.Provider>
           </IntentContext.Provider>
         </ThemeProvider>
+        <ReactQueryDevtools
+          initialIsOpen={false}
+        />
       </QueryClientProvider>
     </>
   );

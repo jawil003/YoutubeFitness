@@ -1,4 +1,5 @@
 import { css } from "@emotion/react";
+import YouTubeIcon from "@material-ui/icons/YouTube";
 import {
   DialogContent,
   DialogContentText,
@@ -11,7 +12,11 @@ import {
   Slider,
   Checkbox,
   FormControlLabel,
+  ListItemSecondaryAction,
+  ListItemIcon,
+  IconButton,
 } from "@material-ui/core";
+import DeleteIcon from "@material-ui/icons/Delete";
 import React, {
   useMemo,
   useState,
@@ -19,6 +24,8 @@ import React, {
 import useDialogStepperContext from "../../hooks/useDialogStepperContext.hook";
 import FlexContainer from "../FlexContainer";
 import * as yup from "yup";
+import { useQuery } from "react-query";
+import YoutubeService from "../../services/frontend/youtube.service";
 
 /**
  * An OverlayMenu React Component.
@@ -39,26 +46,41 @@ const AddVideoMenu: React.FC = () => {
   const [
     stepperRange,
     setStepperRange,
-  ] = useState<number[]>([0, 20]);
+  ] = useState<number[]>([0, 100]);
   const [
     useWholeVideo,
     setUseWholeVideo,
   ] = useState(true);
-  const marks = [
-    {
-      value: 0,
-      label: "00:00:00",
+  const [
+    videoUrl,
+    setVideoUrl,
+  ] = useState("");
+  const { data: video } = useQuery(
+    ["video", videoUrl],
+    async () => {
+      if (videoUrl != "")
+        return await new YoutubeService().getMetadataForVideo(
+          videoUrl,
+        );
     },
     {
-      value: 100,
-      label: "01:00:00",
+      placeholderData: {
+        title: "No Title",
+        duration: "100",
+      },
     },
-  ];
+  );
   const youtubeVideoUrlSchema = yup
     .string()
     .url(
       "Please insert an valid Youtube Video Link",
     );
+  const resetState = () => {
+    setUrl("");
+    setVideoUrl("");
+    setUseWholeVideo(true);
+    setUrlError("");
+  };
   return (
     <>
       <DialogContent>
@@ -80,8 +102,13 @@ const AddVideoMenu: React.FC = () => {
             css={css`
               & {
                 flex: 1;
-                height: 300px;
+
+                min-height: 100%;
                 overflow-y: scroll;
+                border: 1px solid
+                  rgba(0, 0, 0, 0.12);
+                padding: 40px;
+                border-radius: 4px;
               }
             `}
           >
@@ -91,13 +118,22 @@ const AddVideoMenu: React.FC = () => {
                   videos.map(
                     ({ url }) => (
                       <ListItem>
-                        <ListItemText>
-                          {
+                        <ListItemIcon>
+                          <YouTubeIcon />
+                        </ListItemIcon>
+                        <ListItemText
+                          primary={
                             url.split(
                               "v=",
                             )[1]
                           }
-                        </ListItemText>
+                        />
+
+                        <ListItemSecondaryAction>
+                          <IconButton edge="end">
+                            <DeleteIcon />
+                          </IconButton>
+                        </ListItemSecondaryAction>
                       </ListItem>
                     ),
                   )
@@ -120,15 +156,20 @@ const AddVideoMenu: React.FC = () => {
             )}
           </List>
           <FlexContainer
+            css={css`
+              & {
+                margin: auto !important;
+                flex: 1;
+                min-height: 100%;
+                border: 1px solid
+                  rgba(0, 0, 0, 0.12);
+                padding: 40px;
+                border-radius: 4px;
+              }
+            `}
             rowGap="20px"
             direction="column"
             justifyContent="center"
-            css={css`
-              & {
-                flex: 1;
-                min-height: 100%;
-              }
-            `}
           >
             <TextField
               fullWidth
@@ -143,6 +184,7 @@ const AddVideoMenu: React.FC = () => {
                     url,
                   );
                   setUrlError("");
+                  setVideoUrl(url);
                 } catch (err) {
                   setUrlError(
                     (err as yup.ValidationError)
@@ -160,41 +202,143 @@ const AddVideoMenu: React.FC = () => {
                 shrink: true,
               }}
             />
-            <FormControlLabel
-              value="wholeVideo"
-              control={
-                <Checkbox
-                  checked={
-                    useWholeVideo
-                  }
-                  onChange={() =>
-                    setUseWholeVideo(
-                      (prev) => !prev,
-                    )
-                  }
-                  color="secondary"
-                />
-              }
-              label="Use whole Video"
-              labelPlacement="end"
-            />
-            {!useWholeVideo ? (
-              <Slider
-                value={stepperRange}
-                onChange={(
-                  _,
-                  newValue,
-                ) =>
-                  setStepperRange(
-                    newValue as number[],
-                  )
-                }
-                marks={marks}
-                defaultValue={0}
-                valueLabelDisplay="auto"
-                max={100}
-              />
-            ) : undefined}
+            {urlError === "" && url
+              ? [
+                  <FormControlLabel
+                    value="wholeVideo"
+                    control={
+                      <Checkbox
+                        checked={
+                          useWholeVideo
+                        }
+                        onChange={() =>
+                          setUseWholeVideo(
+                            (prev) =>
+                              !prev,
+                          )
+                        }
+                        color="secondary"
+                      />
+                    }
+                    label="Use whole Video"
+                    labelPlacement="end"
+                  />,
+                  !useWholeVideo
+                    ? [
+                        <Slider
+                          key={`slider-${video?.title}`}
+                          css={css`
+                            &.MuiSlider-root {
+                              margin: auto !important;
+                              width: calc(
+                                100% -
+                                  40px
+                              );
+                            }
+                          `}
+                          value={
+                            stepperRange
+                          }
+                          onChange={(
+                            _,
+                            newValue,
+                          ) =>
+                            setStepperRange(
+                              newValue as number[],
+                            )
+                          }
+                          max={Number(
+                            video?.duration,
+                          )}
+                          defaultValue={
+                            0
+                          }
+                        />,
+                        <FlexContainer columnGap="10px">
+                          <TextField
+                            onChange={({
+                              target: {
+                                value,
+                              },
+                            }) => {
+                              const newValue = Number(
+                                value,
+                              );
+                              if (
+                                newValue <
+                                  stepperRange[0] &&
+                                newValue <=
+                                  Number(
+                                    video?.duration,
+                                  )
+                              )
+                                setStepperRange(
+                                  (
+                                    prev,
+                                  ) => [
+                                    Number(
+                                      value,
+                                    ),
+                                    prev[1],
+                                  ],
+                                );
+                            }}
+                            css={css`
+                              & {
+                                width: 100px;
+                              }
+                            `}
+                            value={
+                              stepperRange[0]
+                            }
+                          />
+                          <div
+                            css={css`
+                              & {
+                                flex: 1;
+                              }
+                            `}
+                          />
+                          <TextField
+                            onChange={({
+                              target: {
+                                value,
+                              },
+                            }) => {
+                              const newValue = Number(
+                                value,
+                              );
+                              if (
+                                stepperRange[0] <
+                                  newValue &&
+                                newValue <=
+                                  Number(
+                                    video?.duration,
+                                  )
+                              )
+                                setStepperRange(
+                                  (
+                                    prev,
+                                  ) => [
+                                    prev[0],
+                                    newValue,
+                                  ],
+                                );
+                            }}
+                            css={css`
+                              & {
+                                width: 100px;
+                              }
+                            `}
+                            value={
+                              stepperRange[1]
+                            }
+                          />
+                        </FlexContainer>,
+                      ]
+                    : undefined,
+                ]
+              : undefined}
             <Button
               onClick={() => {
                 setValues((prev) => ({
@@ -204,7 +348,7 @@ const AddVideoMenu: React.FC = () => {
                     { url },
                   ],
                 }));
-                setUrl("");
+                resetState();
               }}
             >
               Add Video
@@ -220,6 +364,7 @@ const AddVideoMenu: React.FC = () => {
             }
           `}
           onClick={() => {
+            resetState();
             setActiveStep(0);
           }}
         >

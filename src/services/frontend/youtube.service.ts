@@ -28,6 +28,7 @@ export default class YoutubeService {
                   url
                 }
               }
+              duration
           }
         }
         `,
