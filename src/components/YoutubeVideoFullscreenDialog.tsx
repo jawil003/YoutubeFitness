@@ -3,10 +3,11 @@ import {
   Dialog,
   Toolbar,
   IconButton,
-  Typography,
   DialogContent,
 } from "@material-ui/core";
-import React from "react";
+import React, {
+  useEffect,
+} from "react";
 import CloseIcon from "@material-ui/icons/Close";
 import useIntentContext from "src/hooks/useIntent.hook";
 import YouTube from "react-youtube";
@@ -24,6 +25,13 @@ interface Props {
 const YoutubeFullScreenDialog: React.FC<Props> = ({
   open,
 }) => {
+  const youtubeRef = React.createRef<YouTube>();
+  useEffect(() => {
+    const youtubeElement =
+      youtubeRef?.current;
+    if (youtubeElement)
+      const youtubePlayer = youtubeElement.getInternalPlayer();
+  }, []);
   const {
     toggleYoutube,
     data: { youtube },
@@ -69,6 +77,7 @@ const YoutubeFullScreenDialog: React.FC<Props> = ({
         `}
       >
         <YouTube
+          ref={youtubeRef}
           videoId={
             //TODO: Implement mechanism to loop through them and go to next automatic etc
             youtube?.videos?.length > 0
