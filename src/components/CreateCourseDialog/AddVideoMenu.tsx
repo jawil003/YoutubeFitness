@@ -24,7 +24,10 @@ import React, {
 import useDialogStepperContext from "../../hooks/useDialogStepperContext.hook";
 import FlexContainer from "../FlexContainer";
 import * as yup from "yup";
-import { useQuery } from "react-query";
+import {
+  useQuery,
+  useQueryClient,
+} from "react-query";
 import YoutubeService from "../../services/frontend/youtube.service";
 import useTimestampReducer from "src/reducer/timeStamp.reducer";
 import Course from "../../entities/course.entitiy";
@@ -32,6 +35,7 @@ import VideoRepository from "src/services/frontend/videoRepository.service";
 import Video from "src/entities/video.entity";
 import CourseRepository from "src/services/frontend/courseRepository.service";
 import useFabContext from "src/hooks/useFabContext";
+import { Query } from "src/config/reactQuery.enum";
 
 const TimelineInputStyle = css`
   & {
@@ -49,11 +53,13 @@ const TimelineInputStyle = css`
  * @version 0.1
  */
 const AddVideoMenu: React.FC = () => {
+  const queryClient = useQueryClient();
   const {
-    setActiveStep,
     course,
     videos,
     setValues,
+    setCourseError,
+    setActiveStep,
   } = useDialogStepperContext();
   const { toggle } = useFabContext();
   const [
@@ -109,12 +115,20 @@ const AddVideoMenu: React.FC = () => {
     .url(
       "Please insert an valid Youtube Video Link",
     );
-  const resetState = () => {
+  const resetLocalState = () => {
     setVideoState({
       url: "",
       error: "",
     });
     setUseWholeVideo(true);
+  };
+  const resetGlobalState = () => {
+    setValues({
+      course: { title: "" },
+      videos: [],
+    });
+    setActiveStep(0);
+    setCourseError({ titleError: "" });
   };
   return (
     <>
@@ -399,7 +413,7 @@ const AddVideoMenu: React.FC = () => {
                     video as any,
                   ],
                 }));
-                resetState();
+                resetLocalState();
               }}
             >
               Add Video
@@ -415,7 +429,7 @@ const AddVideoMenu: React.FC = () => {
             }
           `}
           onClick={() => {
-            resetState();
+            resetLocalState();
             setActiveStep(0);
           }}
         >
@@ -443,6 +457,10 @@ const AddVideoMenu: React.FC = () => {
             }
             await CourseRepository.save(
               courseEntity,
+            );
+            resetGlobalState();
+            await queryClient.invalidateQueries(
+              Query.courses,
             );
             toggle();
           }}

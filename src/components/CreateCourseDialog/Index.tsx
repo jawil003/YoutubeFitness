@@ -15,8 +15,7 @@ import AddVideoMenu from "./AddVideoMenu";
 import CloseIcon from "@material-ui/icons/Close";
 import FlexContainer from "../FlexContainer";
 import DialogStepperContext from "../../contexts/DialogStepperContext";
-
-//TODO: Finish the new DialogStepper
+import Video from "src/entities/video.entity";
 
 interface Props {}
 
@@ -30,10 +29,6 @@ const CreateCourseDialog: React.FC<Props> = () => {
     courseError,
     setCourseError,
   ] = useState({ titleError: "" });
-  const [
-    videosError,
-    setVideosError,
-  ] = useState({ urlError: "" });
   const {
     menuOpen,
     toggle,
@@ -44,7 +39,7 @@ const CreateCourseDialog: React.FC<Props> = () => {
   ] = useState<0 | 1>(0);
   const [values, setValues] = useState<{
     course: { title: string };
-    videos: { url: string }[];
+    videos: Video[];
   }>({
     course: { title: "" },
     videos: [],
@@ -60,7 +55,6 @@ const CreateCourseDialog: React.FC<Props> = () => {
     });
     setActiveStep(0);
     setCourseError({ titleError: "" });
-    setVideosError({ urlError: "" });
   };
 
   const handleClose = () => {
@@ -71,9 +65,7 @@ const CreateCourseDialog: React.FC<Props> = () => {
     <DialogStepperContext.Provider
       value={{
         activeStep,
-        videosError,
         courseError,
-        setVideosError,
         setCourseError,
         ...values,
         setValues,

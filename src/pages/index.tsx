@@ -71,16 +71,16 @@ const MyCoursePage: React.FC = () => {
           {courses.map(
             ({
               id,
-              thumbnailUrl,
-              url,
+              videos: [video],
               title,
-              timestamp,
             }) => (
+              //TODO: Fix the Way Videos are played
               <Course
                 id={id}
                 title={title}
-                timestamp={timestamp}
-                youtubeVideoUrl={url}
+                youtubeVideoUrl={
+                  video.url
+                }
                 thumbnailUrl={
                   thumbnailUrl
                 }
