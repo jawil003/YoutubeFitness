@@ -26,6 +26,22 @@ import FlexContainer from "../FlexContainer";
 import * as yup from "yup";
 import { useQuery } from "react-query";
 import YoutubeService from "../../services/frontend/youtube.service";
+import useTimestampReducer from "src/reducer/timeStamp.reducer";
+import Course from "../../entities/course.entitiy";
+import VideoRepository from "src/services/frontend/videoRepository.service";
+import Video from "src/entities/video.entity";
+import CourseRepository from "src/services/frontend/courseRepository.service";
+import useFabContext from "src/hooks/useFabContext";
+
+const TimelineInputStyle = css`
+  & {
+    width: 80px;
+  }
+  &
+    .MuiInputBase-input.MuiInputBase-input {
+    text-align: center;
+  }
+`;
 
 /**
  * An OverlayMenu React Component.
@@ -35,51 +51,70 @@ import YoutubeService from "../../services/frontend/youtube.service";
 const AddVideoMenu: React.FC = () => {
   const {
     setActiveStep,
+    course,
     videos,
     setValues,
   } = useDialogStepperContext();
-  const [url, setUrl] = useState("");
-  const [
-    urlError,
-    setUrlError,
-  ] = useState("");
-  const [
-    stepperRange,
-    setStepperRange,
-  ] = useState<number[]>([0, 100]);
+  const { toggle } = useFabContext();
   const [
     useWholeVideo,
     setUseWholeVideo,
   ] = useState(true);
   const [
-    videoUrl,
-    setVideoUrl,
-  ] = useState("");
-  const { data: video } = useQuery(
+    {
+      url: videoUrl,
+      error: videoError,
+    },
+    setVideoState,
+  ] = useState({ url: "", error: "" });
+  const { data: video } = useQuery<{
+    title?: string;
+    id?: string;
+    thumbnailUrl?: string;
+    url?: string;
+    duration: number;
+  }>(
     ["video", videoUrl],
     async () => {
-      if (videoUrl != "")
-        return await new YoutubeService().getMetadataForVideo(
-          videoUrl,
-        );
+      return await new YoutubeService().getMetadataForVideo(
+        videoUrl,
+      );
     },
     {
       placeholderData: {
-        title: "No Title",
-        duration: "100",
+        duration: 100,
       },
+      enabled:
+        videoError === "" &&
+        videoUrl !== "",
+      refetchOnMount: false,
+      refetchOnWindowFocus: false,
     },
   );
+  const [
+    {
+      seconds: {
+        begin: beginSecond,
+        end: endSecond,
+      },
+      timestamp: {
+        begin: beginTimestamp,
+        end: endTimestamp,
+      },
+    },
+    dispatch,
+  ] = useTimestampReducer();
   const youtubeVideoUrlSchema = yup
     .string()
     .url(
       "Please insert an valid Youtube Video Link",
     );
   const resetState = () => {
-    setUrl("");
-    setVideoUrl("");
+    setVideoState({
+      url: "",
+      error: "",
+    });
     setUseWholeVideo(true);
-    setUrlError("");
   };
   return (
     <>
@@ -116,21 +151,41 @@ const AddVideoMenu: React.FC = () => {
               () =>
                 videos.length > 0 ? (
                   videos.map(
-                    ({ url }) => (
+                    (
+                      { title },
+                      index,
+                    ) => (
                       <ListItem>
                         <ListItemIcon>
                           <YouTubeIcon />
                         </ListItemIcon>
                         <ListItemText
                           primary={
-                            url.split(
-                              "v=",
-                            )[1]
+                            title
                           }
                         />
 
                         <ListItemSecondaryAction>
-                          <IconButton edge="end">
+                          <IconButton
+                            edge="end"
+                            onClick={() => {
+                              setValues(
+                                (
+                                  prev,
+                                ) => ({
+                                  ...prev,
+                                  videos: prev.videos.filter(
+                                    (
+                                      _,
+                                      indexVideo,
+                                    ) =>
+                                      index !==
+                                      indexVideo,
+                                  ),
+                                }),
+                              );
+                            }}
+                          >
                             <DeleteIcon />
                           </IconButton>
                         </ListItemSecondaryAction>
@@ -175,7 +230,7 @@ const AddVideoMenu: React.FC = () => {
               fullWidth
               placeholder="https://www.youtube.com/watch?v=UItWltVZZmE"
               autoFocus
-              value={url}
+              value={videoUrl}
               onChange={async ({
                 target: { value: url },
               }) => {
@@ -183,26 +238,41 @@ const AddVideoMenu: React.FC = () => {
                   await youtubeVideoUrlSchema.validate(
                     url,
                   );
-                  setUrlError("");
-                  setVideoUrl(url);
+
+                  setVideoState(
+                    (prev) => ({
+                      ...prev,
+                      url,
+                      error: "",
+                    }),
+                  );
                 } catch (err) {
-                  setUrlError(
-                    (err as yup.ValidationError)
-                      .errors[0],
+                  setVideoState(
+                    (prev) => ({
+                      ...prev,
+                      error: (err as yup.ValidationError)
+                        .errors[0],
+                    }),
                   );
                 } finally {
-                  setUrl(url);
+                  setVideoState(
+                    (prev) => ({
+                      ...prev,
+                      url,
+                    }),
+                  );
                 }
               }}
-              error={urlError != ""}
-              helperText={urlError}
+              error={videoError != ""}
+              helperText={videoError}
               label="YoutubeVideoUrl"
               variant="outlined"
               InputLabelProps={{
                 shrink: true,
               }}
             />
-            {urlError === "" && url
+            {videoError === "" &&
+            videoUrl
               ? [
                   <FormControlLabel
                     value="wholeVideo"
@@ -226,7 +296,6 @@ const AddVideoMenu: React.FC = () => {
                   !useWholeVideo
                     ? [
                         <Slider
-                          key={`slider-${video?.title}`}
                           css={css`
                             &.MuiSlider-root {
                               margin: auto !important;
@@ -236,17 +305,29 @@ const AddVideoMenu: React.FC = () => {
                               );
                             }
                           `}
-                          value={
-                            stepperRange
-                          }
+                          value={[
+                            beginSecond,
+                            endSecond,
+                          ]}
                           onChange={(
                             _,
                             newValue,
-                          ) =>
-                            setStepperRange(
-                              newValue as number[],
-                            )
-                          }
+                          ) => {
+                            const [
+                              beginSecond,
+                              endSecond,
+                            ] = newValue as number[];
+                            dispatch({
+                              type:
+                                "ADD_SECONDS_BEGIN",
+                              value: beginSecond,
+                            });
+                            dispatch({
+                              type:
+                                "ADD_SECONDS_END",
+                              value: endSecond,
+                            });
+                          }}
                           max={Number(
                             video?.duration,
                           )}
@@ -256,40 +337,22 @@ const AddVideoMenu: React.FC = () => {
                         />,
                         <FlexContainer columnGap="10px">
                           <TextField
+                            css={
+                              TimelineInputStyle
+                            }
                             onChange={({
                               target: {
                                 value,
                               },
                             }) => {
-                              const newValue = Number(
+                              dispatch({
+                                type:
+                                  "ADD_FORMATTTED_BEGIN",
                                 value,
-                              );
-                              if (
-                                newValue <
-                                  stepperRange[0] &&
-                                newValue <=
-                                  Number(
-                                    video?.duration,
-                                  )
-                              )
-                                setStepperRange(
-                                  (
-                                    prev,
-                                  ) => [
-                                    Number(
-                                      value,
-                                    ),
-                                    prev[1],
-                                  ],
-                                );
+                              });
                             }}
-                            css={css`
-                              & {
-                                width: 100px;
-                              }
-                            `}
                             value={
-                              stepperRange[0]
+                              beginTimestamp
                             }
                           />
                           <div
@@ -305,33 +368,17 @@ const AddVideoMenu: React.FC = () => {
                                 value,
                               },
                             }) => {
-                              const newValue = Number(
+                              dispatch({
+                                type:
+                                  "ADD_FORMATTTED_END",
                                 value,
-                              );
-                              if (
-                                stepperRange[0] <
-                                  newValue &&
-                                newValue <=
-                                  Number(
-                                    video?.duration,
-                                  )
-                              )
-                                setStepperRange(
-                                  (
-                                    prev,
-                                  ) => [
-                                    prev[0],
-                                    newValue,
-                                  ],
-                                );
+                              });
                             }}
-                            css={css`
-                              & {
-                                width: 100px;
-                              }
-                            `}
+                            css={
+                              TimelineInputStyle
+                            }
                             value={
-                              stepperRange[1]
+                              endTimestamp
                             }
                           />
                         </FlexContainer>,
@@ -340,12 +387,16 @@ const AddVideoMenu: React.FC = () => {
                 ]
               : undefined}
             <Button
+              disabled={
+                videoUrl === "" ||
+                videoError !== ""
+              }
               onClick={() => {
                 setValues((prev) => ({
                   ...prev,
                   videos: [
                     ...prev.videos,
-                    { url },
+                    video as any,
                   ],
                 }));
                 resetState();
@@ -370,7 +421,32 @@ const AddVideoMenu: React.FC = () => {
         >
           Previous
         </Button>
-        <Button onClick={() => {}}>
+        <Button
+          disabled={videos.length === 0}
+          onClick={async () => {
+            const courseEntity = new Course(
+              course.title,
+            );
+            const videoIds: Video[] = [];
+
+            for (const video of videos) {
+              videoIds.push({
+                id: (
+                  await VideoRepository.save(
+                    {
+                      ...video,
+                      id: undefined,
+                    },
+                  )
+                ).id,
+              });
+            }
+            await CourseRepository.save(
+              courseEntity,
+            );
+            toggle();
+          }}
+        >
           Finish
         </Button>
       </DialogActions>

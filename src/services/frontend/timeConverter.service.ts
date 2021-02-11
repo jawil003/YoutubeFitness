@@ -41,4 +41,51 @@ export default class TimeConverterService {
       seconds
     );
   }
+  public static secondsToHHMMSS(
+    given_seconds: number,
+  ) {
+    const dateObj = new Date(
+      given_seconds * 1000,
+    );
+    const hours = dateObj.getUTCHours();
+    const minutes = dateObj.getUTCMinutes();
+    const seconds = dateObj.getSeconds();
+
+    const timeString =
+      hours
+        .toString()
+        .padStart(2, "0") +
+      ":" +
+      minutes
+        .toString()
+        .padStart(2, "0") +
+      ":" +
+      seconds
+        .toString()
+        .padStart(2, "0");
+    return timeString;
+  }
+  public static HHMMSStoSeconds(
+    hhmmss: string,
+  ) {
+    const hhmmssArray = hhmmss.split(
+      ":",
+    );
+    if (hhmmss.length < 3) return;
+    const hours = Number(
+      hhmmssArray[0],
+    );
+    const minutes = Number(
+      hhmmssArray[1],
+    );
+    const seconds = Number(
+      hhmmssArray[2],
+    );
+
+    return (
+      hours * 3600 +
+      minutes * 60 +
+      seconds
+    );
+  }
 }

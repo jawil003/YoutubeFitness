@@ -1,4 +1,5 @@
 import React from "react";
+import Video from "src/entities/video.entity";
 
 const DialogStepperContext = React.createContext<{
   activeStep: 0 | 1;
@@ -9,19 +10,13 @@ const DialogStepperContext = React.createContext<{
       titleError: string;
     }>
   >;
-  videos: { url: string }[];
-  videosError: { urlError: string };
-  setVideosError: React.Dispatch<
-    React.SetStateAction<{
-      urlError: string;
-    }>
-  >;
+  videos: Video[];
   setValues: React.Dispatch<
     React.SetStateAction<{
       course: {
         title: string;
       };
-      videos: { url: string }[];
+      videos: Video[];
     }>
   >;
   setActiveStep: React.Dispatch<
@@ -34,8 +29,6 @@ const DialogStepperContext = React.createContext<{
   courseError: { titleError: "" },
   setCourseError: () => {},
   videos: [],
-  videosError: { urlError: "" },
-  setVideosError: () => {},
   setValues: () => {},
   setActiveStep: () => {},
   reset: () => {},
