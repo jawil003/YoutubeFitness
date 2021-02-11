@@ -1,5 +1,7 @@
+import Video from "src/entities/video.entity";
 import Course from "../../entities/course.entitiy";
 import { db } from "../../store/LocalAppStorage";
+import VideoRepository from "./videoRepository.service";
 
 export default class CourseRepository {
   public static transaction =
@@ -27,5 +29,24 @@ export default class CourseRepository {
     id: number,
   ) {
     await db.courses.delete(id);
+  }
+  public static async resolveVideos(
+    c: Course,
+  ) {
+    const videoIds = c.videos as {
+      id: number;
+    }[];
+    const videos = [];
+    for (const {
+      id: videoId,
+    } of videoIds) {
+      videos.push(
+        await VideoRepository.findById(
+          videoId,
+        ),
+      );
+    }
+    c.videos = videos as Video[];
+    return c;
   }
 }

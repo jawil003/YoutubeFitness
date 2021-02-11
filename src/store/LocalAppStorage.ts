@@ -11,11 +11,10 @@ class LocalAppStorage extends Dexie {
 
   constructor() {
     super("YoutubeFitnessDatabase");
-    this.version(1).stores({
-      courses:
-        "++id, title, timestamp, videos",
-      videos:
-        "++id, title, url, thumbnailUrl, length",
+    //www.youtube.com/watch?v=jCTEVKRTuS8
+    https: this.version(1).stores({
+      courses: "++id, title",
+      videos: "++id, title, &videoId",
       //...other tables goes here...
     });
     // The following line is needed if your typescript

@@ -410,7 +410,12 @@ const AddVideoMenu: React.FC = () => {
                   ...prev,
                   videos: [
                     ...prev.videos,
-                    video as any,
+                    {
+                      ...video,
+                      videoId: YoutubeService.getIdFromUrl(
+                        video?.url as string,
+                      ),
+                    } as Video,
                   ],
                 }));
                 resetLocalState();
@@ -455,6 +460,7 @@ const AddVideoMenu: React.FC = () => {
                 ).id,
               });
             }
+            courseEntity.videos = videoIds;
             await CourseRepository.save(
               courseEntity,
             );

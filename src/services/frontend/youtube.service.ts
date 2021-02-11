@@ -61,6 +61,11 @@ export default class YoutubeService {
       ),
     };
   }
+  public static getIdFromUrl(
+    url: string,
+  ) {
+    return url.split("v=")[1];
+  }
 }
 
 interface YoutubeMetaData {

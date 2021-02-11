@@ -10,6 +10,7 @@ import Course from "src/components/Course";
 import { useQuery } from "react-query";
 import { CircularProgress } from "@material-ui/core";
 import { Query } from "../config/reactQuery.enum";
+import Video from "src/entities/video.entity";
 /**
  * An MyCoursePage React Component.
  * @author
@@ -21,8 +22,15 @@ const MyCoursePage: React.FC = () => {
     isFetched,
   } = useQuery(
     Query.courses,
-    async () =>
-      await CourseRepository.findAll(),
+    async () => {
+      const courses = await CourseRepository.findAll();
+      for (const course of courses) {
+        await CourseRepository.resolveVideos(
+          course,
+        );
+      }
+      return courses;
+    },
   );
 
   return (
@@ -69,21 +77,12 @@ const MyCoursePage: React.FC = () => {
           `}
         >
           {courses.map(
-            ({
-              id,
-              videos: [video],
-              title,
-            }) => (
+            ({ id, title, videos }) => (
               //TODO: Fix the Way Videos are played
               <Course
                 id={id}
                 title={title}
-                youtubeVideoUrl={
-                  video.url
-                }
-                thumbnailUrl={
-                  thumbnailUrl
-                }
+                videos={videos as any}
               />
             ),
           )}

@@ -6,13 +6,15 @@ import designSystem from "../styles/designSystem";
 import ThreeDotMenu from "./ThreeDotMenu";
 import { useQueryClient } from "react-query";
 import { Query } from "../config/reactQuery.enum";
+import Video from "src/entities/video.entity";
 
 interface Props {
   id?: number;
-  youtubeVideoUrl: string;
   title: string;
-  thumbnailUrl: string;
-  timestamp: number;
+  videos: (Video & {
+    begin?: number;
+    end?: number;
+  })[];
 }
 
 /**
@@ -22,10 +24,8 @@ interface Props {
  */
 const Course: React.FC<Props> = ({
   title,
-  thumbnailUrl,
-  youtubeVideoUrl,
-  timestamp,
   id,
+  videos,
 }) => {
   const {
     toggleYoutube,
@@ -105,18 +105,19 @@ const Course: React.FC<Props> = ({
     >
       <div
         className="imageContainer"
-        onClick={() =>
-          toggleYoutube({
+        onClick={() => {
+          //TODO: Fix the IntentContext and the YoutubeWIndow to use Playlist
+          /*toggleYoutube({
             title,
             youtubeVideoId: youtubeVideoUrl.split(
               "v=",
             )[1],
             timestamp,
-          })
-        }
+          })*/
+        }}
       >
         <img
-          src={thumbnailUrl}
+          src={videos[0].thumbnailUrl}
           alt={title + "-image"}
         />
         <div>

@@ -7,6 +7,15 @@ export default class VideoRepository {
   public static async save(
     c: Video,
   ): Promise<Video> {
+    const equalUrl = (
+      await db.videos
+        .where("videoId")
+        .equals(c.videoId as string)
+        .toArray()
+    )[0];
+    if (equalUrl) {
+      return equalUrl;
+    }
     const id = await db.videos.put(c);
     return { ...c, id };
   }

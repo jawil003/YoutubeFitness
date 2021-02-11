@@ -3,11 +3,12 @@ import Video from "./video.entity";
 export default class Course {
   public id?: number;
   public title: string;
-  public timestamp: {
+  public session?: {
     videoId?: number;
     time: number;
   };
-  public videos?: Video[];
+  public videos?: Video &
+    { begin?: number; end?: number }[];
 
   constructor(
     title: string,
@@ -16,7 +17,6 @@ export default class Course {
   ) {
     if (id) this.id = id;
     this.title = title;
-    this.timestamp = { time: 0 };
     if (videos) this.videos = videos;
   }
 }
