@@ -18,6 +18,7 @@ import {
 } from "@material-ui/core";
 import DeleteIcon from "@material-ui/icons/Delete";
 import React, {
+  useEffect,
   useMemo,
   useState,
 } from "react";
@@ -73,7 +74,10 @@ const AddVideoMenu: React.FC = () => {
     },
     setVideoState,
   ] = useState({ url: "", error: "" });
-  const { data: video } = useQuery<{
+  const {
+    data: video,
+    isFetched,
+  } = useQuery<{
     title?: string;
     id?: string;
     thumbnailUrl?: string;
@@ -115,6 +119,10 @@ const AddVideoMenu: React.FC = () => {
     .url(
       "Please insert an valid Youtube Video Link",
     );
+
+  /**
+   * Reset all State Properties to it`s default which are scoped inside this Component.
+   */
   const resetLocalState = () => {
     setVideoState({
       url: "",
@@ -122,6 +130,9 @@ const AddVideoMenu: React.FC = () => {
     });
     setUseWholeVideo(true);
   };
+  /**
+   * Reset all State Properties to it`s default which are scoped in the {@link DialogStepperContext}.
+   */
   const resetGlobalState = () => {
     setValues({
       course: { title: "" },
@@ -130,6 +141,18 @@ const AddVideoMenu: React.FC = () => {
     setActiveStep(0);
     setCourseError({ titleError: "" });
   };
+  useEffect(() => {
+    // When Video is loaded set the Range of the Slider to then End of the Video as default
+    if (
+      videoUrl &&
+      videoError === "" &&
+      isFetched
+    )
+      dispatch({
+        type: "ADD_SECONDS_END",
+        value: video?.duration as number,
+      });
+  }, [videoUrl, videoError, isFetched]);
   return (
     <>
       <DialogContent>

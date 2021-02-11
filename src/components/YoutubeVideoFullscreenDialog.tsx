@@ -70,12 +70,21 @@ const YoutubeFullScreenDialog: React.FC<Props> = ({
       >
         <YouTube
           videoId={
-            youtube?.youtubeVideoId as string
+            //TODO: Implement mechanism to loop through them and go to next automatic etc
+            youtube?.videos?.length > 0
+              ? (youtube?.videos[0]
+                  .videoId as string)
+              : undefined
           }
           opts={{
             playerVars: {
               autoplay: 1,
-              start: youtube?.timestamp as number,
+              start:
+                youtube?.videos
+                  ?.length > 0
+                  ? youtube?.videos[0]
+                      .begin
+                  : undefined,
             },
           }}
         />

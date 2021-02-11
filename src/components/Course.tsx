@@ -107,13 +107,10 @@ const Course: React.FC<Props> = ({
         className="imageContainer"
         onClick={() => {
           //TODO: Fix the IntentContext and the YoutubeWIndow to use Playlist
-          /*toggleYoutube({
+          toggleYoutube({
             title,
-            youtubeVideoId: youtubeVideoUrl.split(
-              "v=",
-            )[1],
-            timestamp,
-          })*/
+            videos,
+          });
         }}
       >
         <img
