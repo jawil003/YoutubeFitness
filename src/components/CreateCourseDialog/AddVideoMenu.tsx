@@ -33,7 +33,6 @@ import YoutubeService from "../../services/frontend/youtube.service";
 import useTimestampReducer from "src/reducer/timeStamp.reducer";
 import Course from "../../entities/course.entitiy";
 import VideoRepository from "src/services/frontend/videoRepository.service";
-import Video from "src/entities/video.entity";
 import CourseRepository from "src/services/frontend/courseRepository.service";
 import useFabContext from "src/hooks/useFabContext";
 import { Query } from "src/config/reactQuery.enum";
@@ -78,13 +77,7 @@ const AddVideoMenu: React.FC = () => {
   const {
     data: video,
     isFetched,
-  } = useQuery<{
-    title: string;
-    youtubeVideoId: string;
-    thumbnailUrl: string;
-    url: string;
-    duration: number;
-  }>(
+  } = useQuery(
     ["video", videoUrl],
     async () => {
       return await new YoutubeService().getMetadataForVideo(

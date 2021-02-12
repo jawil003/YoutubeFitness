@@ -35,3 +35,7 @@ yarn-error.log*
 
 #environment
 .env
+
+#next-pwa
+sw.js
+workbox**.js

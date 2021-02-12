@@ -39,15 +39,18 @@ const CreateCourseDialog: React.FC<Props> = () => {
   ] = useState<0 | 1>(0);
   const [values, setValues] = useState<{
     course: { title: string };
-    videos: Video[];
+    videos: (Video & {
+      begin: number;
+      end: number;
+    })[];
   }>({
     course: { title: "" },
     videos: [],
   });
-  const [
-    completed,
-    _setCompleted,
-  ] = useState([false, false]);
+  const [completed] = useState([
+    false,
+    false,
+  ]);
   const resetState = () => {
     setValues({
       course: { title: "" },

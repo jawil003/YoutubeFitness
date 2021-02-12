@@ -20,7 +20,10 @@ const generateItems = (
   return items.map(
     ({ name, onClick, url }) =>
       url ? (
-        <Link href={url}>
+        <Link
+          key={`${name}-link`}
+          href={url}
+        >
           <MenuItem
             css={css`
               & {

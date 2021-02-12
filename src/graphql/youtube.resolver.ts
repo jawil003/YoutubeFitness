@@ -21,7 +21,7 @@ export default class YoutubeResolver {
       nullable: false,
     })
     youtubeVideoId: string,
-    @Info() info: InfoType,
+    @Info() _info: InfoType,
   ): Promise<YoutubeVideo> {
     //TODO: Find out which Data really needs to be fetched
     const {
