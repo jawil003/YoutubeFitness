@@ -7,11 +7,13 @@ import {
 } from "@material-ui/core";
 import React, {
   useEffect,
+  useState,
 } from "react";
 import CloseIcon from "@material-ui/icons/Close";
 import useIntentContext from "src/hooks/useIntent.hook";
 import YouTube from "react-youtube";
 import { css } from "@emotion/react";
+import YoutubeTimerService from "src/services/frontend/youtubeTimer.service";
 
 interface Props {
   open: boolean;
@@ -25,36 +27,50 @@ interface Props {
 const YoutubeFullScreenDialog: React.FC<Props> = ({
   open,
 }) => {
-  const youtubeRef = React.createRef<YouTube>();
-  useEffect(() => {
-    const youtubeElement =
-      youtubeRef?.current;
-    if (
-      youtubeElement &&
-      youtube.videos.length > 1
-    ) {
-      const youtubePlayer = youtubeElement.getInternalPlayer();
-      const videos = youtube.videos.splice(
-        0,
-        1,
-      );
-      for (const {
-        begin,
-        end,
-        videoId,
-      } of videos) {
-        youtubePlayer.cueVideoByUrl({
-          mediaContentUrl: `http://www.youtube.com/v/${videoId}?version=3`,
-          startSeconds: begin,
-          endSeconds: end,
-        });
-      }
-    }
-  }, []);
   const {
     toggleYoutube,
     data: { youtube },
   } = useIntentContext();
+  const youtubeRef = React.createRef<YouTube>();
+  const [
+    youtubeVideoId,
+    setYoutubeId,
+  ] = useState("");
+  const [
+    videoStart,
+    setVideoStart,
+  ] = useState(0);
+  useEffect(() => {
+    if (open) {
+      const firstVideo =
+        youtube.videos[0];
+      if (!firstVideo)
+        throw new Error(
+          "No Videos passed to component!",
+        );
+
+      setYoutubeId(
+        firstVideo.videoId as string,
+      );
+      setVideoStart(
+        firstVideo.begin as number,
+      );
+      if (
+        firstVideo.end &&
+        firstVideo.begin
+      )
+        YoutubeTimerService.get().start(
+          firstVideo.end -
+            firstVideo.begin,
+          () => {
+            youtubeRef.current
+              ?.getInternalPlayer()
+              .pauseVideo();
+          },
+        );
+    }
+  }, [open]);
+
   return (
     <Dialog open={open} fullScreen>
       <AppBar
@@ -99,10 +115,7 @@ const YoutubeFullScreenDialog: React.FC<Props> = ({
           ref={youtubeRef}
           videoId={
             //TODO: Implement mechanism to loop through them and go to next automatic etc
-            youtube?.videos?.length > 0
-              ? (youtube?.videos[0]
-                  .videoId as string)
-              : undefined
+            youtubeVideoId
           }
           opts={{
             playerVars: {
@@ -112,12 +125,6 @@ const YoutubeFullScreenDialog: React.FC<Props> = ({
                   ?.length > 0
                   ? youtube?.videos[0]
                       .begin
-                  : undefined,
-              end:
-                youtube?.videos
-                  ?.length > 0
-                  ? youtube?.videos[0]
-                      .end
                   : undefined,
             },
           }}

@@ -6,7 +6,16 @@ import timezone from "dayjs/plugin/timezone";
 dayjs.extend(utc);
 dayjs.extend(timezone);
 
+/**
+ * Service that generates SEO Tags etc.
+ * @author Jannik Will
+ * @version 0.3
+ */
 class MetaService {
+  /**
+   * Generator for main tags which are same on all Pages.
+   * @param webApp Is App an PWA?
+   */
   public static generateGeneralTags(
     webApp?: boolean,
   ) {

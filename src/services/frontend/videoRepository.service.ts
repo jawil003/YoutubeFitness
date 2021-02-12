@@ -36,7 +36,7 @@ export default class VideoRepository {
     youtubeVideoId: string,
   ) {
     return await db.videos
-      .where("youtubeVideoId")
+      .where("videoId")
       .equals(youtubeVideoId)
       .first();
   }
