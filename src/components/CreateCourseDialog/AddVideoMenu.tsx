@@ -37,6 +37,7 @@ import Video from "src/entities/video.entity";
 import CourseRepository from "src/services/frontend/courseRepository.service";
 import useFabContext from "src/hooks/useFabContext";
 import { Query } from "src/config/reactQuery.enum";
+import logger from "../../config/logger";
 
 const TimelineInputStyle = css`
   & {
@@ -78,10 +79,10 @@ const AddVideoMenu: React.FC = () => {
     data: video,
     isFetched,
   } = useQuery<{
-    title?: string;
-    id?: string;
-    thumbnailUrl?: string;
-    url?: string;
+    title: string;
+    youtubeVideoId: string;
+    thumbnailUrl: string;
+    url: string;
     duration: number;
   }>(
     ["video", videoUrl],
@@ -92,6 +93,10 @@ const AddVideoMenu: React.FC = () => {
     },
     {
       placeholderData: {
+        title: "",
+        youtubeVideoId: "123456",
+        thumbnailUrl: "",
+        url: "",
         duration: 100,
       },
       enabled:
@@ -435,10 +440,14 @@ const AddVideoMenu: React.FC = () => {
                     ...prev.videos,
                     {
                       ...video,
+                      length:
+                        video?.duration,
                       videoId: YoutubeService.getIdFromUrl(
                         video?.url as string,
                       ),
-                    } as Video,
+                      begin: beginSecond,
+                      end: endSecond,
+                    },
                   ],
                 }));
                 resetLocalState();
@@ -469,29 +478,71 @@ const AddVideoMenu: React.FC = () => {
             const courseEntity = new Course(
               course.title,
             );
-            const videoIds: Video[] = [];
-
+            logger.debug(
+              `Create new Course '${course.title}'`,
+            );
+            const videoIds: typeof videos = [];
+            logger.debug(
+              `Start saving added Videos ...`,
+            );
             for (const video of videos) {
+              const {
+                begin,
+                end,
+                title,
+                length,
+                videoId,
+                thumbnailUrl,
+              } = video;
               videoIds.push({
-                id: (
-                  await VideoRepository.save(
-                    {
-                      ...video,
-                      id: undefined,
-                    },
-                  )
-                ).id,
+                ...(await VideoRepository.save(
+                  {
+                    title,
+                    length,
+                    videoId,
+                    thumbnailUrl,
+                  },
+                )),
+                begin,
+                end,
               });
+              logger.debug(
+                `Video ${JSON.stringify(
+                  video,
+                )} successful saved`,
+              );
             }
+            logger.debug(
+              `All videos saved`,
+            );
             courseEntity.videos = videoIds;
+            logger.debug(
+              `Videos ${JSON.stringify(
+                videoIds,
+              )} are added to Course`,
+            );
             await CourseRepository.save(
               courseEntity,
             );
+            logger.debug(
+              `Saved new Course ${JSON.stringify(
+                course.title,
+              )}`,
+            );
             resetGlobalState();
+            logger.debug(
+              `Reset global State`,
+            );
             await queryClient.invalidateQueries(
               Query.courses,
             );
+            logger.debug(
+              `Invalidate react-query ${Query.courses}`,
+            );
             toggle();
+            logger.debug(
+              `Close Window`,
+            );
           }}
         >
           Finish

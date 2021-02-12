@@ -10,13 +10,19 @@ const DialogStepperContext = React.createContext<{
       titleError: string;
     }>
   >;
-  videos: Video[];
+  videos: (Video & {
+    begin: number;
+    end: number;
+  })[];
   setValues: React.Dispatch<
     React.SetStateAction<{
       course: {
         title: string;
       };
-      videos: Video[];
+      videos: (Video & {
+        begin: number;
+        end: number;
+      })[];
     }>
   >;
   setActiveStep: React.Dispatch<

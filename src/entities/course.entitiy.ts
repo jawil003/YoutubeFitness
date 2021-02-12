@@ -13,7 +13,10 @@ export default class Course {
   constructor(
     title: string,
     id?: number,
-    videos?: Video[],
+    videos?: (Video & {
+      begin?: number;
+      end?: number;
+    })[],
   ) {
     if (id) this.id = id;
     this.title = title;

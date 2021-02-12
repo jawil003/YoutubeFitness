@@ -21,6 +21,7 @@ import BottomAndHeaderContext from "src/contexts/BottomAndHeaderContext";
 import IntentContext from "src/contexts/IntentContext";
 import YoutubeFullScreenDialog from "src/components/YoutubeVideoFullscreenDialog";
 import { ReactQueryDevtools } from "react-query/devtools";
+import Video from "src/entities/video.entity";
 
 const queryClient = new QueryClient();
 
@@ -51,7 +52,15 @@ const MyApp: React.FC<AppProps> = ({
     setIntentState,
   ] = useState({
     youtubeOpen: false,
-    data: { youtube: {} },
+    data: {
+      youtube: {
+        title: "",
+        videos: [] as (Video & {
+          begin?: number;
+          end?: number;
+        })[],
+      },
+    },
   });
   const validateEnvironment = useValidateEnvironment();
 
@@ -75,9 +84,7 @@ const MyApp: React.FC<AppProps> = ({
           <IntentContext.Provider
             value={{
               ...intentState,
-              toggleYoutube: (
-                data: {} | undefined,
-              ) =>
+              toggleYoutube: (data) =>
                 data
                   ? setIntentState(
                       (prev) => ({

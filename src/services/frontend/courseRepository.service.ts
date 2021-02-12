@@ -35,16 +35,22 @@ export default class CourseRepository {
   ) {
     const videoIds = c.videos as {
       id: number;
+      begin: number;
+      end: number;
     }[];
     const videos = [];
     for (const {
       id: videoId,
+      begin,
+      end,
     } of videoIds) {
-      videos.push(
-        await VideoRepository.findById(
+      videos.push({
+        ...(await VideoRepository.findById(
           videoId,
-        ),
-      );
+        )),
+        begin,
+        end,
+      });
     }
     c.videos = videos as Video[];
     return c;

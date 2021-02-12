@@ -29,8 +29,27 @@ const YoutubeFullScreenDialog: React.FC<Props> = ({
   useEffect(() => {
     const youtubeElement =
       youtubeRef?.current;
-    if (youtubeElement)
+    if (
+      youtubeElement &&
+      youtube.videos.length > 1
+    ) {
       const youtubePlayer = youtubeElement.getInternalPlayer();
+      const videos = youtube.videos.splice(
+        0,
+        1,
+      );
+      for (const {
+        begin,
+        end,
+        videoId,
+      } of videos) {
+        youtubePlayer.cueVideoByUrl({
+          mediaContentUrl: `http://www.youtube.com/v/${videoId}?version=3`,
+          startSeconds: begin,
+          endSeconds: end,
+        });
+      }
+    }
   }, []);
   const {
     toggleYoutube,
@@ -93,6 +112,12 @@ const YoutubeFullScreenDialog: React.FC<Props> = ({
                   ?.length > 0
                   ? youtube?.videos[0]
                       .begin
+                  : undefined,
+              end:
+                youtube?.videos
+                  ?.length > 0
+                  ? youtube?.videos[0]
+                      .end
                   : undefined,
             },
           }}

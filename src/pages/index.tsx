@@ -10,7 +10,7 @@ import Course from "src/components/Course";
 import { useQuery } from "react-query";
 import { CircularProgress } from "@material-ui/core";
 import { Query } from "../config/reactQuery.enum";
-import Video from "src/entities/video.entity";
+
 /**
  * An MyCoursePage React Component.
  * @author

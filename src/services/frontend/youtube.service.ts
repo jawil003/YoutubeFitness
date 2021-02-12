@@ -53,7 +53,7 @@ export default class YoutubeService {
 
     return {
       title,
-      id: youtubeVideoId,
+      youtubeVideoId,
       thumbnailUrl,
       url: youtubeVideoUrl,
       duration: TimeConverterService.getSecondsFromISO8601(
@@ -69,7 +69,7 @@ export default class YoutubeService {
 }
 
 interface YoutubeMetaData {
-  id: string;
+  id: number;
   title: string;
   thumbnails: {
     default: {

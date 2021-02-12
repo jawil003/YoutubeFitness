@@ -19,7 +19,17 @@ const IntentContext = React.createContext<{
     >;
   };
   toggleYoutube: (
-    _data?: {} | undefined,
+    _data?:
+      | {
+          title: string;
+          videos: Array<
+            Video & {
+              begin?: number;
+              end?: number;
+            }
+          >;
+        }
+      | undefined,
   ) => void;
 }>({
   youtubeOpen: false,
