@@ -7,12 +7,14 @@ import {
 } from "@material-ui/core";
 import React, {
   useEffect,
+  useMemo,
   useState,
 } from "react";
 import CloseIcon from "@material-ui/icons/Close";
 import useIntentContext from "src/hooks/useIntent.hook";
 import YouTube from "react-youtube";
 import { css } from "@emotion/react";
+import designSystem from "src/styles/designSystem";
 
 interface Props {
   open: boolean;
@@ -64,6 +66,19 @@ const YoutubeFullScreenDialog: React.FC<Props> = ({
       setVideoEnd(
         firstVideo.end as number,
       );
+      setTimeout(() => {
+        const nextVideo =
+          youtube.videos[1];
+        setYoutubeId(
+          nextVideo.videoId as string,
+        );
+        setVideoStart(
+          nextVideo.begin as number,
+        );
+        setVideoEnd(
+          nextVideo.end as number,
+        );
+      }, ((firstVideo.end as number) - (firstVideo.begin as number)) * 1000);
     }
   }, [open]);
 
@@ -107,41 +122,47 @@ const YoutubeFullScreenDialog: React.FC<Props> = ({
           }
         `}
       >
-        <YouTube
-          onEnd={() => {
-            if (
-              currentVideo ===
-              youtube.videos.length - 1
-            ) {
-              toggleYoutube();
-              return;
-            }
-            const nextVideo =
-              youtube.videos[
-                currentVideo + 1
-              ];
-            setYoutubeId(
-              nextVideo.videoId as string,
-            );
-            setVideoStart(
-              nextVideo.begin as number,
-            );
-            setVideoEnd(
-              nextVideo.end as number,
-            );
-            setCurrentVideo(
-              (prev) => prev + 1,
-            );
-          }}
-          videoId={youtubeVideoId}
-          opts={{
-            playerVars: {
-              autoplay: 1,
-              start: videoStart,
-              end: videoEnd,
-            },
-          }}
-        />
+        {useMemo(
+          () => (
+            <iframe
+              css={css`
+                @media (min-width: ${designSystem
+                    .breakpoints
+                    .phoneOnly}) {
+                  & {
+                    border-radius: 8px;
+                    width: 50vw;
+                    height: calc(
+                      calc(50vw / 16) *
+                        9
+                    );
+                  }
+                }
+                @media (max-width: ${designSystem
+                    .breakpoints
+                    .phoneOnly}) {
+                  & {
+                    width: calc(
+                      100vw - 40px
+                    );
+                    height: calc(
+                      calc(
+                          calc(
+                              100vw / 16
+                            ) * 9
+                        ) - 40px
+                    );
+                  }
+                }
+              `}
+              src={`https://www.youtube.com/embed/${youtubeVideoId}?autoplay=1&start=${videoStart}&end=${videoEnd}`}
+              allowFullScreen
+              allow="autoplay"
+              frameBorder={0}
+            />
+          ),
+          [youtubeVideoId],
+        )}
       </DialogContent>
     </Dialog>
   );
