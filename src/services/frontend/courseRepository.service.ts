@@ -2,7 +2,11 @@ import Video from "src/entities/video.entity";
 import Course from "../../entities/course.entitiy";
 import { db } from "../../store/LocalAppStorage";
 import VideoRepository from "./videoRepository.service";
-
+/**
+ * Repository for getting Data from IndexDB Table courses.
+ * @author Jannik Will
+ * @version 0.2
+ */
 export default class CourseRepository {
   public static transaction =
     db.transaction;

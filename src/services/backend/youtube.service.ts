@@ -1,6 +1,17 @@
 import axios from "axios";
 
+/**
+ *  Backend Service to connect to YouTube Data API v3.
+ * @author Jannik Will
+ * @version 0.1
+ */
 export default class YoutubeService {
+  /**
+   * Fetch Data from Youtube Data API v3 to get meta for url
+   * @param youtubeVideoId
+   * @param parts
+   * @returns {YoutubeSnippetResponse} videoMetaData
+   */
   public async getMetadataForVideo(
     youtubeVideoId: string,
     parts: (
