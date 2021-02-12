@@ -10,6 +10,11 @@ import VideoRepository from "./videoRepository.service";
 export default class CourseRepository {
   public static transaction =
     db.transaction;
+
+  /**
+   *  Save a Course Instance in the Database.
+   * @param c
+   */
   public static async save(
     c: Course,
   ): Promise<Course> {
@@ -21,6 +26,11 @@ export default class CourseRepository {
   > {
     return await db.courses.toArray();
   }
+
+  /**
+   * Find an Course in the Database by its Id.
+   * @param id
+   */
   public static async findById(
     id: number,
   ) {
@@ -29,6 +39,11 @@ export default class CourseRepository {
       .equals(id)
       .first();
   }
+
+  /**
+   * Delete an Course in the Database by its Id.
+   * @param id
+   */
   public static async deleteById(
     id: number,
   ) {
