@@ -66,6 +66,7 @@ const YoutubeFullScreenDialog: React.FC<Props> = ({
       setVideoEnd(
         firstVideo.end as number,
       );
+      //TODO: Make this work for x Videos as well
       setTimeout(() => {
         const nextVideo =
           youtube.videos[1];
