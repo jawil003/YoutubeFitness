@@ -13,7 +13,6 @@ import CloseIcon from "@material-ui/icons/Close";
 import useIntentContext from "src/hooks/useIntent.hook";
 import YouTube from "react-youtube";
 import { css } from "@emotion/react";
-import YoutubeTimerService from "src/services/frontend/youtubeTimer.service";
 
 interface Props {
   open: boolean;
@@ -27,11 +26,14 @@ interface Props {
 const YoutubeFullScreenDialog: React.FC<Props> = ({
   open,
 }) => {
+  var [
+    currentVideo,
+    setCurrentVideo,
+  ] = useState(0);
   const {
     toggleYoutube,
     data: { youtube },
   } = useIntentContext();
-  const youtubeRef = React.createRef<YouTube>();
   const [
     youtubeVideoId,
     setYoutubeId,
@@ -39,6 +41,10 @@ const YoutubeFullScreenDialog: React.FC<Props> = ({
   const [
     videoStart,
     setVideoStart,
+  ] = useState(0);
+  const [
+    videoEnd,
+    setVideoEnd,
   ] = useState(0);
   useEffect(() => {
     if (open) {
@@ -55,19 +61,9 @@ const YoutubeFullScreenDialog: React.FC<Props> = ({
       setVideoStart(
         firstVideo.begin as number,
       );
-      if (
-        firstVideo.end &&
-        firstVideo.begin
-      )
-        YoutubeTimerService.get().start(
-          firstVideo.end -
-            firstVideo.begin,
-          () => {
-            youtubeRef.current
-              ?.getInternalPlayer()
-              .pauseVideo();
-          },
-        );
+      setVideoEnd(
+        firstVideo.end as number,
+      );
     }
   }, [open]);
 
@@ -112,20 +108,37 @@ const YoutubeFullScreenDialog: React.FC<Props> = ({
         `}
       >
         <YouTube
-          ref={youtubeRef}
-          videoId={
-            //TODO: Implement mechanism to loop through them and go to next automatic etc
-            youtubeVideoId
-          }
+          onEnd={() => {
+            if (
+              currentVideo ===
+              youtube.videos.length - 1
+            ) {
+              toggleYoutube();
+              return;
+            }
+            const nextVideo =
+              youtube.videos[
+                currentVideo + 1
+              ];
+            setYoutubeId(
+              nextVideo.videoId as string,
+            );
+            setVideoStart(
+              nextVideo.begin as number,
+            );
+            setVideoEnd(
+              nextVideo.end as number,
+            );
+            setCurrentVideo(
+              (prev) => prev + 1,
+            );
+          }}
+          videoId={youtubeVideoId}
           opts={{
             playerVars: {
               autoplay: 1,
-              start:
-                youtube?.videos
-                  ?.length > 0
-                  ? youtube?.videos[0]
-                      .begin
-                  : undefined,
+              start: videoStart,
+              end: videoEnd,
             },
           }}
         />
