@@ -32,6 +32,14 @@ export default class VideoRepository {
       .equals(id)
       .first();
   }
+  public static async findByYoutubeVideoId(
+    youtubeVideoId: string,
+  ) {
+    return await db.videos
+      .where("youtubeVideoId")
+      .equals(youtubeVideoId)
+      .first();
+  }
   public static async deleteById(
     id: number,
   ) {
