@@ -6,6 +6,7 @@ import {
   DialogContent,
 } from "@material-ui/core";
 import React, {
+  useCallback,
   useEffect,
   useMemo,
   useState,
@@ -29,10 +30,16 @@ interface Props {
 const YoutubeFullScreenDialog: React.FC<Props> = ({
   open,
 }) => {
+  let timerId: number;
+  const ref = React.createRef<YouTube>();
   const {
     toggleYoutube,
     data: { youtube },
   } = useIntentContext();
+  const [
+    autoplay,
+    setAutoplay,
+  ] = useState<0 | 1>(0);
   const [
     { videoId, begin, end, index },
     setYoutubeData,
@@ -67,6 +74,10 @@ const YoutubeFullScreenDialog: React.FC<Props> = ({
       begin: nextVideo.begin as number,
       end: nextVideo.end as number,
     });
+    setCurrentTime(
+      (nextVideo.end as number) -
+        (nextVideo.begin as number),
+    );
   };
   const resetVideoState = () => {
     setYoutubeData({
@@ -76,10 +87,49 @@ const YoutubeFullScreenDialog: React.FC<Props> = ({
       end: 0,
     });
   };
+  const [
+    currentTime,
+    setCurrentTime,
+  ] = useState(-1);
   useEffect(() => {
-    if (open) setNextVideo();
-    setVideoQueue(youtube.videos);
+    if (open) {
+      setNextVideo();
+
+      setVideoQueue(youtube.videos);
+      if (youtube.videos.length > 0)
+        setCurrentTime(
+          (youtube.videos[0]
+            .end as number) -
+            (youtube.videos[0]
+              .begin as number),
+        );
+      setAutoplay(1);
+      setupTimestampListener();
+    } else {
+      teardownTimestampListener();
+    }
   }, [open]);
+
+  const setupTimestampListener = () => {
+    timerId = window.setInterval(() => {
+      const beginStamp = ref.current
+        ?.getInternalPlayer()
+        .getCurrentTime();
+
+      if (
+        isNaN(beginStamp) ||
+        isNaN(end) ||
+        currentTime < 1
+      )
+        return;
+
+      setCurrentTime(end - beginStamp);
+    }, 1000);
+  };
+
+  const teardownTimestampListener = () => {
+    window.clearInterval(timerId);
+  };
 
   return (
     <Dialog open={open} fullScreen>
@@ -155,6 +205,7 @@ const YoutubeFullScreenDialog: React.FC<Props> = ({
           `}
         >
           <YouTube
+            ref={ref}
             containerClassName="youtube-container"
             css={css`
               & {
@@ -166,6 +217,25 @@ const YoutubeFullScreenDialog: React.FC<Props> = ({
                 border-radius: 8px;
               }
             `}
+            onReady={({ target }) => {
+              timerId = window.setInterval(
+                () => {
+                  const beginStamp = target.getCurrentTime();
+
+                  if (
+                    isNaN(beginStamp) ||
+                    isNaN(end) ||
+                    currentTime < 1
+                  )
+                    return;
+
+                  setCurrentTime(
+                    end - beginStamp,
+                  );
+                },
+                1000,
+              );
+            }}
             onError={() => {}}
             onEnd={() => {
               setNextVideo();
@@ -179,7 +249,7 @@ const YoutubeFullScreenDialog: React.FC<Props> = ({
             videoId={videoId}
             opts={{
               playerVars: {
-                autoplay: 1,
+                autoplay,
                 start: begin,
                 end: end,
                 enablejsapi: 1,
@@ -214,15 +284,17 @@ const YoutubeFullScreenDialog: React.FC<Props> = ({
                       index === 0
                     }
                     timestamp={
-                      (end as number) -
-                      (begin as number)
+                      index === 0
+                        ? currentTime
+                        : (end as number) -
+                          (begin as number)
                     }
                   />
                 ),
               )}
             </FlexContainer>
           ),
-          [videoQueue],
+          [videoQueue, currentTime],
         )}
       </DialogContent>
     </Dialog>

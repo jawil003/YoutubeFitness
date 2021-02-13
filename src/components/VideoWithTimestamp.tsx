@@ -1,8 +1,6 @@
 import { css } from "@emotion/react";
-import React, {
-  useEffect,
-} from "react";
-import useTimestampReducer from "src/reducer/timeStamp.reducer";
+import React from "react";
+import TimeConverterService from "src/services/frontend/timeConverter.service";
 import designSystem from "src/styles/designSystem";
 
 interface Props {
@@ -21,40 +19,6 @@ const VideoWithTimestamp: React.FC<Props> = ({
   timestamp,
   current,
 }) => {
-  const [
-    {
-      seconds: { begin: beginSeconds },
-      timestamp: {
-        begin: beginTimestamp,
-      },
-    },
-    dispatch,
-  ] = useTimestampReducer();
-  useEffect(() => {
-    let timerId: number;
-    if (current)
-      timerId = window.setInterval(
-        () => {
-          if (beginSeconds > 0)
-            dispatch({
-              type: "ADD_SECONDS_BEGIN",
-              value: beginSeconds - 1,
-            });
-          else {
-            window.clearInterval(
-              timerId,
-            );
-          }
-        },
-        1000,
-      );
-  }, [current, timestamp]);
-  useEffect(() => {
-    dispatch({
-      type: "ADD_SECONDS_BEGIN",
-      value: timestamp,
-    });
-  }, [timestamp]);
   return (
     <div
       css={css`
@@ -103,7 +67,9 @@ const VideoWithTimestamp: React.FC<Props> = ({
         `}
       />
       <span className="timestamp">
-        {beginTimestamp}
+        {TimeConverterService.secondsToHHMMSS(
+          timestamp,
+        )}
       </span>
     </div>
   );
