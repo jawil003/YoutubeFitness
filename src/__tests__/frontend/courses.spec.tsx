@@ -23,7 +23,7 @@ describe("src/components/course.tsx", () => {
     render(
       <CourseComponent
         title={title}
-        thumbnailUrl={mockUrl}
+        videos={[]}
       />,
     );
     const titleSpan = screen.getByText(
