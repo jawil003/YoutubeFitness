@@ -7,13 +7,16 @@ import {
 } from "@material-ui/core";
 import React, {
   useEffect,
+  useMemo,
   useState,
 } from "react";
 import CloseIcon from "@material-ui/icons/Close";
 import useIntentContext from "src/hooks/useIntent.hook";
 import YouTube from "react-youtube";
 import { css } from "@emotion/react";
-import designSystem from "src/styles/designSystem";
+import VideoWithTimestamp from "../components/VideoWithTimestamp";
+import FlexContainer from "../components/FlexContainer";
+import TimeConverterService from "../services/frontend/timeConverter.service";
 
 interface Props {
   open: boolean;
@@ -40,6 +43,12 @@ const YoutubeFullScreenDialog: React.FC<Props> = ({
     begin: 0,
     end: 0,
   });
+  const [
+    videoQueue,
+    setVideoQueue,
+  ] = useState<typeof youtube.videos>(
+    [],
+  );
   const setNextVideo = () => {
     const nextIndex = index + 1;
     if (
@@ -70,6 +79,11 @@ const YoutubeFullScreenDialog: React.FC<Props> = ({
   };
   useEffect(() => {
     if (open) setNextVideo();
+    setVideoQueue(
+      youtube.videos.filter(
+        (_, index) => index !== 0,
+      ),
+    );
   }, [open]);
 
   return (
@@ -106,56 +120,113 @@ const YoutubeFullScreenDialog: React.FC<Props> = ({
       <DialogContent
         css={css`
           & {
+            display: inline-flex;
+            flex-direction: row;
             width: 100%;
-            display: flex;
-            flex-direction: column;
+            margin-top: 64px;
             justify-content: center;
+          }
+          & > .youtube-container {
+            display: flex;
+            align-items: flex-start;
+            flex: 1;
+            width: 100%;
+            padding-top: calc(
+              calc(100% / 16) * 9
+            );
+            position: relative;
           }
         `}
       >
-        <YouTube
+        <div
           css={css`
-            @media (min-width: ${designSystem
-                .breakpoints
-                .phoneOnly}) {
-              & {
-                border-radius: 8px;
-                width: 50vw;
-                height: calc(
-                  calc(50vw / 16) * 9
-                );
-              }
+            & {
+              flex: 1;
+              width: 100%;
+              height: 100%;
+              display: flex;
+              flex-direction: column;
+              align-items: flex-start;
+
+              overflow-x: hidden;
             }
-            @media (max-width: ${designSystem
-                .breakpoints
-                .phoneOnly}) {
-              & {
-                width: calc(
-                  100vw - 40px
-                );
-                height: calc(
-                  calc(
-                      calc(100vw / 16) *
-                        9
-                    ) - 40px
-                );
-              }
+            & > .youtube-container {
+              width: 100%;
+              padding-top: calc(
+                calc(100% / 16) * 9
+              );
+              position: relative;
             }
           `}
-          onError={() => {}}
-          onEnd={() => {
-            setNextVideo();
-          }}
-          videoId={videoId}
-          opts={{
-            playerVars: {
-              autoplay: 1,
-              start: begin,
-              end: end,
-              enablejsapi: 1,
-            },
-          }}
-        />
+        >
+          <YouTube
+            containerClassName="youtube-container"
+            css={css`
+              & {
+                position: absolute;
+                top: 0;
+                left: 0;
+                width: 100%;
+                height: 100%;
+                border-radius: 8px;
+              }
+            `}
+            onError={() => {}}
+            onEnd={() => {
+              setNextVideo();
+              setVideoQueue((prev) => [
+                ...prev.filter(
+                  (_, index) =>
+                    index !== 0,
+                ),
+              ]);
+            }}
+            videoId={videoId}
+            opts={{
+              playerVars: {
+                autoplay: 1,
+                start: begin,
+                end: end,
+                enablejsapi: 1,
+                controls: 0,
+              },
+            }}
+          />
+        </div>
+        {useMemo(
+          () => (
+            <FlexContainer
+              rowGap="20px"
+              alignItems="center"
+              css={css`
+                & {
+                  min-width: 340px;
+                  padding: 0px 20px;
+                }
+              `}
+              direction="column"
+            >
+              {videoQueue.map(
+                ({
+                  begin,
+                  end,
+                  title,
+                }) => (
+                  <VideoWithTimestamp
+                    title={
+                      title as string
+                    }
+                    timestamp={TimeConverterService.secondsToHHMMSS(
+                      (end as number) -
+                        (begin as number),
+                    )}
+                  />
+                ),
+              )}
+            </FlexContainer>
+          ),
+          [videoQueue],
+        )}
       </DialogContent>
     </Dialog>
   );
