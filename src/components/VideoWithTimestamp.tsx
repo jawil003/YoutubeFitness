@@ -23,10 +23,32 @@ const VideoWithTimestamp: React.FC<Props> = ({
 }) => {
   const [
     {
-      timestamp: { begin },
+      seconds: { begin: beginSeconds },
+      timestamp: {
+        begin: beginTimestamp,
+      },
     },
     dispatch,
   ] = useTimestampReducer();
+  useEffect(() => {
+    let timerId: number;
+    if (current)
+      timerId = window.setInterval(
+        () => {
+          if (beginSeconds > 0)
+            dispatch({
+              type: "ADD_SECONDS_BEGIN",
+              value: beginSeconds - 1,
+            });
+          else {
+            window.clearInterval(
+              timerId,
+            );
+          }
+        },
+        1000,
+      );
+  }, [current, timestamp]);
   useEffect(() => {
     dispatch({
       type: "ADD_SECONDS_BEGIN",
@@ -81,7 +103,7 @@ const VideoWithTimestamp: React.FC<Props> = ({
         `}
       />
       <span className="timestamp">
-        {begin}
+        {beginTimestamp}
       </span>
     </div>
   );

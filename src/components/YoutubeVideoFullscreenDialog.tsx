@@ -16,7 +16,6 @@ import YouTube from "react-youtube";
 import { css } from "@emotion/react";
 import VideoWithTimestamp from "../components/VideoWithTimestamp";
 import FlexContainer from "../components/FlexContainer";
-import TimeConverterService from "../services/frontend/timeConverter.service";
 
 interface Props {
   open: boolean;
