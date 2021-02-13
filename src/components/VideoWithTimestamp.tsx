@@ -1,10 +1,14 @@
 import { css } from "@emotion/react";
-import React from "react";
+import React, {
+  useEffect,
+} from "react";
+import useTimestampReducer from "src/reducer/timeStamp.reducer";
 import designSystem from "src/styles/designSystem";
 
 interface Props {
   title: string;
-  timestamp: string;
+  timestamp: number;
+  current?: boolean;
 }
 
 /**
@@ -15,7 +19,20 @@ interface Props {
 const VideoWithTimestamp: React.FC<Props> = ({
   title,
   timestamp,
+  current,
 }) => {
+  const [
+    {
+      timestamp: { begin },
+    },
+    dispatch,
+  ] = useTimestampReducer();
+  useEffect(() => {
+    dispatch({
+      type: "ADD_SECONDS_BEGIN",
+      value: timestamp,
+    });
+  }, [timestamp]);
   return (
     <div
       css={css`
@@ -26,18 +43,21 @@ const VideoWithTimestamp: React.FC<Props> = ({
           justify-content: center;
           align-items: center;
           min-height: 40px;
-          filter: drop-shadow(
-            2px 4px 16px
-              rgba(0, 0, 0, 0.25)
-          );
+          filter: ${current
+            ? undefined
+            : "drop-shadow(2px 4px 16px rgba(0, 0, 0, 0.25))"};
           padding: 10px 20px;
           border-radius: 18px;
-          filter: drop-shadow(
-            2px 4px 16px
-              rgba(0, 0, 0, 0.25)
-          );
-          background-color: ${designSystem
-            .colors.brand.primary};
+          background-color: ${current
+            ? designSystem.colors.brand
+                .secondary
+            : designSystem.colors.brand
+                .primary};
+          color: ${current
+            ? designSystem.colors.brand
+                .primary
+            : designSystem.colors.brand
+                .secondaryText};
         }
       `}
     >
@@ -61,10 +81,14 @@ const VideoWithTimestamp: React.FC<Props> = ({
         `}
       />
       <span className="timestamp">
-        {timestamp}
+        {begin}
       </span>
     </div>
   );
+};
+
+VideoWithTimestamp.defaultProps = {
+  current: false,
 };
 
 export default VideoWithTimestamp;

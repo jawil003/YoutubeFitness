@@ -79,11 +79,7 @@ const YoutubeFullScreenDialog: React.FC<Props> = ({
   };
   useEffect(() => {
     if (open) setNextVideo();
-    setVideoQueue(
-      youtube.videos.filter(
-        (_, index) => index !== 0,
-      ),
-    );
+    setVideoQueue(youtube.videos);
   }, [open]);
 
   return (
@@ -207,19 +203,21 @@ const YoutubeFullScreenDialog: React.FC<Props> = ({
               direction="column"
             >
               {videoQueue.map(
-                ({
-                  begin,
-                  end,
-                  title,
-                }) => (
+                (
+                  { begin, end, title },
+                  index,
+                ) => (
                   <VideoWithTimestamp
                     title={
                       title as string
                     }
-                    timestamp={TimeConverterService.secondsToHHMMSS(
+                    current={
+                      index === 0
+                    }
+                    timestamp={
                       (end as number) -
-                        (begin as number),
-                    )}
+                      (begin as number)
+                    }
                   />
                 ),
               )}
