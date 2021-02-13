@@ -4,6 +4,7 @@ import {
   Toolbar,
   IconButton,
   DialogContent,
+  Typography,
 } from "@material-ui/core";
 import React, {
   useEffect,
@@ -16,6 +17,9 @@ import YouTube from "react-youtube";
 import { css } from "@emotion/react";
 import VideoWithTimestamp from "../components/VideoWithTimestamp";
 import FlexContainer from "../components/FlexContainer";
+import PlayArrowIcon from "@material-ui/icons/PlayArrow";
+import SkipNextIcon from "@material-ui/icons/SkipNext";
+import PauseIcon from "@material-ui/icons/Pause";
 
 interface Props {
   open: boolean;
@@ -256,12 +260,54 @@ const YoutubeFullScreenDialog: React.FC<Props> = ({
               },
             }}
           />
+          <FlexContainer
+            justifyContent="center"
+            css={css`
+              & {
+                width: 100%;
+                min-height: 40px;
+              }
+            `}
+          >
+            <IconButton
+              onClick={() => {
+                ref.current
+                  ?.getInternalPlayer()
+                  .playVideo();
+              }}
+            >
+              <PlayArrowIcon fontSize="large" />
+            </IconButton>
+            <IconButton
+              onClick={() => {
+                ref.current
+                  ?.getInternalPlayer()
+                  .pauseVideo();
+              }}
+            >
+              <PauseIcon fontSize="large" />
+            </IconButton>
+            <IconButton
+              onClick={() => {
+                setNextVideo();
+                setVideoQueue(
+                  (prev) => [
+                    ...prev.filter(
+                      (_, index) =>
+                        index !== 0,
+                    ),
+                  ],
+                );
+              }}
+            >
+              <SkipNextIcon fontSize="large" />
+            </IconButton>
+          </FlexContainer>
         </div>
         {useMemo(
           () => (
             <FlexContainer
               rowGap="20px"
-              alignItems="center"
               css={css`
                 & {
                   min-width: 340px;
@@ -270,6 +316,14 @@ const YoutubeFullScreenDialog: React.FC<Props> = ({
               `}
               direction="column"
             >
+              <Typography
+                variant="h4"
+                variantMapping={{
+                  h4: "h2",
+                }}
+              >
+                Playlist
+              </Typography>
               {videoQueue.map(
                 (
                   { begin, end, title },
