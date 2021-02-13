@@ -7,7 +7,6 @@ import {
 } from "@material-ui/core";
 import React, {
   useEffect,
-  useMemo,
   useState,
 } from "react";
 import CloseIcon from "@material-ui/icons/Close";
@@ -28,59 +27,49 @@ interface Props {
 const YoutubeFullScreenDialog: React.FC<Props> = ({
   open,
 }) => {
-  var [
-    currentVideo,
-    setCurrentVideo,
-  ] = useState(0);
   const {
     toggleYoutube,
     data: { youtube },
   } = useIntentContext();
   const [
-    youtubeVideoId,
-    setYoutubeId,
-  ] = useState("");
-  const [
-    videoStart,
-    setVideoStart,
-  ] = useState(0);
-  const [
-    videoEnd,
-    setVideoEnd,
-  ] = useState(0);
-  useEffect(() => {
-    if (open) {
-      const firstVideo =
-        youtube.videos[0];
-      if (!firstVideo)
-        throw new Error(
-          "No Videos passed to component!",
-        );
-
-      setYoutubeId(
-        firstVideo.videoId as string,
-      );
-      setVideoStart(
-        firstVideo.begin as number,
-      );
-      setVideoEnd(
-        firstVideo.end as number,
-      );
-      //TODO: Make this work for x Videos as well
-      setTimeout(() => {
-        const nextVideo =
-          youtube.videos[1];
-        setYoutubeId(
-          nextVideo.videoId as string,
-        );
-        setVideoStart(
-          nextVideo.begin as number,
-        );
-        setVideoEnd(
-          nextVideo.end as number,
-        );
-      }, ((firstVideo.end as number) - (firstVideo.begin as number)) * 1000);
+    { videoId, begin, end, index },
+    setYoutubeData,
+  ] = useState({
+    index: -1,
+    videoId: "",
+    begin: 0,
+    end: 0,
+  });
+  const setNextVideo = () => {
+    const nextIndex = index + 1;
+    if (
+      youtube.videos.length - 1 <
+      nextIndex
+    ) {
+      resetVideoState();
+      toggleYoutube();
+      return;
     }
+    const nextVideo =
+      youtube.videos[nextIndex];
+
+    setYoutubeData({
+      index: nextIndex,
+      videoId: nextVideo.videoId as string,
+      begin: nextVideo.begin as number,
+      end: nextVideo.end as number,
+    });
+  };
+  const resetVideoState = () => {
+    setYoutubeData({
+      index: -1,
+      videoId: "",
+      begin: 0,
+      end: 0,
+    });
+  };
+  useEffect(() => {
+    if (open) setNextVideo();
   }, [open]);
 
   return (
@@ -96,9 +85,10 @@ const YoutubeFullScreenDialog: React.FC<Props> = ({
           <IconButton
             focusRipple={false}
             disableRipple
-            onClick={() =>
-              toggleYoutube()
-            }
+            onClick={() => {
+              resetVideoState();
+              toggleYoutube();
+            }}
             edge="start"
             color="inherit"
             aria-label="close"
@@ -123,47 +113,49 @@ const YoutubeFullScreenDialog: React.FC<Props> = ({
           }
         `}
       >
-        {useMemo(
-          () => (
-            <iframe
-              css={css`
-                @media (min-width: ${designSystem
-                    .breakpoints
-                    .phoneOnly}) {
-                  & {
-                    border-radius: 8px;
-                    width: 50vw;
-                    height: calc(
-                      calc(50vw / 16) *
+        <YouTube
+          css={css`
+            @media (min-width: ${designSystem
+                .breakpoints
+                .phoneOnly}) {
+              & {
+                border-radius: 8px;
+                width: 50vw;
+                height: calc(
+                  calc(50vw / 16) * 9
+                );
+              }
+            }
+            @media (max-width: ${designSystem
+                .breakpoints
+                .phoneOnly}) {
+              & {
+                width: calc(
+                  100vw - 40px
+                );
+                height: calc(
+                  calc(
+                      calc(100vw / 16) *
                         9
-                    );
-                  }
-                }
-                @media (max-width: ${designSystem
-                    .breakpoints
-                    .phoneOnly}) {
-                  & {
-                    width: calc(
-                      100vw - 40px
-                    );
-                    height: calc(
-                      calc(
-                          calc(
-                              100vw / 16
-                            ) * 9
-                        ) - 40px
-                    );
-                  }
-                }
-              `}
-              src={`https://www.youtube.com/embed/${youtubeVideoId}?autoplay=1&start=${videoStart}&end=${videoEnd}`}
-              allowFullScreen
-              allow="autoplay"
-              frameBorder={0}
-            />
-          ),
-          [youtubeVideoId],
-        )}
+                    ) - 40px
+                );
+              }
+            }
+          `}
+          onError={() => {}}
+          onEnd={() => {
+            setNextVideo();
+          }}
+          videoId={videoId}
+          opts={{
+            playerVars: {
+              autoplay: 1,
+              start: begin,
+              end: end,
+              enablejsapi: 1,
+            },
+          }}
+        />
       </DialogContent>
     </Dialog>
   );
