@@ -39,6 +39,14 @@ const MyApp: React.FC<AppProps> = ({
     setFloatingButtonContext,
   ] = useState({
     menuOpen: false,
+    data: {
+      title: "",
+      videos: [] as Video &
+        {
+          begin: number;
+          end: number;
+        }[],
+    },
   });
   const [
     buttonAndHeaderContext,
@@ -121,6 +129,13 @@ const MyApp: React.FC<AppProps> = ({
                       (prev) => ({
                         ...prev,
                         menuOpen: !prev.menuOpen,
+                      }),
+                    ),
+                  setData: (data) =>
+                    setFloatingButtonContext(
+                      (prev) => ({
+                        ...prev,
+                        data,
                       }),
                     ),
                 }}

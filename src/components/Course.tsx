@@ -7,13 +7,14 @@ import ThreeDotMenu from "./ThreeDotMenu";
 import { useQueryClient } from "react-query";
 import { Query } from "../config/reactQuery.enum";
 import Video from "src/entities/video.entity";
+import useFabContext from "src/hooks/useFabContext";
 
 interface Props {
   id?: number;
   title: string;
   videos: (Video & {
-    begin?: number;
-    end?: number;
+    begin: number;
+    end: number;
   })[];
 }
 
@@ -30,6 +31,10 @@ const Course: React.FC<Props> = ({
   const {
     toggleYoutube,
   } = useIntentContext();
+  const {
+    toggle,
+    setData,
+  } = useFabContext();
   const queryClient = useQueryClient();
   return (
     <div
@@ -125,6 +130,16 @@ const Course: React.FC<Props> = ({
       <div className="menuContainer">
         <ThreeDotMenu
           items={[
+            {
+              name: "Edit",
+              onClick: async () => {
+                setData({
+                  title,
+                  videos,
+                });
+                toggle();
+              },
+            },
             {
               name: "Delete",
               onClick: async () => {

@@ -1,4 +1,5 @@
 import React, {
+  useEffect,
   useMemo,
   useState,
 } from "react";
@@ -32,7 +33,21 @@ const CreateCourseDialog: React.FC<Props> = () => {
   const {
     menuOpen,
     toggle,
+    data,
+    setData,
   } = useFabContext();
+  useEffect(() => {
+    if (menuOpen) {
+      setValues({
+        course: { title: data.title },
+        videos: [...data.videos],
+      });
+      setData({
+        title: "",
+        videos: [],
+      });
+    }
+  }, [menuOpen]);
   const [
     activeStep,
     setActiveStep,
