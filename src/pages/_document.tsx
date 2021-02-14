@@ -34,8 +34,8 @@ class MyDocument extends Document {
           <link
             key="favicon"
             rel="shortcut icon"
-            type="image/x-icon"
-            href={`img/favicon.ico`}
+            type="image/png"
+            href={`img/favicon.png`}
           />
           {provideImages(
             "./img/icons",
