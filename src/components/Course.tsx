@@ -111,7 +111,6 @@ const Course: React.FC<Props> = ({
       <div
         className="imageContainer"
         onClick={() => {
-          //TODO: Fix the IntentContext and the YoutubeWIndow to use Playlist
           toggleYoutube({
             title,
             videos,
@@ -134,6 +133,7 @@ const Course: React.FC<Props> = ({
               name: "Edit",
               onClick: async () => {
                 setData({
+                  id,
                   title,
                   videos,
                 });

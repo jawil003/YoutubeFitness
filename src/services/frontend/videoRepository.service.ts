@@ -4,7 +4,7 @@ import { db } from "../../store/LocalAppStorage";
 export default class VideoRepository {
   public static transaction =
     db.transaction;
-  public static async save(
+  public static async saveOrReturnExistent(
     c: Video,
   ): Promise<Video> {
     const equalUrl = (

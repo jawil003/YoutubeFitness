@@ -470,6 +470,7 @@ const AddVideoMenu: React.FC = () => {
           onClick={async () => {
             const courseEntity = new Course(
               course.title,
+              course.id,
             );
             logger.debug(
               `Create new Course '${course.title}'`,
@@ -488,7 +489,7 @@ const AddVideoMenu: React.FC = () => {
                 thumbnailUrl,
               } = video;
               videoIds.push({
-                ...(await VideoRepository.save(
+                ...(await VideoRepository.saveOrReturnExistent(
                   {
                     title,
                     length,
@@ -514,7 +515,7 @@ const AddVideoMenu: React.FC = () => {
                 videoIds,
               )} are added to Course`,
             );
-            await CourseRepository.save(
+            await CourseRepository.saveOrUpdate(
               courseEntity,
             );
             logger.debug(

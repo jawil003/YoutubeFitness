@@ -3,7 +3,10 @@ import Video from "src/entities/video.entity";
 
 const DialogStepperContext = React.createContext<{
   activeStep: 0 | 1;
-  course: { title: string };
+  course: {
+    title: string;
+    id?: number;
+  };
   courseError: { titleError: string };
   setCourseError: React.Dispatch<
     React.SetStateAction<{
@@ -17,6 +20,7 @@ const DialogStepperContext = React.createContext<{
   setValues: React.Dispatch<
     React.SetStateAction<{
       course: {
+        id?: number;
         title: string;
       };
       videos: (Video & {

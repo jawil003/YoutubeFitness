@@ -3,6 +3,7 @@ import Video from "src/entities/video.entity";
 
 const FloatingButtonContext = React.createContext<{
   data: {
+    id?: number;
     title: string;
     videos: Video &
       { begin: number; end: number }[];
@@ -10,6 +11,7 @@ const FloatingButtonContext = React.createContext<{
   menuOpen: boolean;
   toggle: () => void;
   setData: (data: {
+    id?: number;
     title: string;
     videos: Video &
       {

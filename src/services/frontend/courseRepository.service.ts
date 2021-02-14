@@ -15,11 +15,18 @@ export default class CourseRepository {
    *  Save a Course Instance in the Database.
    * @param c
    */
-  public static async save(
+  public static async saveOrUpdate(
     c: Course,
   ): Promise<Course> {
-    const id = await db.courses.put(c);
-    return { ...c, id };
+    if (c.id) {
+      await db.courses.put(c, c.id);
+      return c;
+    } else {
+      const id = await db.courses.put(
+        c,
+      );
+      return { ...c, id };
+    }
   }
   public static async findAll(): Promise<
     Course[]

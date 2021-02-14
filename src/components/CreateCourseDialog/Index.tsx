@@ -39,10 +39,14 @@ const CreateCourseDialog: React.FC<Props> = () => {
   useEffect(() => {
     if (menuOpen) {
       setValues({
-        course: { title: data.title },
+        course: {
+          title: data.title,
+          id: data.id,
+        },
         videos: [...data.videos],
       });
       setData({
+        id: undefined,
         title: "",
         videos: [],
       });
@@ -53,7 +57,10 @@ const CreateCourseDialog: React.FC<Props> = () => {
     setActiveStep,
   ] = useState<0 | 1>(0);
   const [values, setValues] = useState<{
-    course: { title: string };
+    course: {
+      title: string;
+      id?: number;
+    };
     videos: (Video & {
       begin: number;
       end: number;
@@ -68,7 +75,10 @@ const CreateCourseDialog: React.FC<Props> = () => {
   ]);
   const resetState = () => {
     setValues({
-      course: { title: "" },
+      course: {
+        title: "",
+        id: undefined,
+      },
       videos: [],
     });
     setActiveStep(0);
