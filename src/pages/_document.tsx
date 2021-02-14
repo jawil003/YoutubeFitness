@@ -18,6 +18,58 @@ import designSystem from "src/styles/designSystem";
  */
 
 class MyDocument extends Document {
+  // A common UX pattern for progressive web apps is to show a banner when a service worker has updated and waiting to install.
+  // NOTE: MUST set skipWaiting to false in next.config.js pwa object
+  // https://developers.google.com/web/tools/workbox/guides/advanced-recipes#offer_a_page_reload_for_users
+  promptNewVersionAvailable = (
+    _event: any,
+  ) => {
+    // `event.wasWaitingBeforeRegister` will be false if this is the first time the updated service worker is waiting.
+    // When `event.wasWaitingBeforeRegister` is true, a previously updated service worker is still waiting.
+    // You may want to customize the UI prompt accordingly.
+    if (
+      confirm(
+        "A newer version of this web app is available, reload to update?",
+      )
+    ) {
+      this.wb.addEventListener(
+        "controlling",
+        (_event: any) => {
+          window.location.reload();
+        },
+      );
+
+      // Send a message to the waiting service worker, instructing it to activate.
+      this.wb.messageSW({
+        type: "SKIP_WAITING",
+      });
+    } else {
+      console.log(
+        "User rejected to reload the web app, keep using old version. New version will be automatically load when user open the app next time.",
+      );
+    }
+  };
+  wb = (window as any).workbox as any;
+  componentDidMount() {
+    this.wb.addEventListener(
+      "waiting",
+      this.promptNewVersionAvailable,
+    );
+    this.wb.addEventListener(
+      "externalwaiting",
+      this.promptNewVersionAvailable,
+    );
+  }
+  componentWillUnmount() {
+    this.wb.removeEventListener(
+      "waititng",
+      this.promptNewVersionAvailable,
+    );
+    this.wb.removeEventListener(
+      "externalwaiting",
+      this.promptNewVersionAvailable,
+    );
+  }
   render() {
     return (
       <Html lang="de">
