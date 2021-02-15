@@ -20,7 +20,7 @@ import FlexContainer from "../components/FlexContainer";
 import PlayArrowIcon from "@material-ui/icons/PlayArrow";
 import SkipNextIcon from "@material-ui/icons/SkipNext";
 import PauseIcon from "@material-ui/icons/Pause";
-
+import designSystem from "../styles/designSystem";
 interface Props {
   open: boolean;
 }
@@ -167,22 +167,24 @@ const YoutubeFullScreenDialog: React.FC<Props> = ({
       </AppBar>
       <DialogContent
         css={css`
+          @media (min-width: ${designSystem
+              .breakpoints.desktopUp}) {
+            & {
+              flex-direction: row;
+            }
+          }
+          @media (max-width: ${designSystem
+              .breakpoints.desktopUp}) {
+            & {
+              flex-direction: column;
+            }
+          }
           & {
             display: inline-flex;
-            flex-direction: row;
+
             width: 100%;
             margin-top: 64px;
             justify-content: center;
-          }
-          & > .youtube-container {
-            display: flex;
-            align-items: flex-start;
-            flex: 1;
-            width: 100%;
-            padding-top: calc(
-              calc(100% / 16) * 9
-            );
-            position: relative;
           }
         `}
       >
@@ -198,12 +200,36 @@ const YoutubeFullScreenDialog: React.FC<Props> = ({
 
               overflow-x: hidden;
             }
-            & > .youtube-container {
-              width: 100%;
-              padding-top: calc(
-                calc(100% / 16) * 9
-              );
-              position: relative;
+            @media (min-width: ${designSystem
+                .breakpoints
+                .desktopUp}) {
+              & > .youtube-container {
+                display: flex;
+                align-items: flex-start;
+                flex: 1;
+                width: 100%;
+                padding-top: calc(
+                  calc(100% / 16) * 9
+                );
+                position: relative;
+              }
+            }
+            @media (max-width: ${designSystem
+                .breakpoints
+                .desktopUp}) {
+              && {
+                align-items: center;
+              }
+              & > .youtube-container {
+                display: flex;
+                align-items: flex-start;
+                flex: 1;
+                height: 100%;
+                padding-left: calc(
+                  calc(100% / 16) * 9
+                );
+                position: relative;
+              }
             }
           `}
         >
@@ -312,6 +338,16 @@ const YoutubeFullScreenDialog: React.FC<Props> = ({
                 & {
                   min-width: 340px;
                   padding: 0px 20px;
+
+                  height: 100%;
+                }
+                @media (max-width: ${designSystem
+                    .breakpoints
+                    .desktopUp}) {
+                  & {
+                    width: 100%;
+                    flex: 1;
+                  }
                 }
               `}
               direction="column"
@@ -324,27 +360,56 @@ const YoutubeFullScreenDialog: React.FC<Props> = ({
               >
                 Playlist
               </Typography>
-              {videoQueue.map(
-                (
-                  { begin, end, title },
-                  index,
-                ) => (
-                  <VideoWithTimestamp
-                    title={
-                      title as string
+              <FlexContainer
+                rowGap="20px"
+                columnGap="20px"
+                css={css`
+                  & {
+                    width: 100%;
+                    height: 100%;
+                  }
+                  @media (max-width: ${designSystem
+                      .breakpoints
+                      .desktopUp}) {
+                    && {
+                      flex-direction: row;
+                      flex: 1;
+                      align-items: flex-start;
+                      flex-wrap: wrap;
+                      align-items: flex-start;
+                      justify-content: center;
                     }
-                    current={
-                      index === 0
-                    }
-                    timestamp={
-                      index === 0
-                        ? currentTime
-                        : (end as number) -
-                          (begin as number)
-                    }
-                  />
-                ),
-              )}
+                  }
+                `}
+                alignItems="flex-start"
+                direction="column"
+              >
+                {videoQueue.map(
+                  (
+                    {
+                      begin,
+                      end,
+                      title,
+                    },
+                    index,
+                  ) => (
+                    <VideoWithTimestamp
+                      title={
+                        title as string
+                      }
+                      current={
+                        index === 0
+                      }
+                      timestamp={
+                        index === 0
+                          ? currentTime
+                          : (end as number) -
+                            (begin as number)
+                      }
+                    />
+                  ),
+                )}
+              </FlexContainer>
             </FlexContainer>
           ),
           [videoQueue, currentTime],
