@@ -174,6 +174,7 @@ const AddVideoMenu: React.FC = () => {
                 flex: 1;
 
                 min-height: 100%;
+                max-height: 300px;
                 overflow-y: scroll;
                 border: 1px solid
                   rgba(0, 0, 0, 0.12);
