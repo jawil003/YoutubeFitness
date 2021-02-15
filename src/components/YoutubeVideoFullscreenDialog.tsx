@@ -200,36 +200,15 @@ const YoutubeFullScreenDialog: React.FC<Props> = ({
 
               overflow-x: hidden;
             }
-            @media (min-width: ${designSystem
-                .breakpoints
-                .desktopUp}) {
-              & > .youtube-container {
-                display: flex;
-                align-items: flex-start;
-                flex: 1;
-                width: 100%;
-                padding-top: calc(
-                  calc(100% / 16) * 9
-                );
-                position: relative;
-              }
-            }
-            @media (max-width: ${designSystem
-                .breakpoints
-                .desktopUp}) {
-              && {
-                align-items: center;
-              }
-              & > .youtube-container {
-                display: flex;
-                align-items: flex-start;
-                flex: 1;
-                height: 100%;
-                padding-left: calc(
-                  calc(100% / 16) * 9
-                );
-                position: relative;
-              }
+
+            & > .youtube-container {
+              display: flex;
+              align-items: flex-start;
+              width: 100%;
+              padding-top: calc(
+                calc(100% / 16) * 9
+              );
+              position: relative;
             }
           `}
         >
