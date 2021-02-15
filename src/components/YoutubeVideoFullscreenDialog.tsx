@@ -97,7 +97,6 @@ const YoutubeFullScreenDialog: React.FC<Props> = ({
   useEffect(() => {
     if (open) {
       setNextVideo();
-
       setVideoQueue(youtube.videos);
       if (youtube.videos.length > 0)
         setCurrentTime(
@@ -168,13 +167,15 @@ const YoutubeFullScreenDialog: React.FC<Props> = ({
       <DialogContent
         css={css`
           @media (min-width: ${designSystem
-              .breakpoints.desktopUp}) {
+              .breakpoints
+              .tabletLandscapeUp}) {
             & {
               flex-direction: row;
             }
           }
           @media (max-width: ${designSystem
-              .breakpoints.desktopUp}) {
+              .breakpoints
+              .tabletLandscapeUp}) {
             & {
               flex-direction: column;
             }
@@ -197,17 +198,50 @@ const YoutubeFullScreenDialog: React.FC<Props> = ({
               display: flex;
               flex-direction: column;
               align-items: flex-start;
-
               overflow-x: hidden;
             }
+            @media (max-width: ${designSystem
+                .breakpoints
+                .tabletLandscapeUp}) {
+              & > .youtube-container {
+                margin: auto;
+                width: calc(
+                  calc(
+                      calc(
+                          50vh -
+                            calc(
+                              64px +
+                                calc(
+                                  8px +
+                                    42px
+                                )
+                            )
+                        ) / 9
+                    ) * 16
+                );
 
+                height: calc(
+                  50vh -
+                    calc(
+                      64px +
+                        calc(8px + 42px)
+                    )
+                );
+              }
+            }
+            @media (min-width: ${designSystem
+                .breakpoints
+                .tabletLandscapeUp}) {
+              & > .youtube-container {
+                width: 100%;
+                padding-top: calc(
+                  calc(100% / 16) * 9
+                );
+              }
+            }
             & > .youtube-container {
               display: flex;
               align-items: flex-start;
-              width: 100%;
-              padding-top: calc(
-                calc(100% / 16) * 9
-              );
               position: relative;
             }
           `}
@@ -322,7 +356,7 @@ const YoutubeFullScreenDialog: React.FC<Props> = ({
                 }
                 @media (max-width: ${designSystem
                     .breakpoints
-                    .desktopUp}) {
+                    .tabletLandscapeUp}) {
                   & {
                     width: 100%;
                     flex: 1;
@@ -349,7 +383,7 @@ const YoutubeFullScreenDialog: React.FC<Props> = ({
                   }
                   @media (max-width: ${designSystem
                       .breakpoints
-                      .desktopUp}) {
+                      .tabletLandscapeUp}) {
                     && {
                       flex-direction: row;
                       flex: 1;
