@@ -281,12 +281,12 @@ class MetaService {
       <meta
         key="og:image"
         property="og:image"
-        content={`${process.env.HOST}/img/cover.png`}
+        content={`https://${process.env.HOST}/img/cover.png`}
       />,
       <meta
         key="twitter:image"
         property="twitter:image"
-        content={`${process.env.HOST}/img/cover.png`}
+        content={`https://${process.env.HOST}/img/cover.png`}
       />,
       <meta
         name="twitter:card"
