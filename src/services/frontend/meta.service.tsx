@@ -142,6 +142,27 @@ class MetaService {
           content={description}
         />
       ) : undefined,
+      description ? (
+        <meta
+          key="og:description"
+          name="og:description"
+          content={description}
+        />
+      ) : undefined,
+      title ? (
+        <meta
+          key="og:title"
+          property="og:title"
+          content={title}
+        />
+      ) : undefined,
+      title ? (
+        <meta
+          key="twitter:title"
+          property="twitter:title"
+          content={title}
+        />
+      ) : undefined,
       author
         ? [
             <meta
@@ -249,6 +270,20 @@ class MetaService {
         rel="apple-touch-icon"
         sizes="180x180"
         href={`${iconName}-180x180.png`}
+      />,
+      <meta
+        key="og:image"
+        property="og:image"
+        content={`${process.env.HOST}/img/cover.png`}
+      />,
+      <meta
+        key="twitter:image"
+        property="twitter:image"
+        content={`${process.env.HOST}/img/cover.png`}
+      />,
+      <meta
+        name="twitter:card"
+        content="summary_large_image"
       />,
     ];
   }

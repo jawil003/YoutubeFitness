@@ -3,12 +3,37 @@
   "name": "YouTube Fitness",
   "icons": [
     {
-      "src": "/img/icons/icon_192.png",
+      "src": "/img/icons/icon-60x60.png",
+      "type": "image/png",
+      "sizes": "60x60"
+    },
+    {
+      "src": "/img/icons/icon-76x76.png",
+      "type": "image/png",
+      "sizes": "76x76"
+    },
+    {
+      "src": "/img/icons/icon-83.5x83.5.png",
+      "type": "image/png",
+      "sizes": "84x84"
+    },
+    {
+      "src": "/img/icons/icon-120x120.png",
+      "type": "image/png",
+      "sizes": "120x120"
+    },
+    {
+      "src": "/img/icons/icon-152x152.png",
+      "type": "image/png",
+      "sizes": "152x152"
+    },
+    {
+      "src": "/img/icons/icon-192x192.png",
       "type": "image/png",
       "sizes": "192x192"
     },
     {
-      "src": "/img/icons/icon_512.png",
+      "src": "/img/icons/icon-512x512.png",
       "type": "image/png",
       "sizes": "512x512"
     }
