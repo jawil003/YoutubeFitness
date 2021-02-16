@@ -40,7 +40,7 @@ class MyDocument extends Document {
         );
 
         // Send a message to the waiting service worker, instructing it to activate.
-        this.wb.messageSW({
+        wb.messageSW({
           type: "SKIP_WAITING",
         });
       } else {

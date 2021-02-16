@@ -5,7 +5,6 @@ import React, {
 } from "react";
 import designSystem from "../styles/designSystem";
 import ThreeDotMenu from "./ThreeDotMenu";
-import getMaterialIcons from "src/functions/getMaterialIcons.func";
 import FlexContainer from "./FlexContainer";
 import { Typography } from "@material-ui/core";
 
