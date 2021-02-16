@@ -125,7 +125,9 @@ class MetaService {
         <meta
           key="apple-mobile-web-app-title"
           name="apple-mobile-web-app-title"
-          content={title}
+          content={
+            title + " | " + appTitle
+          }
         />
       ) : undefined,
       title ? (
@@ -153,14 +155,18 @@ class MetaService {
         <meta
           key="og:title"
           property="og:title"
-          content={title}
+          content={
+            title + " | " + appTitle
+          }
         />
       ) : undefined,
       title ? (
         <meta
           key="twitter:title"
           property="twitter:title"
-          content={title}
+          content={
+            title + " | " + appTitle
+          }
         />
       ) : undefined,
       author
@@ -221,7 +227,8 @@ class MetaService {
     basePath: string,
     iconName: string,
   ) {
-    iconName = basePath + iconName;
+    iconName =
+      basePath + "/" + iconName;
     return [
       <link
         key="apple-touch-icon-default"
