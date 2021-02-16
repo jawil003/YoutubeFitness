@@ -19,6 +19,9 @@ const designSystem = {
       white: {
         base: "#f3f3f3",
       },
+      red: {
+        base: "#EE1A26",
+      },
       blue: {
         base: "#2D69C3",
       },

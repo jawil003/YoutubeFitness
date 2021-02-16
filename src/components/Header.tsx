@@ -60,11 +60,6 @@ const Header: React.FC = () => {
         `}
         columnGap="20px"
       >
-        {getMaterialIcons(
-          title === "My Courses"
-            ? "FitnessCenter"
-            : "Explore",
-        )}
         <Typography
           css={css`
             &.MuiTypography-root {

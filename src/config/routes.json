@@ -17,10 +17,6 @@
     ]
   },
   "dot": [
-    {
-      "name": "Settings",
-      "url": "/settings"
-    },
     { "name": "About", "url": "/about" }
   ]
 }
