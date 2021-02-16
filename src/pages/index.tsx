@@ -37,6 +37,8 @@ const MyCoursePage: React.FC = () => {
     <>
       <Head>
         {generateIndividualTags({
+          description:
+            "Create and edit Courses based on your favourite YouTube Videos and create a Playlist for your Workout just in a few Steps. All for free.",
           accentColor:
             designSystem.colors.brand
               .primary,
@@ -78,7 +80,6 @@ const MyCoursePage: React.FC = () => {
         >
           {courses.map(
             ({ id, title, videos }) => (
-              //TODO: Fix the Way Videos are played
               <Course
                 id={id}
                 title={title}

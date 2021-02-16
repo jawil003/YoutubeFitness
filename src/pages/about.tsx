@@ -14,6 +14,8 @@ const AboutPage: React.FC = () => {
     <>
       <Head>
         {generateIndividualTags({
+          description:
+            "Find out which awesome Developer created YouTube Fitness App. Is it me? Hope so :)",
           accentColor:
             designSystem.colors.brand
               .primary,
