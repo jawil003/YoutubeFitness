@@ -277,6 +277,7 @@ const YoutubeFullScreenDialog: React.FC<Props> = ({
                 },
                 1000,
               );
+              target.playVideo();
             }}
             onError={() => {}}
             onEnd={() => {
