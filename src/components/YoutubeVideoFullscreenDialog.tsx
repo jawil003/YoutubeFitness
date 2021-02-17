@@ -203,6 +203,9 @@ const YoutubeFullScreenDialog: React.FC<Props> = ({
             @media (max-width: ${designSystem
                 .breakpoints
                 .tabletLandscapeUp}) {
+              & {
+                flex: 1;
+              }
               & > .youtube-container {
                 margin: auto;
                 width: calc(
@@ -352,13 +355,19 @@ const YoutubeFullScreenDialog: React.FC<Props> = ({
                 & {
                   min-width: 340px;
                   padding: 0px 20px;
-
-                  height: 100%;
+                }
+                @media (min-width: ${designSystem
+                    .breakpoints
+                    .tabletLandscapeUp}) {
+                  & {
+                    min-height: 100%;
+                  }
                 }
                 @media (max-width: ${designSystem
                     .breakpoints
                     .tabletLandscapeUp}) {
                   & {
+                    overflow: hidden;
                     width: 100%;
                     flex: 1;
                   }
@@ -379,8 +388,13 @@ const YoutubeFullScreenDialog: React.FC<Props> = ({
                 columnGap="20px"
                 css={css`
                   & {
+                    display: block;
                     width: 100%;
                     height: 100%;
+                    overflow-y: scroll;
+                  }
+                  %::-webkit-scrollbar {
+                    display: none;
                   }
                   @media (max-width: ${designSystem
                       .breakpoints
