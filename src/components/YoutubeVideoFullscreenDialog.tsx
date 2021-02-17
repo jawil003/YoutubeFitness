@@ -350,7 +350,6 @@ const YoutubeFullScreenDialog: React.FC<Props> = ({
         {useMemo(
           () => (
             <FlexContainer
-              rowGap="20px"
               css={css`
                 & {
                   min-width: 340px;
@@ -392,8 +391,10 @@ const YoutubeFullScreenDialog: React.FC<Props> = ({
                     width: 100%;
                     height: 100%;
                     overflow-y: scroll;
+                    -ms-overflow-style: none; /* IE and Edge */
+                    scrollbar-width: none; /* Firefox */
                   }
-                  %::-webkit-scrollbar {
+                  &::-webkit-scrollbar {
                     display: none;
                   }
                   @media (max-width: ${designSystem
